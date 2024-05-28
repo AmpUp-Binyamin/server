@@ -1,4 +1,4 @@
-import { Document } from "mongoose"
+import { Document, ObjectId } from "mongoose"
 import ICard from "./ICard";
 import IStoreItem from "./IStoreItem";
  
@@ -10,7 +10,7 @@ export default interface IChallenge extends Partial<Document> {
     tags: string[];
     isPublic: boolean;
     isTemplate: boolean;
-    creator?: string; 
+    creator?: ObjectId; 
     store: IStoreItem[];
     cards: ICard[];
     invited: string[]; 
