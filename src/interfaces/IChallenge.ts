@@ -13,6 +13,6 @@ export default interface IChallenge extends Partial<Document> {
     creator?: ObjectId; 
     store: IStoreItem[];
     cards: ICard[];
-    invited: string[]; 
+    invited: ObjectId[]; 
 }
 

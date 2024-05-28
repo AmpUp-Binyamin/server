@@ -121,7 +121,8 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
     store: [storeItemSchema],
     cards: [cardSchema],
     invited: [{
-        type: String,
+        type: SchemaTypes.ObjectId,
+        ref: 'member',
         required: true,
     }],
 })
