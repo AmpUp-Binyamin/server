@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const MONGO_URL = "mongodb+srv://test:1234@cluster0.onb7tvx.mongodb.net/Typescript-Template"
+const MONGO_URL = process.env.MONGO_URL as string
 export function connect() {
     try {
         mongoose.connect(MONGO_URL)
