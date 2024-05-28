@@ -8,16 +8,21 @@ export default class ActiveChallegeService {
     static async getSingleActiveChallenge(id: string): Promise<IActiveChallenge | null> {
         return await this.controller.readOne(id)
     }
-    static async createNewActiveChallenge(data: AddActiveChallengeRequest): Promise<IActiveChallenge | null> {
+    static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
+        if (!data.challenge) {
+            throw { code: 400, msg: "challenge not found" }
+        }
+        if (!data.startDate) {
+            throw { code: 400, msg: "start date not found" }
+        }
         let newActiveChallenge: IActiveChallenge = {
-            coach: data.coach,
+            coach: data.userId,
             challenge: data.challenge,
-            participants: data.participants,
+            participants: [],
             startDate: data.startDate,
-            cards: data.cards,
-
+            cards: []
         }
         return await this.controller.create(newActiveChallenge)
     }
-
 }
+

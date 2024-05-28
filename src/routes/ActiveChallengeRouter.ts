@@ -16,8 +16,9 @@ router.get('/:activeChallengeId', async (req: Request, res: Response) => {
 })
 router.post('/', async (req: Request, res: Response) => {
     try {
-        let request = Mapper<AddActiveChallengeRequest>(new AddActiveChallengeRequest(), req.body)
-        let activeChallenge = await ActiveChallegeService.createNewActiveChallenge(request)
+        let activeChallenge = await ActiveChallegeService.createNewActiveChallenge(req.body)
+        console.log(activeChallenge);
+
         res.send(activeChallenge)
     }
     catch (error) {
