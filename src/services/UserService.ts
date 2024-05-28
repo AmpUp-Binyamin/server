@@ -14,6 +14,7 @@ export default class UserService {
             email: data.email,
             permission: "user",
         }
+
         return await this.controller.create(newUser)
     }
 

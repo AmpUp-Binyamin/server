@@ -1,10 +1,12 @@
-import { Document } from "mongoose"
-import Permission from "../types/Permission"
+import { Document, ObjectId } from "mongoose"
 
 export default interface ICoach extends Partial<Document> {
     fullName: string
     email: string
-    permission: Permission
+    phoneNumber: string
+    picture: string
+    link: string
+    myChallenges: ObjectId[]
     password?: string
 }
 
