@@ -15,4 +15,5 @@ export interface IActiveCard {
     challengeDay: number
     coins: number
     answerValue: string
+    answerMedia?: string[]
 }

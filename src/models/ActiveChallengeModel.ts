@@ -1,9 +1,7 @@
 import mongoose, { Mongoose } from 'mongoose'
 import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
 
-const activeCardMedia = new mongoose.Schema({
 
-})
 
 const activeCardSchema = new mongoose.Schema<IActiveCard>({
 
@@ -26,8 +24,10 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
         required: true
     },
     answerValue: {
-        type: String
+        type: String,
+        required: true
     },
+    answerMedia: [String]
 
 
 })
