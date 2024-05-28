@@ -13,8 +13,14 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+// middleware - token to user
+import { verifyToken } from './middleware/auth'
+app.use('*', verifyToken)
+
 import UserRouter from './routes/UserRouter'
+import CoachRouter from './routes/CoachRouter'
 app.use('/user', UserRouter)
+app.use('/coach', CoachRouter)
 
 import MediaRouter from './routes/MediaRouter'
 app.use('/media', MediaRouter)
