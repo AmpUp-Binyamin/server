@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { SchemaTypes } from "mongoose";
 import IChallenge from "../interfaces/IChallenge";
 import IStoreItem from "../interfaces/IStoreItem";
 import ICard from "../interfaces/ICard";
@@ -115,7 +115,8 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
         required: true,
     },
     creator: {
-        type:String,
+        type: SchemaTypes.ObjectId,
+        ref: 'coach'
     },
     store: [storeItemSchema],
     cards: [cardSchema],
