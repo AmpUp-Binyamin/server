@@ -1,9 +1,12 @@
-export default class AddUserRequest{
-    fullName : string
+import UserAuth from "../../middleware/UserAuth"
+
+export default class AddUserRequest extends UserAuth {
+    fullName: string
     email: string
 
-    constructor(fn ='', email=''){
-        this.fullName=fn
-        this.email=email
+    constructor(fn = '', email = '') {
+        super()
+        this.fullName = fn
+        this.email = email
     }
 }
