@@ -1,7 +1,7 @@
 import { Document } from "mongoose"
 import ICard from "./ICard";
 import IStoreItem from "./IStoreItem";
-
+ 
 export default interface IChallenge extends Partial<Document> {
     challengeName: string;
     coverImage: string;
