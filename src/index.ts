@@ -22,7 +22,11 @@ import CoachRouter from './routes/CoachRouter'
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 
+
 import MediaRouter from './routes/MediaRouter'
 app.use('/media', MediaRouter)
+
+import FeedBackRouter from './routes/FeedBackRouter'
+app.use('/feedback', FeedBackRouter)
 
 app.listen(3030, () => console.log("Server is UP : 3030"))
