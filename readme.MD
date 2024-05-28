@@ -6,6 +6,7 @@ for dev mode
 run 
 
 ```sh
+   git clone -
    npm i
    npm run watch
 ```
