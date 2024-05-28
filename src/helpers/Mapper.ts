@@ -1,7 +1,7 @@
 
 export const Mapper = <T>(dto: T, body: any): T => {
     if (!dto) {
-        throw new Error('responseDTO cannot be null or undefined');
+        throw new Error('dto cannot be null or undefined');
     }
 
     const mappedDTO: Partial<T> = {};

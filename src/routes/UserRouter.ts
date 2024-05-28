@@ -2,7 +2,6 @@ import { Request, Response, Router } from 'express'
 import UserService from '../services/UserService'
 import AddUserRequest from '../dto/user/AddUserRequest'
 import { Mapper } from '../helpers/Mapper'
-import IUser from '../interfaces/IUser'
 const router = Router()
 
 
