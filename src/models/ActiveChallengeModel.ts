@@ -1,8 +1,6 @@
 import mongoose, { Mongoose } from 'mongoose'
 import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
 
-
-
 const activeCardSchema = new mongoose.Schema<IActiveCard>({
 
     member: {
@@ -32,7 +30,6 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
 
 })
 
-
 const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
     coach: {
         type: mongoose.Schema.Types.ObjectId,
@@ -56,6 +53,5 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
     },
     cards: [activeCardSchema]
 })
-
 
 export default mongoose.model<IActiveChallenge>('activeChallenge', ActiveChallengeSchema)
