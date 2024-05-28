@@ -18,7 +18,7 @@ export default class activeChallengeController implements IController<IActiveCha
         return await this.readOne(id)
     }
 
-    del(id: string): Promise<boolean> {
+    del(id: string): Promise<boolean> { //unimplemented
         throw new Error('Method not implemented.');
     }
 

@@ -9,6 +9,7 @@ export default interface IActiveChallenge extends Partial<Document> {
     cards: IActiveCard[]
 }
 
+//----sub Interface for each answered card within the running challenge
 export interface IActiveCard {
     member: ObjectId
     card: ObjectId
