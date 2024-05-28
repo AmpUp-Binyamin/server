@@ -1,5 +1,14 @@
 import mongoose, { Mongoose } from 'mongoose'
-import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
+import IActiveChallenge, { IActiveCard, IActiveMeida } from '../interfaces/IActiveChallenge';
+
+const activeMediaSchema = new mongoose.Schema<IActiveMeida>({
+    type: {
+        type: String
+    },
+    content: {
+        type: String
+    }
+})
 
 const activeCardSchema = new mongoose.Schema<IActiveCard>({
 
@@ -25,7 +34,7 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
         type: String,
         required: true
     },
-    answerMedia: [String]
+    answerMedia: [activeMediaSchema]
 
 
 })
