@@ -1,17 +1,24 @@
 // import { ObjectId } from 'mongoose';
+import { FilterQuery } from 'mongoose';
+import IController from '../interfaces/IController';
 import IUser from '../interfaces/IUser';
-import UserModel from './UserModel'
+import UserModel from '../models/UserModel'
 
-export default class UserController {
-
-    static async create(user: IUser): Promise<IUser> {
-        return await UserModel.create(user)
+export default class UserController implements IController<IUser> {
+    async create(data: IUser): Promise<IUser> {
+        return await UserModel.create(data)
     }
-
-    static read() { }
-    static async readOne(id: string): Promise<IUser | null> {
+    async read(filter: FilterQuery<IUser>): Promise<IUser[]> {
+        return await UserModel.find(filter)
+    }
+    async readOne(id: string): Promise<IUser | null> {
         return await UserModel.findById(id)
     }
-    static update() { }
-    static del() { }
+    async update(id: string, data: Partial<IUser>): Promise<IUser | null> {
+        await UserModel.updateOne({_id:id},data)
+        return await this.readOne(id)
+    }
+    async del(id: string): Promise<boolean> {
+        throw new Error('Method not implemented.');
+    }
 }

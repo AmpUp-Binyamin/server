@@ -17,17 +17,7 @@ router.get('/:userId', async (req:Request, res:Response) => {
 })
 router.post('/', async (req:Request, res:Response) => {
     try{
-        // TODO: mapper
-        let x : AddUserRequest = {
-            fullName: '',
-            email: 0
-        }
-      
-        // https://medium.com/@mokremiz/building-a-flexible-dto-mapper-for-react-and-next-js-projects-3ee77055f05d
-        let request = Mapper<AddUserRequest>(x, req.body)
-        console.log("request:",request);
-        
-        //  new AddUserRequest(req.body.fullName,req.body.email)
+        let request = Mapper<AddUserRequest>(new AddUserRequest(), req.body)
         let user= await UserService.createNewUser(request)
         res.send(user)
     }
