@@ -9,6 +9,8 @@ app.use(cors())
 app.use(express.json())
 
 import UserRouter from './routes/UserRouter'
+import CoachRouter from './routes/CoachRouter'
 app.use('/user', UserRouter)
+app.use('/coach', CoachRouter)
 
 app.listen(3030, () => console.log("Server is UP : 3030"))
