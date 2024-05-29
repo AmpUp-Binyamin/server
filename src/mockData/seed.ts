@@ -122,7 +122,7 @@ export default async function go() {
     {
       "day": 1,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -218,7 +218,7 @@ export default async function go() {
     {
       "day": 2,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -314,7 +314,7 @@ export default async function go() {
     {
       "day": 3,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -410,7 +410,7 @@ export default async function go() {
     {
       "day": 4,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -458,7 +458,7 @@ export default async function go() {
     {
       "day": 4,
       "cardOrder": 5,
-      "cardType": "question",
+      "cardType": "study",
       "subType": "open",
       "title": "Favorite Healthy Meal",
       "content": "Share your favorite healthy meal recipe.",
@@ -506,7 +506,7 @@ export default async function go() {
     {
       "day": 5,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -602,7 +602,7 @@ export default async function go() {
     {
       "day": 6,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",

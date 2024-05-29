@@ -1,3 +1,3 @@
-type Media = "image"| "video"| "audio" | "document" | "other" 
+type Media = "image"| "video"| "audio" | "document" | "other" | "text"
 
 export default Media;
