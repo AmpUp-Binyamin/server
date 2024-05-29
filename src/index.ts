@@ -12,6 +12,9 @@ if (!fs.existsSync('./files')) {
 const app = express()
 app.use(cors())
 app.use(express.json())
+import go from './mockData/seed';
+
+// go()
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth'
