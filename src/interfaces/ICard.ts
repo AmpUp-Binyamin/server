@@ -1,13 +1,13 @@
 import IMedia from "./IMedia";
 
 export default interface ICard {
-    _id?:string;
+    _id?: string;
     day: number;
-    cardOrder: number; 
-    cardType: string; // יעבור להיות Union
+    cardOrder: number;
+    cardType: 'question' | 'exercise' | 'media' | 'knowledge' | 'luck'; // יעבור להיות Union
     subType?: string;// יעבור להיות Union
     title: string;
-    content: string; 
+    content: string;
     media?: IMedia;
     coins: number;
     image?: string;
