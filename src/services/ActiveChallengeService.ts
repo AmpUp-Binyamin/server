@@ -1,10 +1,13 @@
 import activeChallengeController from "../controllers/ActiveChallengeController"
+import MemberController from "../controllers/MemberControllers"
 import AddActiveChallengeRequest from "../dto/activeChallenge/AddActiveChallengeRequest"
+import { RandomNumberGenerator } from "../helpers/luck"
 import IActiveChallenge from "../interfaces/IActiveChallenge"
 
 export default class ActiveChallegeService {
     static controller = new activeChallengeController()
-
+    static RandomGenerator = new RandomNumberGenerator()
+    static memberController = new MemberController()
     static async getSingleActiveChallenge(id: string): Promise<IActiveChallenge | null> {
         return await this.controller.readOne(id)
     }
@@ -24,5 +27,17 @@ export default class ActiveChallegeService {
         }
         return await this.controller.create(newActiveChallenge)
     }
+
+
+
+    static async loveCard(challengeId: string): Promise<any> {
+        let challenge = await this.controller.readOne(challengeId, 'participants')
+        if (!challenge) throw { code: 400, message: "go to hell!!!" };
+        let num = challenge.participants.length
+        let user = challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+        return await this.memberController.readOne(String(user))
+    }
 }
+
+
 

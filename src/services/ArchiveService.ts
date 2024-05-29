@@ -3,9 +3,8 @@ import activeChallengeController from "../controllers/ActiveChallengeController"
 import ChallengeController from "../controllers/ChallengeController"
 import CoachController from "../controllers/CoachController"
 import MemberController from "../controllers/MemberControllers"
-import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge"
+import IActiveChallenge from "../interfaces/IActiveChallenge"
 import IChallenge from "../interfaces/IChallenge"
-import ICard from "../interfaces/ICard"
 
 
 

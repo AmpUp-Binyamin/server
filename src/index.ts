@@ -1,27 +1,40 @@
-import 'dotenv/config'
-import cors from 'cors'
+import cors from 'cors';
+import 'dotenv/config';
 import express from 'express';
-import { connect } from './config/db'
+import { connect } from './config/db';
+import ActiveChallengeRouter from './routes/ActiveChallengeRouter';
+import ArchiveRouter from './routes/ArchiveRouter';
+import CoachRouter from './routes/CoachRouter';
+import FeedBackRouter from './routes/FeedBackRouter';
+import LuckRouter from './routes/LuckRouter';
+import MediaRouter from './routes/MediaRouter';
+import MemberRouter from './routes/MemberRouter';
+import NotificationRoutr from './routes/NotificationRouter';
+import StoreRouter from './routes/StoreRouter';
+import UserRouter from './routes/UserRouter';
+
 connect()
 
 const app = express()
 app.use(cors())
 app.use(express.json())
 
+// go()
+
 // middleware - token to user
-import { verifyToken } from './middleware/auth'
+import { verifyToken } from './middleware/auth';
 app.use('*', verifyToken)
 
-import UserRouter from './routes/UserRouter'
-import CoachRouter from './routes/CoachRouter'
-import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
-import ArchiveRouter from './routes/ArchiveRouter'
+
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
+app.use('/store', StoreRouter)
 app.use('/archive', ArchiveRouter)
-
-import FeedBackRouter from './routes/FeedBackRouter'
+app.use('/media', MediaRouter)
+app.use('/notification', NotificationRoutr)
 app.use('/feedback', FeedBackRouter)
+app.use('/luck', LuckRouter)
+app.use('/member', MemberRouter)
 
 app.listen(3030, () => console.log("Server is UP : 3030"))

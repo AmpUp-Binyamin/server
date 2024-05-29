@@ -26,16 +26,4 @@ router.get('/:challengeId/:cardId', async (req: Request, res: Response) => {
 })
 
 
-
-// router.get('/:userId/activeChallenges', async (req: Request, res: Response) => {
-//     try {
-//         let memberActiveChallenge = await ArchiveService.getMemberActive(req.params.userId)
-//         res.send(memberActiveChallenge)
-//     } catch (error) {
-//         res.status(400).send(error)
-//     }
-// })
-
-
-
 export default router;
