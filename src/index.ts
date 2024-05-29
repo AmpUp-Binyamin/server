@@ -20,4 +20,6 @@ app.use('/coach', CoachRouter)
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
 
+import LuckRouter from './routes/LuckRouter'
+app.use('/luck', LuckRouter)
 app.listen(3030, () => console.log("Server is UP : 3030"))
