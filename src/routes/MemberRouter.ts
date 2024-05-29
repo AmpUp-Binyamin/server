@@ -6,13 +6,23 @@ import jwt from 'jsonwebtoken';
 import createToken from '../middleware/createToken'
 const router = Router()
 
-router.get('/:memberId', async (req: Request, res: Response) => {
+router.get('/info/:memberId', async (req: Request, res: Response) => {
     try {
         let member = await MemberService.getsingelMember(req.params.memberId)
         console.log(member)
         res.send(member)
     }
     catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/personal-info', async (req: Request, res: Response) => {
+    try {
+        const destructuredUserTokenId = '6656df1b8437151db0cce4e2'
+        const memberInfo = await MemberService.getPersonalInfo(destructuredUserTokenId)
+        res.send(memberInfo)
+    } catch (error) {
         res.status(400).send(error)
     }
 })

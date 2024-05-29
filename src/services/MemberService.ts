@@ -9,9 +9,14 @@ export default class MemberService {
     static async getsingelMember(id: string): Promise<IMember | null> {
         return await this.controller.readOne(id)
     }
-    
-    static async createNewMember(data : AddMemberRequest): Promise<IMember | null> { 
-        let newMember : IMember = {
+
+    static async getPersonalInfo(id: string): Promise<IMember | null> {
+        const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
+        return memberInfo
+    }
+
+    static async createNewMember(data: AddMemberRequest): Promise<IMember | null> {
+        let newMember: IMember = {
             fullName: data.fullName,
             email: data.email,
             phone: data.phone,
