@@ -19,7 +19,7 @@ import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
 import NotificationRoutr from './routes/NotificationRouter'
 import FeedBackRouter from './routes/FeedBackRouter'
-import ActiveChallengeRouter from './routes/ActiveChallengeRouter
+import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
 
 import StoreRouter from './routes/StoreRouter'
 app.use('/user', UserRouter)
