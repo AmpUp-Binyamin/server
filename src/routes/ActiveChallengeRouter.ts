@@ -43,12 +43,12 @@ router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) =>
     try {
         let challengeId = req.params.challengeId;
         let cardId = req.params.cardId;
-        let answer = Mapper<AddUserRequest>(new AddUserRequest(), req.body)
-        await ActiveChallegeService.handleCardAnswer(challengeId, cardId, answer);
+        await ActiveChallegeService.handleCardAnswer(challengeId, cardId, req.body);
         res.send('sucsses');
     }
     catch (error) {
         console.log(error);
+        res.status(400).send(error)
     }
 })
 

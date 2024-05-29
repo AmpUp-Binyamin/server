@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose"
+import { ObjectId, isObjectIdOrHexString, isValidObjectId } from "mongoose"
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import ChallengeController from "../controllers/ChallengeController"
 import MemberController from "../controllers/MemberControllers"
@@ -47,6 +47,8 @@ export default class ActiveChallegeService {
     static async handleCardAnswer(challengeId: string, cardId: string, answer: any): Promise<IActiveCard> {
         console.log({ challengeId, cardId, answer });
         if (!challengeId || !cardId) throw { code: 400, msg: "missing data" };
+        if (!isValidObjectId(challengeId)) throw { code: 400, msg: "challengeId is not ObjectId" };
+        if (!isValidObjectId(cardId)) throw { code: 400, msg: "cardId is not ObjectId" };
 
         // מציאת האתגר בדטאבייס
         let challenge = await this.challengeController.readOne(challengeId);
@@ -70,6 +72,7 @@ export default class ActiveChallegeService {
             answerMedia: [],//TODO: handle files
         }
 
+        console.log('value: ', answer.value)
         // הוספת הקלף החדש לאתגר הפעיל
         await this.controller.update(activeChallenge[0]._id as string, { $push: { cards: cardToAdd } });
         return cardToAdd;
