@@ -1,8 +1,10 @@
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import AddActiveChallengeRequest from "../dto/activeChallenge/AddActiveChallengeRequest"
+import GetActiveChallToStartReq from "../dto/activeChallenge/GetActiveChallToStartReq"
 import { FutureDateCalc } from "../helpers/FutureDateCalc"
 import IActiveChallenge from "../interfaces/IActiveChallenge"
 import IChallenge from "../interfaces/IChallenge"
+import ICoach from "../interfaces/ICoach"
 import IMember from "../interfaces/IMember"
 
 
@@ -13,18 +15,14 @@ export default class ActiveChallegeService {
         return await this.controller.readOne(id)
     }
 
-    static async getActiveChallengeToStartScreen(id: string)  {
-        console.log(id);
-        
-        let challenge: IActiveChallenge| null = await this.controller.readOneWithPopulate(id, {participants: 'img', coach: 'fullName picture title', challenge: 'challengeName coverImage subDescription duration'}, 'startDate participants')
-        if (!challenge) return null
-        if (!('_id' in challenge.challenge)) return null;
-        const futureDate : Date = FutureDateCalc(challenge.startDate, challenge.challenge.duration as number)
-        console.log(futureDate)
-        console.log({...challenge, futureDate});
-        
-        // const par  = challenge?.participants.length
-        return {...challenge, futureDate}
+    static async getActiveChallengeToStartScreen(id: string): Promise<GetActiveChallToStartReq | null>  {        
+        let activeChallenge: IActiveChallenge| null = await this.controller.readOneWithPopulate(id, {participants: 'img', coach: 'fullName picture title', challenge: 'challengeName coverImage subDescription duration'}, 'startDate participants')
+        if (!activeChallenge) return null
+        if (!('_id' in activeChallenge.challenge)) return null;
+        const futureDate : Date = FutureDateCalc(activeChallenge.startDate, activeChallenge.challenge.duration as number)
+        const {startDate, challenge , participants, coach } = activeChallenge
+        const res = new GetActiveChallToStartReq(startDate,futureDate,participants as IMember[], challenge as IChallenge , coach as ICoach)
+        return res
     }
 
     static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {

@@ -1,28 +1,18 @@
-import IActiveChallenge from "../../interfaces/IActiveChallenge"
+import IChallenge from "../../interfaces/IChallenge"
+import ICoach from "../../interfaces/ICoach"
 import IMember from "../../interfaces/IMember"
-
-interface Challenge {
-        challengeName: string
-        coverImg: string
-        subDescription: string
-        duration: number
-}
-
-interface Coach {
-    fullName: string
-    picture: string
-    title: string
-}
 
 export default class GetActiveChallToStartReq  {
 
     startDate: Date
+    futureDate: Date
     participants: IMember[]
-    challenge : Challenge
-    coach: Coach
+    challenge : Partial<IChallenge>
+    coach: Partial<ICoach>
 
-    constructor(startDate: Date, participants: IMember[],challenge :Challenge, coach: Coach){
+    constructor(startDate: Date, futureDate: Date, participants: IMember[],challenge :IChallenge, coach: ICoach){
         this.startDate = startDate
+        this.futureDate = futureDate
         this.participants = participants
         this.challenge = challenge
         this.coach = coach
