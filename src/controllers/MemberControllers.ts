@@ -1,4 +1,4 @@
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, ObjectId } from 'mongoose';
 import IController from '../interfaces/IController';
 import IMember from '../interfaces/IMember';
 import MemberModel from '../models/MemberModel';
@@ -10,7 +10,7 @@ export default class MemberController implements IController<IMember> {
     async read(filter: FilterQuery<IMember>): Promise<IMember[]> {
         return await MemberModel.find(filter)
     }
-    async readOne(id: string): Promise<IMember | null> {
+    async readOne(id: string |ObjectId): Promise<IMember | null> {
         return await MemberModel.findById(id)
     }
     async readWithChallenge(id: string): Promise<IMember | null> {

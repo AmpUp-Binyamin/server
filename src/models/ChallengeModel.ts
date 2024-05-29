@@ -40,10 +40,12 @@ const mediaSchema = new mongoose.Schema<IMedia>({
     fileName: {
         type: String,
         required: true,
+        unique: true
     },
     path: {
         type: String,
         required: true,
+        unique: true
     }
 })
 
@@ -100,23 +102,23 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
         required: true,
     },
     subDescription: {
-        type:String,
+        type: String,
         required: true,
     },
     duration: {
-        type:Number,
+        type: Number,
         required: true,
     },
     tags: [{
-        type:String,
+        type: String,
         required: true,
     }],
     isPublic: {
-        type:Boolean,
+        type: Boolean,
         required: true,
     },
     isTemplate: {
-        type:Boolean,
+        type: Boolean,
         required: true,
     },
     creator: {

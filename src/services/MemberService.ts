@@ -23,11 +23,10 @@ const validation:ValidationRules= {
 export default class MemberService {
 
     static controller = new MemberController();
-
     static async getsingelMember(id: string): Promise<IMember | null> {
         return await this.controller.readOne(id)
     }
-
+    
     static async createNewMember(data : AddMemberRequest): Promise<IMember | null> { 
         let newMember : IMember = {
             fullName: data.fullName,
@@ -40,6 +39,7 @@ export default class MemberService {
             coins: data.coins,
             notifications: data.notifications
         }
+        console.log(newMember)
         return await this.controller.create(newMember)
     }
 
