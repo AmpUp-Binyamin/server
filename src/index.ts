@@ -14,9 +14,11 @@ app.use('*', verifyToken)
 
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
+import NotificationRoutr from './routes/NotificationRouter'
+
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
-
+app.use('/notification',NotificationRoutr)
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
 
