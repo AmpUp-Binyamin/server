@@ -1,12 +1,20 @@
 import mongoose, { Mongoose } from 'mongoose'
-import IActiveChallenge, { IActiveCard, IActiveMeida } from '../interfaces/IActiveChallenge';
+import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
+import IMeida from '../interfaces/IMedia';
 
-const activeMediaSchema = new mongoose.Schema<IActiveMeida>({
+const activeMediaSchema = new mongoose.Schema<IMeida>({
     type: {
-        type: String
+        type: String,
+        required: true,
+        enum: ["image", "video", "audio", "document", "other"]
     },
-    content: {
-        type: String
+    fileName: {
+        type: String,
+        required: true,
+    },
+    path: {
+        type: String,
+        required: true,
     }
 })
 
