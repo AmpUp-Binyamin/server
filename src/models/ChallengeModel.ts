@@ -72,6 +72,9 @@ const cardSchema = new mongoose.Schema<ICard>({
         type: String,
         enum: ['multipleChoice', 'url', 'freeText', 'upload', 'multipleChoice+freeText']
     },
+    answers:{
+        type: [String],        
+    },
     title: {
         type: String,
         required: true,
