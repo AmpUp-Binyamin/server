@@ -8,12 +8,13 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // טוקן זמני לעכשיו
 const temporaryToken = createToken({ userId: "test", userPermission: "user" });
+
 // console.log("temporaryToken: ", temporaryToken);
 
 // middleware - token to user
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authHeader = temporaryToken || req.headers.authorization;
+        const authHeader =  req.headers.authorization || temporaryToken ;
         if (!authHeader) {
             return res.status(401).send('Unauthorized');
         }
