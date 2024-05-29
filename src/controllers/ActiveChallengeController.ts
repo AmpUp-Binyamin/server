@@ -16,9 +16,11 @@ export default class activeChallengeController implements IController<IActiveCha
     async read(filter: FilterQuery<IActiveChallenge>): Promise<IActiveChallenge[]> {
         return await ActiveChallengeModel.find(filter)
     }
-    async readOne(id: string): Promise<IActiveChallenge | null> {
-        return await ActiveChallengeModel.findById({ _id: id })
-    }
+    async readOne(id: string , populate?: string | undefined): Promise<IActiveChallenge | null> { //@ts-ignore
+       return await ActiveChallengeModel.findById({ _id: id })
+       //.populate?(populate) //@ts-ignore
+         
+    } //@ts-ignore
     async update(id: string, data: Partial<IActiveChallenge>): Promise<IActiveChallenge | null> {
         await ActiveChallengeModel.updateOne({ _id: id }, data)
         return await this.readOne(id)

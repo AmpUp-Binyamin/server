@@ -1,14 +1,25 @@
 import mongoose, { Mongoose, SchemaTypes } from 'mongoose'
-import IActiveChallenge, { IActiveCard, IActiveMeida } from '../interfaces/IActiveChallenge';
+import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
+import IMedia from '../interfaces/IMedia';
 
-const activeMediaSchema = new mongoose.Schema<IActiveMeida>({
+const activeMediaSchema = new mongoose.Schema<IMedia>({
     type: {
-        type: String
+        type: String,
+        required: true,
+        enum: ["image", "video", "audio", "document", "other"]
     },
-    content: {
-        type: String
+    fileName: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    path: {
+        type: String,
+        required: true,
+        unique: true
     }
 })
+
 
 const activeCardSchema = new mongoose.Schema<IActiveCard>({
     member: {
@@ -18,7 +29,6 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
     },
     card: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "card",
         required: true
     },
     challengeDay: {

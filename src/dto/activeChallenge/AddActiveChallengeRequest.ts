@@ -1,5 +1,5 @@
 import { ObjectId } from "mongoose";
-import IActiveChallenge, { IActiveCard, IActiveMeida } from "../../interfaces/IActiveChallenge";
+import IActiveChallenge, { IActiveCard } from "../../interfaces/IActiveChallenge";
 
 export default class AddActiveChallengeRequest implements IActiveChallenge {
     coach: ObjectId;
