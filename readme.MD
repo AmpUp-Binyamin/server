@@ -16,6 +16,7 @@ run
 add .env at top level with 
 ```sh
 MONGO_URL= 
+JWT_SECRET=
 ```
 
 **Good luck**
