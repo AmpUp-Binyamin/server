@@ -12,4 +12,5 @@ export default class ChallengeService {
         let challenge = this.controller.readOneWithPopulate(id, {member: 'img ', coach: 'fullName picture title'}, 'challengeName coverImage subDescription invited')
         return challenge
     }
+    
 }
