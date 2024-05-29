@@ -11,7 +11,11 @@ export default class StoreService {
     if (!challenge) {
       throw new Error("this challenge dose not exist ");
     }
-    return challenge.store;
+    return challenge.store.filter((i)=>{
+      if (i.daysToExpiry>30 && i.quantity > 0 ) {
+        return i 
+      }
+    });
   }
 }
 
