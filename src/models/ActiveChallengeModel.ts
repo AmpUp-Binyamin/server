@@ -19,7 +19,6 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
     },
     card: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "card",
         required: true
     },
     challengeDay: {
