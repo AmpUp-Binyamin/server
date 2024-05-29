@@ -3,6 +3,7 @@ import IController from "../interfaces/IController";
 import IMember from "../interfaces/IMember";
 import MemberModel from "../models/MemberModel";
 import INotifications from "../interfaces/INotifications";
+import NotificationModel from "../models/MemberModel";
 
 export default class MemberController implements IController<IMember> {
   async create(data: IMember): Promise<IMember> {
@@ -40,6 +41,14 @@ export default class MemberController implements IController<IMember> {
       );
       return null;
     }
+  }
+  async deleteNotification(
+    memberId: string,
+    notificationId: string
+  ): Promise<INotifications[] | null> {
+    return await NotificationModel.findByIdAndUpdate(memberId, {
+      $pull: { notifications: { _id: notificationId } },
+    });
   }
   async update(id: string, data: Partial<IMember>): Promise<IMember | null> {
     await MemberModel.updateOne({ _id: id }, data);
