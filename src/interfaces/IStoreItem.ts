@@ -5,6 +5,7 @@ export default interface IStoreItem {
     image: string;
     coins: number;
     daysToExpiry: number;
+    expiryDay : Date ;
     quantity: number;
     isActive: boolean;
     
