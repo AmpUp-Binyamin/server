@@ -20,12 +20,13 @@ import CoachRouter from './routes/CoachRouter'
 
 import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
 import NotificationRoutr from './routes/NotificationRouter'
-import MediaRouter from './routes/MediaRouter'
 import FeedBackRouter from './routes/FeedBackRouter'
 
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
+
+import MediaRouter from './routes/MediaRouter'
 app.use('/media', MediaRouter)
 app.use('/notification',NotificationRoutr)
 app.use('/feedback', FeedBackRouter)

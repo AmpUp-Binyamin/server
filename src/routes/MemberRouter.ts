@@ -1,12 +1,23 @@
 import { Request, Response, Router } from 'express'
-import AddMemberRequest from '../dto/member/AddMemberRequest';
-import MemberService from "../services/MemberService";
+import MemberService from '../services/MemberService'
 import { Mapper } from '../helpers/Mapper'
-import jwt from 'jsonwebtoken';
+import UpdateMemberRequest from '../dto/member/UpdateMemberRequest'
 import createToken from '../middleware/createToken'
+import AddMemberRequest from '../dto/member/AddMemberRequest'
 const router = Router()
 
-router.get('/info/:memberId', async (req: Request, res: Response) => {
+router.put('/personal-info', async (req: Request, res: Response) => {
+    try {
+        let request = Mapper<UpdateMemberRequest>(new (UpdateMemberRequest), req.body)
+        let userUpdate = await MemberService.updateMember(request)
+        res.send(userUpdate)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
+router.get('/:memberId', async (req: Request, res: Response) => {
     try {
         let member = await MemberService.getsingelMember(req.params.memberId)
         console.log(member)
@@ -30,9 +41,9 @@ router.get('/personal-info', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
     try {
         const request = Mapper<AddMemberRequest>(new AddMemberRequest(), req.body);
-
+        
         const newMember = await MemberService.createNewMember(request);
-
+        
         const token = createToken({ userId: newMember?.id, userPermission: 'user' });
         console.log(token)
         res.json({ token, newMember });
@@ -42,4 +53,4 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
-export default router
+export default router;
