@@ -12,4 +12,8 @@ export default class NotificationService {
      
        
 }
+static async deleteOneNotification(memberId: string, notificationId:string): Promise<IMember | INotifications[]| null> {
+   
+    return  await (this.controller.deleteNotification(memberId,notificationId))  
+}
 }
