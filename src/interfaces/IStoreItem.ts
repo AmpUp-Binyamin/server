@@ -6,4 +6,6 @@ export default interface IStoreItem {
     coins: number;
     daysToExpiry: number;
     quantity: number;
+    isActive: boolean;
+    
 }

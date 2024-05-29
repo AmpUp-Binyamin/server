@@ -27,10 +27,10 @@ export default class MemberService {
         return await this.controller.readOne(id)
     }
 
-    static async getPersonalInfo(id: string): Promise<IMember | null> {
-        const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
-        return memberInfo
-    }
+    // static async getPersonalInfo(id: string): Promise<IMember | null> {
+    //     const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
+    //     return memberInfo
+    // }
 
     static async createNewMember(data: AddMemberRequest): Promise<IMember | null> {
         let newMember: IMember = {

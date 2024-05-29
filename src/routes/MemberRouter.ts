@@ -28,15 +28,15 @@ router.get('/:memberId', async (req: Request, res: Response) => {
     }
 })
 
-router.get('/personal-info', async (req: Request, res: Response) => {
-    try {
-        const destructuredUserTokenId = '6656df1b8437151db0cce4e2'
-        const memberInfo = await MemberService.getPersonalInfo(destructuredUserTokenId)
-        res.send(memberInfo)
-    } catch (error) {
-        res.status(400).send(error)
-    }
-})
+// router.get('/personal-info', async (req: Request, res: Response) => {
+//     try {
+//         const destructuredUserTokenId = '6656df1b8437151db0cce4e2'
+//         const memberInfo = await MemberService.getPersonalInfo(destructuredUserTokenId)
+//         res.send(memberInfo)
+//     } catch (error) {
+//         res.status(400).send(error)
+//     }
+// })
 
 router.post('/', async (req: Request, res: Response) => {
     try {
