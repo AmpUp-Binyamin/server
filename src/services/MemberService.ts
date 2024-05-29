@@ -10,6 +10,10 @@ export default class MemberService {
     static async getsingelMember(id: string): Promise<IMember | null> {
         return await this.controller.readOne(id)
     }
+    
+    static async getsingelMemberChallenges(id: string): Promise<IMember | null> {
+        return await this.controller.readWithChallenge(id)
+    }
 
     
 

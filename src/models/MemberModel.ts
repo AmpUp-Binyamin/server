@@ -55,6 +55,7 @@ const memberSchema = new mongoose.Schema<IMember>({
     }],
     myChallenge: [{
         type: mongoose.SchemaTypes.ObjectId,
+        ref: 'challenge',
         required: true
     }],
     coins: {

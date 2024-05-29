@@ -3,6 +3,7 @@ import IChallenge from "../interfaces/IChallenge";
 import IController from "../interfaces/IController";
 import ChallengeModel from "../models/ChallengeModel";
 import UserModel from "../models/UserModel";
+import ICard from "../interfaces/ICard";
 
 
 export default class ChallengeController implements IController<IChallenge> {

@@ -15,9 +15,11 @@ app.use('*', verifyToken)
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
 import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
+import ArchiveRouter from './routes/ArchiveRouter'
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
+app.use('/archive', ArchiveRouter)
 
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
