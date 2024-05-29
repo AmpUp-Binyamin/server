@@ -23,10 +23,11 @@ app.use('*', verifyToken)
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
 import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
+import StoreRouter from './routes/StoreRouter'
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
-
+app.use('/store' , StoreRouter) 
 
 import MediaRouter from './routes/MediaRouter'
 app.use('/media', MediaRouter)

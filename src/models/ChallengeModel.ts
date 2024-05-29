@@ -25,6 +25,10 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
         type: Number,
         required: true,
     },
+    expiryDay :{
+        type : Date,
+        
+    },
     quantity: {
         type: Number,
         required: true,
