@@ -25,6 +25,10 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
         type: Number,
         required: true,
     },
+    expiryDay :{
+        type : Date,
+        
+    },
     quantity: {
         type: Number,
         required: true,
@@ -62,9 +66,11 @@ const cardSchema = new mongoose.Schema<ICard>({
     cardType: {
         type: String,
         required: true,
+        enum: ['question', 'task', 'media', 'study' , 'support', 'share', 'lottery']
     },
     subType: {
         type: String,
+        enum: ['multipleChoice', 'url', 'freeText', 'upload', 'multipleChoice+freeText']
     },
     title: {
         type: String,

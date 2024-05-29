@@ -4,8 +4,8 @@ import ActiveChallegeService from '../services/ActiveChallengeService'
 import AddActiveChallengeRequest from '../dto/activeChallenge/AddActiveChallengeRequest'
 import IActiveChallenge from '../interfaces/IActiveChallenge'
 import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToStartReq'
+import AddUserRequest from '../dto/user/AddUserRequest'
 const router = Router()
- 
 
 router.get('/:activeChallengeId', async (req: Request, res: Response) => {
     try {
@@ -51,7 +51,7 @@ router.post('/', async (req: Request, res: Response) => {
 
 router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     try {
-   
+
         let luck = await ActiveChallegeService.loveCard(req.params.challengeId)
         res.send(luck)
 
@@ -60,5 +60,18 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     }
 })
 
+// תשובה על קלף ספציפי
+router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) => {
+    try {
+        let challengeId = req.params.challengeId;
+        let cardId = req.params.cardId;
+        await ActiveChallegeService.handleCardAnswer(challengeId, cardId, req.body);
+        res.send('sucsses');
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).send(error)
+    }
+})
 
 export default router;
