@@ -18,3 +18,4 @@ export interface IActiveCard {
     answerValue: string
     answerMedia?: string[]
 }
+

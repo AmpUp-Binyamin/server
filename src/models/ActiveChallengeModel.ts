@@ -1,8 +1,8 @@
 import mongoose, { Mongoose } from 'mongoose'
 import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
-import IMeida from '../interfaces/IMedia';
+import IMedia from '../interfaces/IMedia';
 
-const activeMediaSchema = new mongoose.Schema<IMeida>({
+const activeMediaSchema = new mongoose.Schema<IMedia>({
     type: {
         type: String,
         required: true,
@@ -11,12 +11,15 @@ const activeMediaSchema = new mongoose.Schema<IMeida>({
     fileName: {
         type: String,
         required: true,
+        unique: true
     },
     path: {
         type: String,
         required: true,
+        unique: true
     }
 })
+
 
 const activeCardSchema = new mongoose.Schema<IActiveCard>({
 
@@ -27,7 +30,6 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
     },
     card: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "card",
         required: true
     },
     challengeDay: {

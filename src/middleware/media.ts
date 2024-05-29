@@ -2,7 +2,6 @@ import fs from "fs";
 import multer, { Multer } from "multer";
 import { Request } from 'express';
 
-
 const storage: multer.StorageEngine = multer.diskStorage({
     destination: function (req: Request, file: Express.Multer.File, cb: (error: Error | null, destination: string) => void) {
         const uploadPath: string = './files';
@@ -14,4 +13,21 @@ const storage: multer.StorageEngine = multer.diskStorage({
     }
 });
 
-export const upload: Multer = multer({ storage: storage });
+// Custom file filter function to allow only image files
+const imageFilter = (req: Request, file: Express.Multer.File, callback: multer.FileFilterCallback) => {
+    // Check if file type is an image
+    if (file.mimetype.startsWith('image/')) {
+        callback(null, true); // Accept the file
+    } else {
+        callback(new Error('Only images are allowed!')); // Reject the file
+    }
+};
+// Initialize multer with custom file filter
+export const uploadImage: Multer = multer({
+    storage: storage,
+    fileFilter: imageFilter // Apply custom file filter
+});
+
+export const uploadAnyFile: Multer = multer({
+    storage: storage,
+});

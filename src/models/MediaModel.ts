@@ -5,7 +5,7 @@ const mediaSchema = new mongoose.Schema<IMedia>({
     type: {
         type: String,
         required: true,
-        enum: ["image", "video", "audio", "document", "other"]
+        enum: ['image', 'video', "audio", "document", "other"]
     },
     fileName: {
         type: String,
@@ -13,10 +13,10 @@ const mediaSchema = new mongoose.Schema<IMedia>({
         required: true
     },
     path: {
-        unique: true,
         type: String,
-        select: false,
+        unique: true,
+        required: true
     },
 })
 
-export default mongoose.model<IMedia>('media', mediaSchema)
+export default mongoose.model<IMedia>('Media', mediaSchema)

@@ -1,21 +1,24 @@
 import { Request, Response, Router } from 'express';
 import { Mapper } from '../helpers/Mapper';
-// import {router , storage , upload} from '../middleware/media'
-import { upload } from "../middleware/media"
+import { uploadImage, uploadAnyFile } from "../middleware/media"
 
 const router: Router = Router();
 
-
-router.post("/", upload.any(), (req: Request, res: Response) => {
+router.post("/", uploadAnyFile.any(), (req: Request, res: Response) => {
     try {
-        let files = req.files as Express.Multer.File[]
-        console.log('***************&&&&&&&&&&&&&&&&&&&&&&&&');
-
-        console.log(files[0].originalname);
+        let files = req.files as Express.Multer.File[];
+        console.log(files[0].mimetype);
         res.send("Files uploaded successfully.");
-
-
-
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).send("An error occurred during file upload.");
+    }
+});
+router.post("/img", uploadImage.any(), (req: Request, res: Response) => {
+    try {
+        let files = req.files as Express.Multer.File[];
+        console.log(files[0].mimetype);
+        res.send("Files uploaded successfully.");
     } catch (error) {
         console.log('Error:', error);
         res.status(500).send("An error occurred during file upload.");
