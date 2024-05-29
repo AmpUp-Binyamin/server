@@ -1,12 +1,12 @@
-import { Document, ObjectId } from "mongoose"
+import { ObjectId } from "mongoose"
 
-export default interface ICoach extends Partial<Document> {
+
+export interface ReadCoachResponse{
     fullName: string
     email: string
     phoneNumber: string
     picture: string
     link: string
     myChallenges: ObjectId[]
-    password?: string
 }
 
