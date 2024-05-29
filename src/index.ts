@@ -17,6 +17,7 @@ app.use('*', verifyToken)
 
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
+
 import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
@@ -28,5 +29,8 @@ app.use('/media', MediaRouter)
 
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
+
+import MemberRouter from './routes/MemberRouter'
+app.use('/member', MemberRouter)
 
 app.listen(3030, () => console.log("Server is UP : 3030"))
