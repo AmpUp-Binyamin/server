@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Mapper } from '../helpers/Mapper';
-import { uploadImage, uploadAnyFile } from "../middleware/media"
+import { uploadImage, uploadAnyFile, } from "../middleware/media"
 
 const router: Router = Router();
 
@@ -25,6 +25,8 @@ router.post("/img", uploadImage.any(), (req: Request, res: Response) => {
     }
 });
 
+
+
 router.get("/", (req: Request, res: Response) => {
     try {
         res.send("yep");
@@ -32,5 +34,7 @@ router.get("/", (req: Request, res: Response) => {
         console.log(error);
     }
 });
+
+
 
 export default router;
