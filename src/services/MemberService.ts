@@ -27,10 +27,10 @@ export default class MemberService {
         return await this.controller.readOne(id)
     }
 
-    // static async getPersonalInfo(id: string): Promise<IMember | null> {
-    //     const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
-    //     return memberInfo
-    // }
+    static async getPersonalInfo(id: string): Promise<IMember | null> {
+        const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
+        return memberInfo
+    }
 
     static async createNewMember(data: AddMemberRequest): Promise<IMember | null> {
         let newMember: IMember = {
@@ -65,14 +65,17 @@ export default class MemberService {
         return member
     }
 
-    static async updateMemberItems(memberId:string,StoreItemId:string):Promise< IMember | null>{
+    static async updateMemberItems(memberId:string,storeItemId:string):Promise< IMember | null>{
         try{
             let memberCoins = await this.controller.readOne(memberId).coins
-            let storeItemPrice = await storeController.readOne(StoreItemId).coins
+            let storeItemPrice = await storeController.readOne(storeItemId).coins
             if (memberCoins>storeItemPrice){
                 // todo - update - myitems in member
+                await this.controller.update(memberId,{storeItemId})
                 // update - coins in member account
+                await this.controller.update(memberId,{storeItemId})
                 // update quntiti in storeItem
+                await storeController.updateQuantity(storeItemId)
             }
         }catch{
             console.error("can not buy it")
