@@ -1,11 +1,5 @@
-
-function luck(chance: number){
-//  boolin
-}
-
-// להוציא אחוז מהסרבר שלי הקלף בחבילה של האחוז ניצחון
-// 
-function Winn(chance : number){
-    
-
-}
+export class RandomNumberGenerator {
+    getRandom(min: number, max: number): number {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+  }

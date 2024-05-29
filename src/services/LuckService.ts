@@ -1,19 +1,16 @@
 import ChallengeController from "../controllers/ChallengeController";
 import LuckResponse from "../dto/luck/LuckResponse";
-
+import  {RandomNumberGenerator}  from "../helpers/luck";
 export class LuckHelper {
+  static RandomGenerator = new RandomNumberGenerator()
   static shapes: string[] = ["a", "b", "c", "d", "e", "f"];
-
-  static getRandom(min: number, max: number): number {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
   static getLottery(drawProbability: number): boolean {
-    return drawProbability >= this.getRandom(0, 1);
+    return drawProbability >= this.RandomGenerator.getRandom(0, 1);
   }
 
   static getWin(winProbability: number): any {
-    const res = this.getRandom(0, 1);
-    const rand5 = () => this.getRandom(0, 5);
+    const res = this.RandomGenerator.getRandom(0, 1);
+    const rand5 = () => this.RandomGenerator.getRandom(0, 5);
     let isWin = winProbability < res;
     let luckResponse = new LuckResponse(isWin);
     if (!isWin) {
