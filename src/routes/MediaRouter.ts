@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { Mapper } from '../helpers/Mapper';
-import { uploadImage, uploadAnyFile } from "../middleware/media"
+import { uploadImage, uploadAnyFile, } from "../middleware/media"
 
 const router: Router = Router();
 
@@ -24,6 +24,8 @@ router.post("/img", uploadImage.any(), (req: Request, res: Response) => {
         res.status(500).send("An error occurred during file upload.");
     }
 });
+
+
 
 router.get("/", (req: Request, res: Response) => {
     try {
