@@ -7,6 +7,9 @@ connect()
 const app = express()
 app.use(cors())
 app.use(express.json())
+import go from './mockData/seed';
+
+// go()
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth'
@@ -14,8 +17,14 @@ app.use('*', verifyToken)
 
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
+import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
+app.use('/activeChallenge', ActiveChallengeRouter)
+
+
+import MediaRouter from './routes/MediaRouter'
+app.use('/media', MediaRouter)
 
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
