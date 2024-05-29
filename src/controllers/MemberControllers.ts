@@ -13,11 +13,14 @@ export default class MemberController implements IController<IMember> {
     async readOne(id: string): Promise<IMember | null> {
         return await MemberModel.findById(id)
     }
+    async readOneProj(id: string, select: string): Promise<IMember | null> {
+        return await MemberModel.findById(id).select(select)
+    }
     async readWithChallenge(id: string): Promise<IMember | null> {
         return await MemberModel.findById(id).populate('myChallenge')
     }
     async update(id: string, data: Partial<IMember>): Promise<IMember | null> {
-        await MemberModel.updateOne({_id:id},data)
+        await MemberModel.updateOne({ _id: id }, data)
         return await this.readOne(id)
     }
     async del(id: string): Promise<boolean> {

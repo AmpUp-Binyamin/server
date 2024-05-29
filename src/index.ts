@@ -29,4 +29,7 @@ app.use('/media', MediaRouter)
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
 
+import MemberRouter from './routes/MemberRouter'
+app.use('/member', MemberRouter)
+
 app.listen(3030, () => console.log("Server is UP : 3030"))
