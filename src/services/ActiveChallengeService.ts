@@ -7,7 +7,7 @@ import IActiveChallenge from "../interfaces/IActiveChallenge"
 export default class ActiveChallegeService {
     static controller = new activeChallengeController()
     static RandomGenerator = new RandomNumberGenerator()
-static memberController = new MemberController()
+    static memberController = new MemberController()
     static async getSingleActiveChallenge(id: string): Promise<IActiveChallenge | null> {
         return await this.controller.readOne(id)
     }
@@ -31,17 +31,12 @@ static memberController = new MemberController()
 
 
     static async loveCard(challengeId: string): Promise<any> {
-
-        let challenge = await this.controller.readOne(challengeId ,'participants')
+        let challenge = await this.controller.readOne(challengeId, 'participants')
         if (!challenge) throw { code: 400, message: "go to hell!!!" };
-       let num=  challenge.participants.length
-      let user=   challenge.participants[this.RandomGenerator.getRandom(0, num -1 )];
-
-    
-        return await  this.memberController.readOne((user))
-      }
-
-      
+        let num = challenge.participants.length
+        let user = challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+        return await this.memberController.readOne(String(user))
+    }
 }
 
 
