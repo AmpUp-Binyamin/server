@@ -60,7 +60,9 @@ export default class MemberController implements IController<IMember> {
   }
   async updateStoreItem(id: string, data: string): Promise<IMember | null> {
     return await MemberModel.findByIdAndUpdate(id,{ $push: { myItems: data } } );
-    
+  }
+  async updateCoins(id: string, data: number): Promise<IMember | null> {
+    return await MemberModel.findByIdAndUpdate(id, { coins:data}  );
   }
   async del(id: string): Promise<boolean> {
     throw new Error("Method not implemented.");

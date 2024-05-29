@@ -29,6 +29,9 @@ export default class MemberService {
     static async addNewStoreItem(memberId:string,storeItemId:string): Promise<IMember | null>  {
         return await this.controller.updateStoreItem( memberId, storeItemId)
     }
+    static async updateMemberCoins(memberId:string,newCoins: number): Promise<IMember | null>  {
+        return await this.controller.updateCoins( memberId, newCoins)
+    }
     static async getPersonalInfo(id: string): Promise<IMember | null> {
         const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
         return memberInfo
