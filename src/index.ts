@@ -14,10 +14,14 @@ app.use('*', verifyToken)
 
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
+
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
+
+import MemberRouter from './routes/MemberRouter'
+app.use('/member', MemberRouter)
 
 app.listen(3030, () => console.log("Server is UP : 3030"))
