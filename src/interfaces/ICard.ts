@@ -4,8 +4,8 @@ export default interface ICard {
     _id?: string;
     day: number;
     cardOrder: number;
-    cardType: 'question' | 'challenge' | 'media' | 'study' | 'lottery' | 'love'; // יעבור להיות Union
-    subType?: string;// יעבור להיות Union
+    cardType: 'question' | 'challenge' | 'media' | 'study' | 'lottery' | 'love' | 'share';
+    subType?: 'multipleChoice' | 'url' | 'freeText' | 'upload' | 'multipleChoice+freeText';
     title: string;
     content: string;
     media?: IMedia;
