@@ -59,10 +59,11 @@ export default async function go() {
         return cards;
     };
     const allCards = generateCards(10);
-    console.log(allCards);
+    console.log("allCards - DONE !!");
 
     await ChallengeModel.findByIdAndUpdate('665739933ccf2b71c3eb3e92',{$push:{cards:allCards}})
     
+    console.log("activeCards - Start !!");
 
     const member = new ObjectId('6656df1b8437151db0cce4e4');
     const answers = {
@@ -93,9 +94,9 @@ export default async function go() {
     };
 
     const activeCards = generateActiveCards(allCards, 7);
-    console.log(activeCards);
+    console.log("activeCards - DONE !!");
 
-    await ActiveChallengeModel.findByIdAndUpdate("6656df1b8437151db0cce4ee",{$push:{cards:activeCards}})
+    await ActiveChallengeModel.findByIdAndUpdate("6656df1b8437151db0cce584",{$push:{cards:activeCards}})
     console.log("###########  DONE  #########");
 
 }
