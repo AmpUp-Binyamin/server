@@ -13,4 +13,5 @@ export default interface ICard {
     image?: string;
     drawProbability?: number; // אחוז הופעה (רק בקלף הגרלה)
     winProbability?: number; // אחוז זכייה (רק בקלף הגרלה)
+    answers?: string[];
 }
