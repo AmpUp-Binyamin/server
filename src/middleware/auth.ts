@@ -7,7 +7,7 @@ import UserController from "../controllers/UserController";
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // טוקן זמני לעכשיו
-const temporaryToken = createToken({ userId:"test", userPermission:"user"});
+const temporaryToken = createToken({ userId: "test", userPermission: "user" });
 // console.log("temporaryToken: ", temporaryToken);
 
 // middleware - token to user
@@ -20,14 +20,14 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
 
         const token = authHeader.replace("Bearer ", "");
         const decoded = jwt.verify(token, JWT_SECRET) as UserAuth;
-        
-        const user : UserAuth = {
+
+        const user: UserAuth = {
             userId: decoded.userId,
             userPermission: decoded.userPermission as Permission,
         }
         console.log(user);
-        
-        req.body= {...req.body,...user};
+
+        req.body = { ...req.body, ...user };
 
         next();
 

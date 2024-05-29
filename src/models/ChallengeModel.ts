@@ -35,8 +35,13 @@ const mediaSchema = new mongoose.Schema<IMedia>({
     type: {
         type: String,
         required: true,
+        enum: ["image", "video", "audio", "document", "other"]
     },
-    content: {
+    fileName: {
+        type: String,
+        required: true,
+    },
+    path: {
         type: String,
         required: true,
     }
