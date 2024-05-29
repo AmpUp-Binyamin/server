@@ -20,6 +20,11 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         type: String,
         required: true
     },
+    isRead:{
+        type: Boolean,
+        required:true,
+        default: false
+    },
     sender: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true
