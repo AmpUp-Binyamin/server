@@ -5,7 +5,6 @@ import AddActiveChallengeRequest from '../dto/activeChallenge/AddActiveChallenge
 import AddUserRequest from '../dto/user/AddUserRequest'
 const router = Router()
 
-
 router.get('/:activeChallengeId', async (req: Request, res: Response) => {
     try {
         let activeChallenge = await ActiveChallegeService.getSingleActiveChallenge(req.params.userId)
@@ -52,7 +51,5 @@ router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) =>
         console.log(error);
     }
 })
-
-
 
 export default router;
