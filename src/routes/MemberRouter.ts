@@ -16,6 +16,18 @@ router.put('/personal-info', async (req: Request, res: Response) => {
         res.status(400).send(error)
     }
 })
+// mayby move to storeRouter?? 
+router.put('/:storeItemId', async (req: Request, res: Response) => {
+    try {
+       let memberId = req.body.memberId
+       let storeItemId = req.params.storeItemId
+       let toBuy = await MemberService.updateMemberItems(memberId,storeItemId)
+        res.send("ok")
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
 
 router.get('/:memberId', async (req: Request, res: Response) => {
     try {

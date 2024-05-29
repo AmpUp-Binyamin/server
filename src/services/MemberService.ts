@@ -64,4 +64,25 @@ export default class MemberService {
         
         return member
     }
+
+    static async updateMemberItems(memberId:string,StoreItemId:string):Promise< IMember | null>{
+        try{
+            let memberCoins = await this.controller.readOne(memberId).coins
+            let storeItemPrice = await storeController.readOne(StoreItemId).coins
+            if (memberCoins>storeItemPrice){
+                // todo - update - myitems in member
+                // update - coins in member account
+                // update quntiti in storeItem
+            }
+        }catch{
+            console.error("can not buy it")
+        
+        }
+
+    }
+
+
+
 }
+
+
