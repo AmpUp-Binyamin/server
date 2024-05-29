@@ -58,6 +58,10 @@ export default class MemberController implements IController<IMember> {
     await MemberModel.updateOne({ _id: id }, data);
     return await this.readOne(id);
   }
+  async updateStoreItem(id: string, data: string): Promise<IMember | null> {
+    return await MemberModel.findByIdAndUpdate(id,{ $push: { myItems: data } } );
+    
+  }
   async del(id: string): Promise<boolean> {
     throw new Error("Method not implemented.");
   }

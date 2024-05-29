@@ -14,7 +14,7 @@ const temporaryToken = createToken({ userId: "test", userPermission: "user" });
 // middleware - token to user
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authHeader =  req.headers.authorization || temporaryToken ;
+        const authHeader = temporaryToken || req.headers.authorization ;
         if (!authHeader) {
             return res.status(401).send('Unauthorized');
         }

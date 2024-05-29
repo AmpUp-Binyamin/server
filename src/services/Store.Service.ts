@@ -1,5 +1,9 @@
 import ChallengeController from "../controllers/ChallengeController";
+import MemberController from "../controllers/MemberControllers";
+import IChallenge from "../interfaces/IChallenge";
+import IMember from "../interfaces/IMember";
 import IStoreItem from "../interfaces/IStoreItem";
+import MemberService from '../services/MemberService'
 
 export default class StoreService {
   static controller = new ChallengeController();
@@ -17,6 +21,36 @@ export default class StoreService {
       }
     });
   }
+  static async updateMemberItems(memberId:string,challengeId:string,storeItemId:string):Promise < IMember| IChallenge | null>{
+    const memberController = new MemberController
+    const challengeController = new ChallengeController
+    // try{
+        let member = await memberController.readOne(memberId)
+        console.log('member befor:', member);
+        let memberCoins = member?.coins
+        
+        let storeItem = await challengeController.readOne(challengeId)
+        let price = storeItem?.store.find(c=>c._id==storeItemId)?.coins
+
+if (memberCoins && price){
+        if (memberCoins> price){
+//             // todo - update - myitems in member
+            await MemberService.addNewStoreItem(memberId,storeItemId)
+            member = await memberController.readOne(memberId)
+            console.log('member after:', member);
+            
+//             // update - coins in member account
+//             await this.controller.update(memberId,{storeItemId})
+//             // update quntiti in storeItem
+//             await storeController.updateQuantity(storeItemId)
+//         }
+//     }catch{
+//         console.error("can not buy it")
+    
+     }
+    }
+    return null
+}
 }
 
 
