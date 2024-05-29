@@ -33,6 +33,8 @@ app.use('/media', MediaRouter)
 app.use('/notification',NotificationRoutr)
 app.use('/feedback', FeedBackRouter)
 
+import ChallengeRouter from './routes/ChallengeRouter'
+app.use('/challenge', ChallengeRouter)
 
 import LuckRouter from './routes/LuckRouter'
 app.use('/luck', LuckRouter)

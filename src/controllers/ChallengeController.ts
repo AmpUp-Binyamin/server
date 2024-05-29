@@ -4,6 +4,11 @@ import IController from "../interfaces/IController";
 import ChallengeModel from "../models/ChallengeModel";
 import UserModel from "../models/UserModel";
 
+interface PopulateProps {
+    member?: string
+    coach?: string
+}
+
 
 export default class ChallengeController implements IController<IChallenge> {
     async create(data: IChallenge): Promise<IChallenge> {
@@ -12,6 +17,25 @@ export default class ChallengeController implements IController<IChallenge> {
 
     async read(filter: FilterQuery<IChallenge>): Promise<IChallenge[]> {
         return await ChallengeModel.find(filter)
+    }
+
+    // לא בטוח שצריך את הפונ הזאת ככה
+    async readOneWithPopulate(id: string, populate: PopulateProps, select: string): Promise<IChallenge | null> {
+        const challenge = ChallengeModel.findById(id).select(select)
+        if(populate.member){
+            challenge.populate({
+                path: 'member',
+                select: populate.member
+              })
+        }
+        
+        if(populate.coach){
+            challenge.populate({
+                path: 'coach',
+                select: populate.coach
+              })
+        }
+        return await challenge.exec()
     }
 
     async readOne(id: string): Promise<IChallenge | null> {

@@ -9,7 +9,7 @@ export default interface IMember extends Partial<Document> {
     motto?:string
     link?:string
     linksToSocialNetwork:string[]
-    myChallenge:ObjectId[]
+    myChallenge:ObjectId[] 
     coins:number
     notifications:INotifications[]
 }
