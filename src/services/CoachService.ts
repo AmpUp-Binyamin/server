@@ -14,6 +14,7 @@ export default class CoachService {
         let newCoach: ICoach = {
             fullName: data.fullName,
             email: data.email,
+            title: data.title,
             phoneNumber: data.phoneNumber,
             picture: data.picture,
             link: data.link,

@@ -2,8 +2,9 @@ import { Request, Response, Router } from 'express'
 import { Mapper } from '../helpers/Mapper'
 import ActiveChallegeService from '../services/ActiveChallengeService'
 import AddActiveChallengeRequest from '../dto/activeChallenge/AddActiveChallengeRequest'
+import IActiveChallenge from '../interfaces/IActiveChallenge'
 const router = Router()
-
+ 
 
 router.get('/:activeChallengeId', async (req: Request, res: Response) => {
     try {
@@ -14,6 +15,17 @@ router.get('/:activeChallengeId', async (req: Request, res: Response) => {
         res.status(400).send(error)
     }
 })
+
+router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
+    try {
+        let activeChallenge = await ActiveChallegeService.getActiveChallengeToStartScreen(req.params.activeChallengeId)
+        res.send(activeChallenge)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 router.post('/', async (req: Request, res: Response) => {
     try {
         let activeChallenge = await ActiveChallegeService.createNewActiveChallenge(req.body)

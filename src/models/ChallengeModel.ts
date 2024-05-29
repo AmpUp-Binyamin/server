@@ -120,11 +120,6 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
     },
     store: [storeItemSchema],
     cards: [cardSchema],
-    invited: [{
-        type: SchemaTypes.ObjectId,
-        ref: 'member',
-        required: true,
-    }],
 })
 
 export default mongoose.model<IChallenge>('challenge', challengeSchema)

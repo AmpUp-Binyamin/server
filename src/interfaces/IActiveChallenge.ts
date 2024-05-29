@@ -1,10 +1,14 @@
 import { Document, ObjectId } from "mongoose"
 import ICard from "./ICard"
+import IMember from "./IMember"
+import IChallenge from "./IChallenge"
+import ICoach from "./ICoach"
 
 export default interface IActiveChallenge extends Partial<Document> {
-    coach: ObjectId
-    challenge: ObjectId
-    participants: ObjectId[]
+    coach: ObjectId | Partial<ICoach> | ICoach  ;
+    challenge: ObjectId | Partial<IChallenge> | IChallenge
+    invited: ObjectId[] | Partial<IMember>[] | IMember[]
+    participants: ObjectId[] | Partial<IMember>[] | IMember[]
     startDate: Date
     cards: IActiveCard[]
 }

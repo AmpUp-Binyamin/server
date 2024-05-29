@@ -3,6 +3,12 @@ import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
 
+interface PopulateProps {
+    participants?: string
+    coach?: string
+    challenge?: string
+}
+
 export default class activeChallengeController implements IController<IActiveChallenge> {
     async create(data: IActiveChallenge): Promise<IActiveChallenge> {
         return await ActiveChallengeModel.create(data)
@@ -20,6 +26,33 @@ export default class activeChallengeController implements IController<IActiveCha
 
     del(id: string): Promise<boolean> { //unimplemented
         throw new Error('Method not implemented.');
+    }
+
+    
+
+    async readOneWithPopulate(id: string, populate: PopulateProps, select: string): Promise<IActiveChallenge | null> {
+        const activeChallenge = ActiveChallengeModel.findById(id).select(select)
+        if(populate.participants){
+            activeChallenge.populate({
+                path: 'participants',
+                select: populate.participants
+              })
+        }
+        
+        if(populate.coach){
+            activeChallenge.populate({
+                path: 'coach',
+                select: populate.coach
+              })
+        }
+
+        if(populate.challenge){
+            activeChallenge.populate({
+                path: 'challenge',
+                select: populate.challenge
+              })
+        }
+        return await activeChallenge.exec()
     }
 
 }

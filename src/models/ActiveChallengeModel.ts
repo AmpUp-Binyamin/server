@@ -1,4 +1,4 @@
-import mongoose, { Mongoose } from 'mongoose'
+import mongoose, { Mongoose, SchemaTypes } from 'mongoose'
 import IActiveChallenge, { IActiveCard, IActiveMeida } from '../interfaces/IActiveChallenge';
 
 const activeMediaSchema = new mongoose.Schema<IActiveMeida>({
@@ -11,7 +11,6 @@ const activeMediaSchema = new mongoose.Schema<IActiveMeida>({
 })
 
 const activeCardSchema = new mongoose.Schema<IActiveCard>({
-
     member: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "member",
@@ -36,7 +35,6 @@ const activeCardSchema = new mongoose.Schema<IActiveCard>({
     },
     answerMedia: [activeMediaSchema]
 
-
 })
 
 const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
@@ -50,11 +48,15 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
         ref: "challenge",
         required: true
     },
-    participants: [{
-        member: {
+    invited: [{
+        type: SchemaTypes.ObjectId,
+        ref: 'member',
+        required: true,
+    }],
+    // 
+    participants: [{ 
             type: mongoose.Schema.Types.ObjectId,
             ref: "member"
-        }
     }],
     startDate: {
         type: Date,

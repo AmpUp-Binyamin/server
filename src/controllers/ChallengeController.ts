@@ -19,22 +19,23 @@ export default class ChallengeController implements IController<IChallenge> {
         return await ChallengeModel.find(filter)
     }
 
+    // לא בטוח שצריך את הפונ הזאת ככה
     async readOneWithPopulate(id: string, populate: PopulateProps, select: string): Promise<IChallenge | null> {
-        const aa = ChallengeModel.findById(id).select(select)
+        const challenge = ChallengeModel.findById(id).select(select)
         if(populate.member){
-            aa.populate({
+            challenge.populate({
                 path: 'member',
                 select: populate.member
               })
         }
         
         if(populate.coach){
-            aa.populate({
+            challenge.populate({
                 path: 'coach',
                 select: populate.coach
               })
         }
-        return await aa.exec()
+        return await challenge.exec()
     }
 
     async readOne(id: string): Promise<IChallenge | null> {
