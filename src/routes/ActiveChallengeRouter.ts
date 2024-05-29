@@ -26,5 +26,16 @@ router.post('/', async (req: Request, res: Response) => {
     }
 })
 
+router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
+    try {
+   
+        let luck = await ActiveChallegeService.loveCard(req.params.challengeId)
+        res.send(luck)
+
+    } catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 
 export default router;

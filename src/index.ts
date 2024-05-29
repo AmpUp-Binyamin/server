@@ -30,6 +30,10 @@ app.use('/media', MediaRouter)
 import FeedBackRouter from './routes/FeedBackRouter'
 app.use('/feedback', FeedBackRouter)
 
+
+import LuckRouter from './routes/LuckRouter'
+app.use('/luck', LuckRouter)
+
 import MemberRouter from './routes/MemberRouter'
 app.use('/member', MemberRouter)
 
