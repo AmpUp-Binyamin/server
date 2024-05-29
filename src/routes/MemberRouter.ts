@@ -18,7 +18,7 @@ const router = Router()
 
 
 
-router.put('/member/personal-info', async (req: Request, res: Response) => {
+router.put('/personal-info', async (req: Request, res: Response) => {
     try {
         let request = Mapper<UpdateMemberRequest>(new (UpdateMemberRequest), req.body)
         let userUpdate = await MemberService.updateMember(request)

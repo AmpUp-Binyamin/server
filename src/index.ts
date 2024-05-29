@@ -23,6 +23,9 @@ app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
 
 
+import MemberRouter from './routes/MemberRouter'
+app.use('/member', MemberRouter)
+
 import MediaRouter from './routes/MediaRouter'
 app.use('/media', MediaRouter)
 
