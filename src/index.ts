@@ -7,9 +7,9 @@ connect()
 const app = express()
 app.use(cors())
 app.use(express.json())
-import go from './mockData/seed';
+import go from './mockData/aviad';
 
-// go()
+go()
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth'

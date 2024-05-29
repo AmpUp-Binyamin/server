@@ -1,4 +1,5 @@
-import { Document, ObjectId } from "mongoose"
+import { Document } from "mongoose"
+import { ObjectId } from "mongodb"
 import ICard from "./ICard"
 
 export default interface IActiveChallenge extends Partial<Document> {
