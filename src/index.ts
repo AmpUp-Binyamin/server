@@ -11,4 +11,7 @@ app.use(express.json())
 import UserRouter from './routes/UserRouter'
 app.use('/user', UserRouter)
 
+import ChallengeRouter from './routes/ChallengeRouter'
+app.use('/challenge', ChallengeRouter)
+
 app.listen(3030, () => console.log("Server is UP : 3030"))
