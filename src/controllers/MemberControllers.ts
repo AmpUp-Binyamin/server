@@ -18,6 +18,10 @@ export default class MemberController implements IController<IMember> {
   async readWithChallenge(id: string): Promise<IMember | null> {
     return await MemberModel.findById(id).populate("myChallenge");
   }
+
+  async readOneProj(id: string, projection: string): Promise<IMember | null> {
+    return await MemberModel.findById(id, projection);
+  }
   async readNotifications(
     memberId: string,
     challengeId: string
