@@ -18,13 +18,14 @@ export default class ActiveChallegeService {
         return await this.controller.readOne(id)
     }
 
-    static async getActiveChallengeToStartScreen(id: string): Promise<GetActiveChallToStartReq | null>  {        
-        let activeChallenge: IActiveChallenge| null = await this.controller.readOneWithPopulate(id, {participants: 'img', coach: 'fullName picture title', challenge: 'challengeName coverImage subDescription duration'}, 'startDate participants')
+    static async getActiveChallengeToStartScreen(id: string): Promise<GetActiveChallToStartReq | null> {
+        let activeChallenge: IActiveChallenge | null = await this.controller.readOneWithPopulate(id, { participants: 'img', coach: 'fullName picture title', challenge: 'challengeName coverImage subDescription duration' }, 'startDate participants')
         if (!activeChallenge) return null
         if (!('_id' in activeChallenge.challenge)) return null;
-        const futureDate : Date = FutureDateCalc(activeChallenge.startDate, activeChallenge.challenge.duration as number)
-        const {startDate, challenge , participants, coach } = activeChallenge
-        const res = new GetActiveChallToStartReq(startDate,futureDate,participants as IMember[], challenge as IChallenge , coach as ICoach)
+        const duration = ((activeChallenge.challenge) as IChallenge).duration as number
+        const futureDate: Date = FutureDateCalc(activeChallenge.startDate, duration)
+        const { startDate, challenge, participants, coach } = activeChallenge
+        const res = new GetActiveChallToStartReq(startDate, futureDate, participants as IMember[], challenge as IChallenge, coach as ICoach)
         return res
     }
 
