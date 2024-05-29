@@ -3,15 +3,13 @@ import cors from 'cors'
 import express from 'express';
 import { connect } from './config/db'
 connect()
-import fs = require("fs")
-if (!fs.existsSync('./files')) {
-    fs.mkdirSync('./files')
-    const code = fs.readFileSync('./files/code.txt', 'utf8')
-}
 
 const app = express()
 app.use(cors())
 app.use(express.json())
+import go from './mockData/seed';
+
+// go()
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth'
