@@ -4,7 +4,7 @@ export default interface ICard {
     _id?: string;
     day: number;
     cardOrder: number;
-    cardType: 'question' | 'challenge' | 'media' | 'study' | 'lottery'; // יעבור להיות Union
+    cardType: 'question' | 'challenge' | 'media' | 'study' | 'lottery' | 'love'; // יעבור להיות Union
     subType?: string;// יעבור להיות Union
     title: string;
     content: string;
