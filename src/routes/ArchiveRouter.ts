@@ -5,9 +5,11 @@ import ArchiveService from "../services/ArchiveService";
 
 const router = Router()
 
-router.get('/:userId/pastChallenges', async (req: Request, res: Response) => {
+router.get('/pastChallenges', async (req: Request, res: Response) => {
     try {
-        let memberChallenges = await ArchiveService.getMemberChallenges(req.params.userId)
+        // let userId = req.body.userId 
+        let userId = '6656df1b8437151db0cce4e2'
+        let memberChallenges = await ArchiveService.getMemberChallenges(userId)
         res.send(memberChallenges)
     } catch (error) {
         res.status(400).send(error)
