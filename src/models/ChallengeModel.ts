@@ -25,6 +25,10 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
         type: Number,
         required: true,
     },
+    expiryDay :{
+        type : Date,
+        
+    },
     quantity: {
         type: Number,
         required: true,
@@ -40,10 +44,12 @@ const mediaSchema = new mongoose.Schema<IMedia>({
     fileName: {
         type: String,
         required: true,
+        unique: true
     },
     path: {
         type: String,
         required: true,
+        unique: true
     }
 })
 
@@ -60,9 +66,14 @@ const cardSchema = new mongoose.Schema<ICard>({
     cardType: {
         type: String,
         required: true,
+        enum: ['question', 'task', 'media', 'study' , 'support', 'share', 'lottery']
     },
     subType: {
         type: String,
+        enum: ['multipleChoice', 'url', 'freeText', 'upload', 'multipleChoice+freeText']
+    },
+    answers:{
+        type: [String],        
     },
     title: {
         type: String,
@@ -100,23 +111,23 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
         required: true,
     },
     subDescription: {
-        type:String,
+        type: String,
         required: true,
     },
     duration: {
-        type:Number,
+        type: Number,
         required: true,
     },
     tags: [{
-        type:String,
+        type: String,
         required: true,
     }],
     isPublic: {
-        type:Boolean,
+        type: Boolean,
         required: true,
     },
     isTemplate: {
-        type:Boolean,
+        type: Boolean,
         required: true,
     },
     creator: {
@@ -125,10 +136,6 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
     },
     store: [storeItemSchema],
     cards: [cardSchema],
-    invited: [{
-        type: String,
-        required: true,
-    }],
 })
 
 export default mongoose.model<IChallenge>('challenge', challengeSchema)

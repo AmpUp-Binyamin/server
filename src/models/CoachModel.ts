@@ -6,6 +6,10 @@ const coachSchema = new mongoose.Schema<ICoach>({
         type: String,
         required: true
     },
+    title: {
+        type: String,
+        required: true,
+    },
     email: {
         type: String,
         unique: true,
@@ -23,7 +27,7 @@ const coachSchema = new mongoose.Schema<ICoach>({
     },
     myChallenges: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'challenges'
+        ref: 'challenge'
     }]
 })
 

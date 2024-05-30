@@ -87,7 +87,8 @@ export default async function go() {
       phoneNumber: "0501234567", // phone as String without dashes
       picture: "https://boringathome.co.il/wp-content/uploads/2022/10/%D7%90%D7%99%D7%A9%D7%94-2.jpg",
       link: "https://example.com/alice",
-      myChallenges: []
+      myChallenges: [],
+      title: ''
     },
     {
       fullName: "Bob Smith",
@@ -95,7 +96,8 @@ export default async function go() {
       phoneNumber: "0509876543", // phone as String without dashes
       picture: "https://investaway.co.il/wp-content/uploads/2019/02/2789878-1024x710.jpg",
       link: "https://example.com/bob",
-      myChallenges: []
+      myChallenges: [],
+      title: ''
     }
   ];
 
@@ -122,7 +124,7 @@ export default async function go() {
     {
       "day": 1,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -218,7 +220,7 @@ export default async function go() {
     {
       "day": 2,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -314,7 +316,7 @@ export default async function go() {
     {
       "day": 3,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -410,7 +412,7 @@ export default async function go() {
     {
       "day": 4,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -458,7 +460,7 @@ export default async function go() {
     {
       "day": 4,
       "cardOrder": 5,
-      "cardType": "question",
+      "cardType": "study",
       "subType": "open",
       "title": "Favorite Healthy Meal",
       "content": "Share your favorite healthy meal recipe.",
@@ -506,7 +508,7 @@ export default async function go() {
     {
       "day": 5,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -602,7 +604,7 @@ export default async function go() {
     {
       "day": 6,
       "cardOrder": 2,
-      "cardType": "task",
+      "cardType": "challenge",
       "subType": "daily",
       "title": "Morning Exercise",
       "content": "Do a 30-minute morning exercise routine.",
@@ -709,8 +711,7 @@ export default async function go() {
     isTemplate: false,
     creator: coach1._id as any,
     store: [stores[0]],
-    "cards": cards,
-    "invited": [m1.email, m4.email]
+    cards: cards,
   }, {
     challengeName: "Reading Challenge",
     coverImage: "https://meyda.education.gov.il/files/pop/10322/kriaa.jpg",
@@ -721,8 +722,7 @@ export default async function go() {
     isTemplate: false,
     creator: coach2._id,
     store: [stores[1]],
-    "cards": cards,
-    "invited": [m1.email, m2.email, m3.email]
+    cards: cards,
   }]
   const c1: IChallenge = await ChallengeModel.create(Challenges[0]);
   const c2: IChallenge = await ChallengeModel.create(Challenges[1]);
@@ -755,6 +755,7 @@ export default async function go() {
     participants: [m1._id as any, m2._id as any],
     startDate: new Date(),
     cards: activeCardsChallenge,
+    invited: []
   }, {
     coach: coach2._id as any,
     challenge: c2._id as any,
@@ -762,6 +763,7 @@ export default async function go() {
 
     startDate: new Date(),
     cards: activeCardsChallenge,
+    invited: []
   }]
   const activCh1 = await ActiveChallengeModel.create(activeChallenges[0]);
   const activCh2 = await ActiveChallengeModel.create(activeChallenges[1]);
