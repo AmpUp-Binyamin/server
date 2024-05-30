@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import cors from 'cors'
-import express from 'express';
+import express, { Request, Response } from 'express';
 import { connect } from './config/db'
 connect()
 
@@ -10,10 +10,13 @@ app.use(express.json())
 import go from './mockData/seed';
 
 // go()
+import AuthRouter from './routes/AuthRouter'
+app.use('/auth', AuthRouter)
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth'
 app.use('*', verifyToken)
+
 
 import UserRouter from './routes/UserRouter'
 import CoachRouter from './routes/CoachRouter'
@@ -30,6 +33,7 @@ import MediaRouter from './routes/MediaRouter'
 app.use('/media', MediaRouter)
 app.use('/notification',NotificationRoutr)
 app.use('/feedback', FeedBackRouter)
+
 
 
 import LuckRouter from './routes/LuckRouter'
