@@ -1,5 +1,7 @@
-import { Document, ObjectId } from "mongoose"
+import { Document } from "mongoose"
+import { ObjectId } from "mongodb"
 import ICard from "./ICard"
+import IMember from "./IMember"
 
 export default interface IActiveChallenge extends Partial<Document> {
     coach: ObjectId
