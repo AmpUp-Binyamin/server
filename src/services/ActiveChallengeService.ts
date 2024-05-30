@@ -14,6 +14,7 @@ import IMember from "../interfaces/IMember"
 
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge"
 import LuckService, { LuckHelper } from "./LuckService"
+import { DaysDoneHelper } from "../helpers/DaysDoneHelper"
 
 
 export default class ActiveChallegeService {
@@ -21,7 +22,7 @@ export default class ActiveChallegeService {
     static challengeController = new ChallengeController();
     static RandomGenerator = new RandomNumberGenerator();
     static memberController = new MemberController();
-    static luckService = new LuckService()
+    static DaysDoneHelper = new DaysDoneHelper()
     static async getSingleActiveChallenge(id: string): Promise<IActiveChallenge | null> {
         return await this.controller.readOne(id)
     }
@@ -63,9 +64,15 @@ export default class ActiveChallegeService {
         let user = challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
 
 
-        //     const chosenMember = await this.memberController.readOne((user))
+        // const chosenMember = await this.memberController.readOne((user))
         //     let memberId = chosenMember?._id
-        this.luckService.positiveStreakCheck(user as unknown as ObjectId, challenge)
+
+        let memberCards = this.DaysDoneHelper.getMemberCardsArray(user as unknown as ObjectId, challenge)
+        let daysDoneObject = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(memberCards, 'challengeDay')
+        let isInPositiveStreak = this.DaysDoneHelper.checkPositiveStreak(daysDoneObject, 5)
+        let isBackAfterNegativeStreak = this.DaysDoneHelper.checkNegativeStreakEnd(daysDoneObject, 5)
+
+
 
         return await this.memberController.readOne(String(user))
     }
