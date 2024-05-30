@@ -27,15 +27,17 @@ router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
     }
 })
 
-// router.get('/status/:activeChallengeId', async (req: Request, res: Response) => {
-//     try {
-//         let startDeilyDeck = await ActiveChallegeService.getStartDailyDeck(req.params.activeChallengeId)
-//         res.send(startDeilyDeck)
-//     }
-//     catch (error) {
-//         res.status(400).send(error)
-//     }
-// })
+router.get('/status/:activeChallengeId', async (req: Request, res: Response) => {
+    try {
+        let userId  = req.body.userId
+        
+        let startDeilyDeck = await ActiveChallegeService.getStartDailyDeck(userId,req.params.activeChallengeId)
+        res.send(startDeilyDeck)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
 
 router.post('/', async (req: Request, res: Response) => {
     try {

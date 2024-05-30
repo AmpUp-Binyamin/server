@@ -1,5 +1,5 @@
 import { isObjectIdOrHexString, isValidObjectId } from "mongoose"
-import {ObjectId} from 'mongodb'
+import { ObjectId } from 'mongodb'
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import ChallengeController from "../controllers/ChallengeController"
 import MemberController from "../controllers/MemberControllers"
@@ -12,6 +12,7 @@ import ICoach from "../interfaces/ICoach"
 import IMember from "../interfaces/IMember"
 
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge"
+import ICard from "../interfaces/ICard"
 
 export default class ActiveChallegeService {
     static controller = new activeChallengeController();
@@ -32,6 +33,28 @@ export default class ActiveChallegeService {
         const { startDate, challenge, participants, coach } = activeChallenge
         const res = new GetActiveChallToStartReq(startDate, futureDate, participants as IMember[], challenge as IChallenge, coach as ICoach)
         return res
+    }
+
+    static async getStartDailyDeck(userId: string, id: string) {
+
+        let challenge = await this.challengeController.readOneWithPopulate(id, {}, 'cards')
+
+
+        const numCardsOfDay: number[] = []
+
+        challenge?.cards.forEach(card => {
+            (numCardsOfDay[card.day - 1] === undefined) ? numCardsOfDay[card.day - 1] = 1 : ++(numCardsOfDay[card.day - 1])
+            // {
+            // numCardsOfDay[card.day - 1] = 1
+            // } else {
+            //     numCardsOfDay[card.day - 1] = (numCardsOfDay[card.day - 1] + 1)
+            // }
+        })
+
+        console.log("hhhh", numCardsOfDay);
+
+
+
     }
 
     static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
