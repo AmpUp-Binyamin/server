@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const MONGO_URL = process.env.MONGO_URL as string
 export function connect() {
-    try {
+    try {        
         mongoose.connect(MONGO_URL)
             .then(r => console.log("DB - Connected"))
     }
