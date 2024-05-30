@@ -1,11 +1,9 @@
 import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
-import multer, { Multer } from "multer";
+import multer from "multer";
 import crypto from 'crypto';
 import sharp from "sharp";
-import { ImageData } from "../interfaces/IMediaData";
-import { Mapper } from "../helpers/Mapper";
 
 const storage = multer.memoryStorage()
 export const upload = multer({ storage: storage })
@@ -54,7 +52,6 @@ export async function getObjectSignedUrl(key: string): Promise<string> {
         Key: key
     };
 
-    // https://aws.amazon.com/blogs/developer/generate-presigned-url-modular-aws-sdk-javascript/
     const command = new GetObjectCommand(params);
     const seconds = 60;
     const url = await getSignedUrl(s3Client, command, { expiresIn: seconds });
@@ -62,12 +59,13 @@ export async function getObjectSignedUrl(key: string): Promise<string> {
     return url;
 }
 
-export async function processAndUploadImage(imageData: Express.Multer.File,): Promise<void> {
+export async function processAndUploadImage(imageData: Express.Multer.File,): Promise<string | void> {
     if (!imageData) return;
     const { buffer, mimetype } = imageData;
-    const height = 1080, width = 1920
     const imageName = generateFileName();
+    // const height = 1080, width = 1920
     // const fileBuffer = await sharp(buffer).resize( height, width ).toBuffer();
-    let path = await uploadFile(buffer, imageName, mimetype);
-    return path;
+    await uploadFile(buffer, imageName, mimetype);
+    return await getObjectSignedUrl(imageName);
+
 }
