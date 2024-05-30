@@ -63,4 +63,5 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
     cards: [activeCardSchema]
 })
 
+
 export default mongoose.model<IActiveChallenge>('activeChallenge', ActiveChallengeSchema)
