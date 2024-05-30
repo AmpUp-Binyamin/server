@@ -25,6 +25,10 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
         type: Number,
         required: true,
     },
+    expiryDay :{
+        type : Date,
+        
+    },
     quantity: {
         type: Number,
         required: true,
@@ -62,9 +66,14 @@ const cardSchema = new mongoose.Schema<ICard>({
     cardType: {
         type: String,
         required: true,
+        enum: ['question', 'task', 'media', 'study' , 'support', 'share', 'lottery']
     },
     subType: {
         type: String,
+        enum: ['multipleChoice', 'url', 'freeText', 'upload', 'multipleChoice+freeText']
+    },
+    answers:{
+        type: [String],        
     },
     title: {
         type: String,
@@ -127,10 +136,6 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
     },
     store: [storeItemSchema],
     cards: [cardSchema],
-    invited: [{
-        type: String,
-        required: true,
-    }],
 })
 
 export default mongoose.model<IChallenge>('challenge', challengeSchema)
