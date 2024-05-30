@@ -50,10 +50,9 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
         required: true
     },
     participants: [{
-        member: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "member"
-        }
+        
     }],
     startDate: {
         type: Date,

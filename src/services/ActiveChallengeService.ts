@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose"
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import MemberController from "../controllers/MemberControllers"
 import AddActiveChallengeRequest from "../dto/activeChallenge/AddActiveChallengeRequest"
@@ -7,10 +8,12 @@ import IActiveChallenge from "../interfaces/IActiveChallenge"
 export default class ActiveChallegeService {
     static controller = new activeChallengeController()
     static RandomGenerator = new RandomNumberGenerator()
-static memberController = new MemberController()
+    static memberController = new MemberController()
+
     static async getSingleActiveChallenge(id: string): Promise<IActiveChallenge | null> {
         return await this.controller.readOne(id)
     }
+
     static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
         if (!data.challenge) {
             throw { code: 400, msg: "challenge not found" }
@@ -30,19 +33,9 @@ static memberController = new MemberController()
 
 
 
-    static async loveCard(challengeId: string): Promise<any> {
-
-        let challenge = await this.controller.readOne(challengeId ,'participants')
-        if (!challenge) throw { code: 400, message: "go to hell!!!" };
-       let num=  challenge.participants.length
-      let user=   challenge.participants[this.RandomGenerator.getRandom(0, num -1 )];
-
-    
-        return await  this.memberController.readOne((user))
-      }
-
-      
+   
 }
+// class checkWhyGetFeedback(userId: ObjectId, challenge: any): Promise<>{
 
-
+// }
 

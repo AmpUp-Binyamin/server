@@ -2,6 +2,7 @@ import { Request, Response, Router } from 'express'
 import { Mapper } from '../helpers/Mapper'
 import ActiveChallegeService from '../services/ActiveChallengeService'
 import AddActiveChallengeRequest from '../dto/activeChallenge/AddActiveChallengeRequest'
+import { loveCard } from '../services/LoveCardService'
 const router = Router()
 
 
@@ -29,7 +30,7 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     try {
    
-        let luck = await ActiveChallegeService.loveCard(req.params.challengeId)
+        let luck = await loveCard.getLove(req.params.challengeId)
         res.send(luck)
 
     } catch (error) {
