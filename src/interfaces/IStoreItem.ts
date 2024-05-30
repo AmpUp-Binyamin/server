@@ -7,4 +7,6 @@ export default interface IStoreItem {
     daysToExpiry: number;
     expiryDay : Date ;
     quantity: number;
+    isActive: boolean;
+    
 }

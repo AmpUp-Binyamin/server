@@ -64,25 +64,25 @@ export default class ArchiveService {
         return finel;
     }
 
-    static async getCard(challengeId: string, cardId: string): Promise<CardResponse > {
+    static async getCard(challengeId: string, cardId: string): Promise<CardResponse> {
         const challenge = await this.challengeController.readOne(challengeId);
         if (!challenge) {
-            console.error(`Challenge with id ${challengeId} not found.`);
-            return undefined;
+            throw (`Challenge with id ${challengeId} not found.`);
+            // return undefined;
         }
 
         const card = challenge.cards.find(card => card._id?.toString() === cardId);
         if (!card || !card._id) {
-            console.error(`Card with id ${cardId} not found in challenge ${challengeId}.`);
-            return undefined;
+            throw (`Card with id ${cardId} not found in challenge ${challengeId}.`);
+            // return undefined;
         }
 
         let cardObjectId: Types.ObjectId;
         try {
             cardObjectId = typeof card._id === 'string' ? new Types.ObjectId(card._id) : card._id;
         } catch (error) {
-            console.error(`Invalid card ID format: ${card._id}`);
-            return undefined;
+            throw (`Invalid card ID format: ${card._id}`);
+            // return undefined;
         }
 
         return new CardResponse(challenge.challengeName, card.title, card.media, cardObjectId);

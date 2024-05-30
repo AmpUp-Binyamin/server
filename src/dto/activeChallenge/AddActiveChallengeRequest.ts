@@ -1,9 +1,10 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import IActiveChallenge, { IActiveCard } from "../../interfaces/IActiveChallenge";
 
 export default class AddActiveChallengeRequest implements IActiveChallenge {
     coach: ObjectId;
     challenge: ObjectId;
+    invited: ObjectId[];
     participants: ObjectId[];
     startDate: Date;
     cards: AddActiveCardRequest[]
@@ -11,12 +12,14 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
     constructor(
         coach: ObjectId,
         challenge: ObjectId,
+        invited: ObjectId[],
         participants: ObjectId[],
         startDate: Date,
         cards: AddActiveCardRequest[]
     ) {
         this.coach = coach;
         this.challenge = challenge;
+        this.invited = invited;
         this.participants = participants;
         this.startDate = startDate;
         this.cards = cards;

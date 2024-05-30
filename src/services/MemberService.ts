@@ -11,12 +11,12 @@ type ValidationRules = {
     [K in keyof UpdateMemberRequest]?: (value: any) => void;
 };
 
-const validation:ValidationRules= {
-    fullName:(fullName:string)=>{if (fullName.length <= 0 ) throw 'the name is not exist'},
-    email:(email:string)=>{if (!regexEmail.test(email)) throw 'the email is not valid'},
-    phone:(phone:number)=>{if (!regexPhone.test(String(phone))) throw 'the phone is not valid'},
-    link:(link:string)=>{if (!regexLink.test(link)) throw 'the link is not valid'},
-    linkToSocialNetworks:(linkToSocialNetworks:string[])=>{linkToSocialNetworks.forEach( l=> {if (!regexLink.test(l)) throw 'there is link in list links is not valid'}) }
+const validation: ValidationRules = {
+    fullName: (fullName: string) => { if (fullName.length <= 0) throw 'the name is not exist' },
+    email: (email: string) => { if (!regexEmail.test(email)) throw 'the email is not valid' },
+    phone: (phone: number) => { if (!regexPhone.test(String(phone))) throw 'the phone is not valid' },
+    link: (link: string) => { if (!regexLink.test(link)) throw 'the link is not valid' },
+    linkToSocialNetworks: (linkToSocialNetworks: string[]) => { linkToSocialNetworks.forEach(l => { if (!regexLink.test(l)) throw 'there is link in list links is not valid' }) }
 }
 
 
@@ -26,11 +26,17 @@ export default class MemberService {
     static async getsingelMember(id: string): Promise<IMember | null> {
         return await this.controller.readOne(id)
     }
-    
+
     static async getsingelMemberChallenges(id: string): Promise<IMember | null> {
         return await this.controller.readWithChallenge(id)
     }
 
+    static async addNewStoreItem(memberId: string, storeItemId: string): Promise<IMember | null> {
+        return await this.controller.updateStoreItem(memberId, storeItemId)
+    }
+    static async updateMemberCoins(memberId: string, newCoins: number): Promise<IMember | null> {
+        return await this.controller.updateCoins(memberId, newCoins)
+    }
     static async getPersonalInfo(id: string): Promise<IMember | null> {
         const memberInfo: IMember | null = await this.controller.readOneProj(id, '-coins -notifications -_id')
         return memberInfo
@@ -53,7 +59,7 @@ export default class MemberService {
     }
 
 
-    static async updateMember(data:UpdateMemberRequest): Promise< IMember | null> {
+    static async updateMember(data: UpdateMemberRequest): Promise<IMember | null> {
         // בהמשך - שמירת התמונה ובדיקות בהתאם
         // מה קורה אם קיבלתי משו לא מהטיפוס הרצוי? מי מחזיר שגיאה?
 
@@ -63,9 +69,13 @@ export default class MemberService {
                 if (validate) validate(data[key]);
             }
         });
-        let member = await this.controller.update(data.userId,data)
+        let member = await this.controller.update(data.userId, data)
         console.log(member);
-        
+
         return member
     }
+
+
 }
+
+

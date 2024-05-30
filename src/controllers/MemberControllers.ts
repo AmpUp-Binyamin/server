@@ -76,4 +76,12 @@ export default class MemberController implements IController<IMember> {
         return await this.readOne(id);
     }
 
+
+    async updateStoreItem(id: string, data: string): Promise<IMember | null> {
+        return await MemberModel.findByIdAndUpdate(id, { $push: { myItems: data } });
+    }
+    async updateCoins(id: string, data: number): Promise<IMember | null> {
+        return await MemberModel.findByIdAndUpdate(id, { coins: data });
+    }
 }
+

@@ -7,14 +7,14 @@ import UserController from "../controllers/UserController";
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // טוקן זמני לעכשיו
-const temporaryToken = createToken({ userId: "test", userPermission: "user" });
+const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4e2", userPermission: "user" });
 
 // console.log("temporaryToken: ", temporaryToken);
 
 // middleware - token to user
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authHeader =  req.headers.authorization || temporaryToken ;
+        const authHeader = temporaryToken || req.headers.authorization ;
         if (!authHeader) {
             return res.status(401).send('Unauthorized');
         }
