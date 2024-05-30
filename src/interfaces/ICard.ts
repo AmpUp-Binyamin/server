@@ -1,16 +1,17 @@
 import IMedia from "./IMedia";
 
 export default interface ICard {
-    _id?:string;
+    _id?: string;
     day: number;
-    cardOrder: number; 
-    cardType: string; // יעבור להיות Union
-    subType?: string;// יעבור להיות Union
+    cardOrder: number;
+    cardType: 'question' | 'task' | 'media' | 'study'  | 'support' | 'share' | 'lottery';
+    subType?: 'multipleChoice' | 'url' | 'freeText' | 'upload' | 'multipleChoice+freeText';
     title: string;
-    content: string; 
+    content: string;
     media?: IMedia;
     coins: number;
     image?: string;
     drawProbability?: number; // אחוז הופעה (רק בקלף הגרלה)
     winProbability?: number; // אחוז זכייה (רק בקלף הגרלה)
+    answers?: string[];
 }

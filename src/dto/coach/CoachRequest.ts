@@ -3,14 +3,16 @@ import { ObjectId } from "mongoose"
 export class CreateCoachRequest {
     fullName: string
     email: string
+    title: string
     phoneNumber: string
     picture: string
     link: string
     myChallenges: ObjectId[]
 
-    constructor(fn = '', email = '', phoneN = '', pic = '', link = '', ch = []) {
+    constructor(fn = '', email = '', title= '', phoneN = '', pic = '', link = '', ch = []) {
         this.fullName = fn
         this.email = email
+        this.title = title
         this.phoneNumber = phoneN
         this.picture = pic
         this.link = link

@@ -1,7 +1,7 @@
 import mongoose, { ObjectId } from 'mongoose'
 import INotifications from '../../interfaces/INotifications'
 
-export default class AddMemberRespons {
+export default class AddMemberRequest {
     fullName: string
     email: string
     phone: number
