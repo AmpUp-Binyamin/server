@@ -68,13 +68,11 @@ export default class ArchiveService {
         const challenge = await this.challengeController.readOne(challengeId);
         if (!challenge) {
             throw (`Challenge with id ${challengeId} not found.`);
-            // return undefined;
         }
 
         const card = challenge.cards.find(card => card._id?.toString() === cardId);
         if (!card || !card._id) {
             throw (`Card with id ${cardId} not found in challenge ${challengeId}.`);
-            // return undefined;
         }
 
         let cardObjectId: Types.ObjectId;
@@ -82,7 +80,6 @@ export default class ArchiveService {
             cardObjectId = typeof card._id === 'string' ? new Types.ObjectId(card._id) : card._id;
         } catch (error) {
             throw (`Invalid card ID format: ${card._id}`);
-            // return undefined;
         }
 
         return new CardResponse(challenge.challengeName, card.title, card.media, cardObjectId);
