@@ -1,13 +1,16 @@
-import { ObjectId } from "mongoose"
+// import { ObjectId } from "mongoose"
+import { Schema, Document, Types, ObjectId } from "mongoose";
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import ChallengeController from "../controllers/ChallengeController"
 import CoachController from "../controllers/CoachController"
 import MemberController from "../controllers/MemberControllers"
 import IActiveChallenge from "../interfaces/IActiveChallenge"
 import IChallenge from "../interfaces/IChallenge"
+// import { CardRequest } from "../dto/singleCard/CardRequest"
+import { CardResponse } from "../dto/singleCard/CardResponse"
 
-
-
+// import { ObjectId: ObjectIdValue } from 'mongodb'
+const { ObjectId: ObjectIdValue } = require("mongodb");
 
 export default class ArchiveService {
     static challengeController = new ChallengeController()
@@ -61,21 +64,30 @@ export default class ArchiveService {
         return finel;
     }
 
-    static async getCard(challengeId: string, cardId: string): Promise<Object | undefined> {
-        let challenge = await this.challengeController.readOne(challengeId)
-        let card = challenge?.cards.find(card => {
-            return card._id = cardId
-        })
-        //class instead of this in the dto open files and build classes
-        let filteredCard =
-        {
-            challengeName: challenge?.challengeName,
-            title: card?.title,
-            media: card?.media,
-            id: card?._id
+    static async getCard(challengeId: string, cardId: string): Promise<CardResponse > {
+        const challenge = await this.challengeController.readOne(challengeId);
+        if (!challenge) {
+            console.error(`Challenge with id ${challengeId} not found.`);
+            return undefined;
         }
-        return filteredCard
+
+        const card = challenge.cards.find(card => card._id?.toString() === cardId);
+        if (!card || !card._id) {
+            console.error(`Card with id ${cardId} not found in challenge ${challengeId}.`);
+            return undefined;
+        }
+
+        let cardObjectId: Types.ObjectId;
+        try {
+            cardObjectId = typeof card._id === 'string' ? new Types.ObjectId(card._id) : card._id;
+        } catch (error) {
+            console.error(`Invalid card ID format: ${card._id}`);
+            return undefined;
+        }
+
+        return new CardResponse(challenge.challengeName, card.title, card.media, cardObjectId);
     }
+
 
     private static calculateEndDate(startDate: Date | undefined, duration: number): string | null {
         if (!startDate || isNaN(startDate.getTime())) {
