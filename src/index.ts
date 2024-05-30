@@ -43,4 +43,7 @@ app.use('/luck', LuckRouter)
 import MemberRouter from './routes/MemberRouter'
 app.use('/member', MemberRouter)
 
+import CoinsRouter from './routes/CoinsRouter'
+app.use('/coins', CoinsRouter)
+
 app.listen(3030, () => console.log("Server is UP : 3030"))
