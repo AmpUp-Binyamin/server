@@ -3,10 +3,8 @@ import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
 import CoinsRequest from "../dto/coins/CoinsRequest";
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
-import ICard from "../interfaces/ICard";
 
 export default class CoinsService {
-
     static activeChallengeController = new activeChallengeController();
     static memberController = new MemberController();
     static challengeController = new ChallengeController();
@@ -17,18 +15,13 @@ export default class CoinsService {
         let cards: IActiveCard[] = activeChallenge.cards.filter(c =>
             String(c.member) == String(data.userId) && c.challengeDay == currentDay
         )
-        console.log(cards);
-        let carsOfChallenge:ICard[] = (await this.challengeController.read({_id:data.challengeId}))?cards.filter(c=>c.day == currentDay && c.cardType != '')
+        
+        let cardsOfChallenge = (await this.challengeController.readOne(data.challengeId))?.cards.filter((c)=>c.day == currentDay && c.cardType != 'support' && c.cardType != 'share'  && c.cardType != 'lottery' )
 
-
-        // לבדוק אם מספר הכרטיסים שמצאתי תואם למספר הכרטיסי חובה ביום הזה באתגר הזה
-        // if (cards.length != data.cardsIds.length) throw 'error : The number of tickets sent does not match the number in the system'
-        // let cards
-
+        if (cards.length != cardsOfChallenge?.length) throw 'error : The number of tickets sent does not match the number in the system'
 
         let newCoins = 0
         cards.forEach(c => newCoins += c.coins)
-
         let member = await this.memberController.readOne(data.userId)
         if (member?.coins) member.coins += newCoins
         if (member) await this.memberController.save(member)
