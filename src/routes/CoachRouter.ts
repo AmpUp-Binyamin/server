@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express";
 import CoachService from "../services/CoachService";
 import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
-import { uploadImage } from "../middleware/media"
+import { uploadImageFS } from "../middleware/media"
 
 
 const router = Router()
@@ -17,7 +17,7 @@ router.get('/:userId', async (req: Request, res: Response) => {
     }
 })
 
-router.post('/', uploadImage.single("img"), async (req: Request, res: Response) => {
+router.post('/', uploadImageFS.single("img"), async (req: Request, res: Response) => {
     try {
         req.body.picture = req.file?.path
         let request = Mapper<CreateCoachRequest>(new CreateCoachRequest(), req.body)
