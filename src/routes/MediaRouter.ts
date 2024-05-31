@@ -1,17 +1,17 @@
 import { Request, Response, Router } from 'express';
 import { uploadImageFS, uploadAnyFileFS, } from "../middleware/media"
-import { processAndUploadImage, upload } from '../middleware/s3';
+import { uploadFile, uploadImage, upload } from '../middleware/s3';
 
 const router: Router = Router();
 
 router.post("/img", upload.single('img'), async (req: Request, res: Response) => {
     try {
-       let path = await processAndUploadImage(req.file as Express.Multer.File)
+       let path = await uploadFile(req.file as Express.Multer.File)
         console.log(path);
         res.send("Files uploaded successfully.");
     } catch (error) {
         console.log('Error:', error);
-        res.status(500).send("An error occurred during file upload.");
+        res.status(500).send(error);
     }
 });
 
