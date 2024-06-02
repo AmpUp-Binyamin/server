@@ -1,5 +1,5 @@
 import { ObjectId as MongoDBObjectId } from 'mongodb';
-import { isValidObjectId } from "mongoose";
+import { ObjectId, isValidObjectId } from "mongoose";
 import activeChallengeController from "../controllers/ActiveChallengeController";
 import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
@@ -11,6 +11,8 @@ import ICoach from "../interfaces/ICoach";
 import IMember from "../interfaces/IMember";
 
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
+import ICard from '../interfaces/ICard';
+import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes';
 
 export default class ActiveChallegeService {
     static controller = new activeChallengeController();
@@ -27,7 +29,7 @@ export default class ActiveChallegeService {
     static async getActiveChallengeToStartScreen(
         id: string
     ): Promise<GetActiveChallToStartReq | null> {
-        let activeChallenge: IActiveChallenge | null =
+        let activeChallenge: IActiveChallenge | null | undefined =
             await this.controller.readOneWithPopulate(
                 id,
                 {
@@ -54,6 +56,43 @@ export default class ActiveChallegeService {
             coach as ICoach
         );
         return res;
+    }
+
+    static async getStartDailyDeck(userId: ObjectId, id: string) {
+
+
+        const activeChallenge: IActiveChallenge | null | undefined = await this.controller.readOneWithPopulate(id, { challenge: '_id cards', coach: 'fullName picture title' })
+        if (!activeChallenge) throw ''
+
+        const challenge = activeChallenge.challenge as Partial<IChallenge>
+        if (!challenge.cards) throw ''
+        const coach: Partial<ICoach> = activeChallenge.coach as Partial<ICoach>
+        let cards: ICard[] = challenge.cards as ICard[]
+
+        const numCardsOfDay: number[] = []
+        const completedDays: number[] = []
+
+        cards?.forEach(card => {
+            (numCardsOfDay[card.day - 1] === undefined) ? numCardsOfDay[card.day - 1] = 1 : ++(numCardsOfDay[card.day - 1])
+        })
+
+        const memberCards: IActiveCard[] = activeChallenge.cards.filter(card => String(card.member) == String(userId))
+
+        numCardsOfDay.forEach((num, day) => {
+            const activeCard: IActiveCard[] = memberCards.filter(c => c.challengeDay == day + 1)
+            if (activeCard.length == num) completedDays.push(day + 1)
+        })
+        let currentDay = Math.floor((Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24))
+        const currentCards: ICard[] = cards.filter(card => card.day == currentDay)
+        console.log('currentCards', currentCards.length);
+
+        const cardsStatus: ICard[] = currentCards.map(card => {
+            const done: IActiveCard | undefined = memberCards.find(c => String(c.card) == card._id)
+            return ({ ...card, done: Boolean(done) })
+        })
+        console.log('cardsStatus', cardsStatus.length);
+
+        return new GetStatusDoneCardsRes(cardsStatus, completedDays, coach)
     }
 
     static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
