@@ -1,7 +1,19 @@
-import 'dotenv/config'
-import cors from 'cors'
+import cors from 'cors';
+import 'dotenv/config';
 import express from 'express';
-import { connect } from './config/db'
+import { connect } from './config/db';
+import ActiveChallengeRouter from './routes/ActiveChallengeRouter';
+import ArchiveRouter from './routes/ArchiveRouter';
+import ChallengeRouter from './routes/ChallengeRouter';
+import CoachRouter from './routes/CoachRouter';
+import FeedBackRouter from './routes/FeedBackRouter';
+import LuckRouter from './routes/LuckRouter';
+import MediaRouter from './routes/MediaRouter';
+import MemberRouter from './routes/MemberRouter';
+import NotificationRoutr from './routes/NotificationRouter';
+import StoreRouter from './routes/StoreRouter';
+import UserRouter from './routes/UserRouter';
+
 connect()
 
 const app = express()
@@ -14,33 +26,20 @@ app.use(express.json())
 // ##########################
 
 // middleware - token to user
-import { verifyToken } from './middleware/auth'
+import { verifyToken } from './middleware/auth';
 app.use('*', verifyToken)
 
-import UserRouter from './routes/UserRouter'
-import CoachRouter from './routes/CoachRouter'
-import NotificationRoutr from './routes/NotificationRouter'
-import FeedBackRouter from './routes/FeedBackRouter'
-import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
 
-import StoreRouter from './routes/StoreRouter'
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
-app.use('/store' , StoreRouter) 
-
-import MediaRouter from './routes/MediaRouter'
+app.use('/store', StoreRouter)
+app.use('/archive', ArchiveRouter)
 app.use('/media', MediaRouter)
-app.use('/notification',NotificationRoutr)
+app.use('/notification', NotificationRoutr)
 app.use('/feedback', FeedBackRouter)
-
-import ChallengeRouter from './routes/ChallengeRouter'
 app.use('/challenge', ChallengeRouter)
-
-import LuckRouter from './routes/LuckRouter'
 app.use('/luck', LuckRouter)
-
-import MemberRouter from './routes/MemberRouter'
 app.use('/member', MemberRouter)
 
 import CoinsRouter from './routes/CoinsRouter'
