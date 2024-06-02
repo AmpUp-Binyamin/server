@@ -23,8 +23,8 @@ export default class CoachService {
         return await this.controller.create(newCoach)
     }
 
-    static async updateCoach(id: string): Promise<ICoach | null> {
-        return await this.controller.readOne(id)
+    static async updateCoach(id: string, data: Partial<ICoach>): Promise<ICoach | null> {
+        return await this.controller.update(id, data)
     }
 
 }

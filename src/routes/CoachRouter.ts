@@ -2,14 +2,13 @@ import { Request, Response, Router } from "express";
 import CoachService from "../services/CoachService";
 import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
-import { uploadImageFS } from "../middleware/media"
 import { verifyTokenCoach } from "../middleware/coachAuth";
-import { uploadImgAndSaveUrl } from "../middleware/s3";
+import { temImgUpload, validateAndUploadImg } from "../middleware/S3";
 
 const router = Router()
 
 
-router.get('/:userId', verifyTokenCoach,  async (req: Request, res: Response) => {
+router.get('/:userId', verifyTokenCoach, async (req: Request, res: Response) => {
     try {
         let coach = await CoachService.getSingleCoach(req.params.userId)
         res.send(coach)
@@ -18,10 +17,17 @@ router.get('/:userId', verifyTokenCoach,  async (req: Request, res: Response) =>
     }
 })
 
-router.post('/', uploadImgAndSaveUrl, async (req: Request, res: Response) => {
+router.post('/', temImgUpload, async (req: Request, res: Response) => {
     try {
         let request = Mapper<CreateCoachRequest>(new CreateCoachRequest(), req.body)
         let coach = await CoachService.createNewCoach(request)
+        if (req.file) {
+            let url = await validateAndUploadImg(req.file)
+            console.log(url)
+            if (url) {
+              coach = await  CoachService.updateCoach(coach?._id as string, { picture: url })
+            }
+        }
         res.send(coach)
     } catch (error) {
         res.status(400).send(error)
