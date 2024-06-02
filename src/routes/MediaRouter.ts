@@ -1,10 +1,21 @@
 import { Request, Response, Router } from 'express';
-import { Mapper } from '../helpers/Mapper';
-import { uploadImage, uploadAnyFile, } from "../middleware/media"
+import { uploadImageFS, uploadAnyFileFS, } from "../middleware/media"
+import { processAndUploadImage, upload } from '../middleware/s3';
 
 const router: Router = Router();
 
-router.post("/", uploadAnyFile.any(), (req: Request, res: Response) => {
+router.post("/img", upload.single('img'), async (req: Request, res: Response) => {
+    try {
+       let path = await processAndUploadImage(req.file as Express.Multer.File)
+        console.log(path);
+        res.send("Files uploaded successfully.");
+    } catch (error) {
+        console.log('Error:', error);
+        res.status(500).send("An error occurred during file upload.");
+    }
+});
+
+router.post("/", uploadAnyFileFS.any(), (req: Request, res: Response) => {
     try {
         let files = req.files as Express.Multer.File[];
         console.log(files[0].mimetype);
@@ -14,7 +25,9 @@ router.post("/", uploadAnyFile.any(), (req: Request, res: Response) => {
         res.status(500).send("An error occurred during file upload.");
     }
 });
-router.post("/img", uploadImage.any(), (req: Request, res: Response) => {
+
+
+router.post("/img", uploadImageFS.any(), (req: Request, res: Response) => {
     try {
         let files = req.files as Express.Multer.File[];
         console.log(files[0].mimetype);
