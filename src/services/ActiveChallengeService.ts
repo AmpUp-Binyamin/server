@@ -28,6 +28,8 @@ static memberController = new MemberController()
         return res
     }
 
+    // static async getStartDailyDeck(id: string): Promise<>
+
     static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
         if (!data.challenge) {
             throw { code: 400, msg: "challenge not found" }
