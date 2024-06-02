@@ -5,6 +5,7 @@ import AddActiveChallengeRequest from '../dto/activeChallenge/AddActiveChallenge
 import IActiveChallenge from '../interfaces/IActiveChallenge'
 import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToStartReq'
 import AddUserRequest from '../dto/user/AddUserRequest'
+import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes'
 const router = Router()
 
 router.get('/:activeChallengeId', async (req: Request, res: Response) => {
@@ -29,9 +30,9 @@ router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
 
 router.get('/status/:activeChallengeId', async (req: Request, res: Response) => {
     try {
-        let userId  = req.body.userId
-        
-        let startDeilyDeck = await ActiveChallegeService.getStartDailyDeck(userId,req.params.activeChallengeId)
+        let userId = req.body.userId
+
+        let startDeilyDeck: GetStatusDoneCardsRes = await ActiveChallegeService.getStartDailyDeck(userId, req.params.activeChallengeId)
         res.send(startDeilyDeck)
     }
     catch (error) {
