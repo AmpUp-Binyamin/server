@@ -9,6 +9,7 @@ export default class AuthService {
         return( await this.MemberController.read({email}))[0]
     }
     static activeChallengeController = new activeChallengeController();
+
     static async checkActivChaleng(challenge:ObjectId) {
         return await this.activeChallengeController.read({challenge})
     }
