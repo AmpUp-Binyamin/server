@@ -5,7 +5,16 @@ import { ObjectId } from "mongoose";
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
 export class LuckHelper {
   static RandomGenerator = new RandomNumberGenerator()
-  static shapes: string[] = ["a", "b", "c", "d", "e", "f"];
+  static shapes: string[] = ["cherry", "diamond", "bell", "clover", "currency", "lemon"];
+  // // דובדבן יהלום פעמון תלתן מטבע לימון
+  static getShapes = [
+    { "cherry": 20 },
+    { "diamond": 100 },
+    { "bell": 30 },
+    { "clover": 40 },
+    { "currency": 50 },
+    { "lemon": 10 },
+  ];
   static getLottery(drawProbability: number): boolean {
     return drawProbability >= this.RandomGenerator.getRandom(0, 1);
   }

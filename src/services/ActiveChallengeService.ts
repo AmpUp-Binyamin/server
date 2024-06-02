@@ -1,5 +1,5 @@
-import { ObjectId } from "mongodb";
-import { isValidObjectId } from "mongoose";
+import { ObjectId as MongoDBObjectId } from 'mongodb';
+import { ObjectId, isValidObjectId } from "mongoose";
 import activeChallengeController from "../controllers/ActiveChallengeController";
 import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
@@ -11,123 +11,164 @@ import ICoach from "../interfaces/ICoach";
 import IMember from "../interfaces/IMember";
 
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
+import ICard from '../interfaces/ICard';
+import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes';
 
 export default class ActiveChallegeService {
-  static controller = new activeChallengeController();
-  static RandomGenerator = new RandomNumberGenerator();
-  static memberController = new MemberController();
-  static challengeController = new ChallengeController();
+    static controller = new activeChallengeController();
+    static RandomGenerator = new RandomNumberGenerator();
+    static memberController = new MemberController();
+    static challengeController = new ChallengeController();
 
-  static async getSingleActiveChallenge(
-    id: string
-  ): Promise<IActiveChallenge | null> {
-    return await this.controller.readOne(id);
-  }
-
-  static async getActiveChallengeToStartScreen(
-    id: string
-  ): Promise<GetActiveChallToStartReq | null> {
-    let activeChallenge: IActiveChallenge | null =
-      await this.controller.readOneWithPopulate(
-        id,
-        {
-          participants: "img",
-          coach: "fullName picture title",
-          challenge: "challengeName coverImage subDescription duration",
-        },
-        "startDate participants"
-      );
-    if (!activeChallenge) return null;
-    if (!("_id" in activeChallenge.challenge)) return null;
-    const duration = (activeChallenge.challenge as IChallenge)
-      .duration as number;
-    const futureDate: Date = FutureDateCalc(
-      activeChallenge.startDate,
-      duration
-    );
-    const { startDate, challenge, participants, coach } = activeChallenge;
-    const res = new GetActiveChallToStartReq(
-      startDate,
-      futureDate,
-      participants as IMember[],
-      challenge as IChallenge,
-      coach as ICoach
-    );
-    return res;
-  }
-
-  static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
-    if (!data.challenge) {
-      throw { code: 400, msg: "challenge not found" };
+    static async getSingleActiveChallenge(
+        id: string
+    ): Promise<IActiveChallenge | null> {
+        return await this.controller.readOne(id);
     }
-    if (!data.startDate) {
-      throw { code: 400, msg: "start date not found" };
+
+    static async getActiveChallengeToStartScreen(
+        id: string
+    ): Promise<GetActiveChallToStartReq | null> {
+        let activeChallenge: IActiveChallenge | null | undefined =
+            await this.controller.readOneWithPopulate(
+                id,
+                {
+                    participants: "img",
+                    coach: "fullName picture title",
+                    challenge: "challengeName coverImage subDescription duration",
+                },
+                "startDate participants"
+            );
+        if (!activeChallenge) return null;
+        if (!("_id" in activeChallenge.challenge)) return null;
+        const duration = (activeChallenge.challenge as IChallenge)
+            .duration as number;
+        const futureDate: Date = FutureDateCalc(
+            activeChallenge.startDate,
+            duration
+        );
+        const { startDate, challenge, participants, coach } = activeChallenge;
+        const res = new GetActiveChallToStartReq(
+            startDate,
+            futureDate,
+            participants as IMember[],
+            challenge as IChallenge,
+            coach as ICoach
+        );
+        return res;
     }
-    let newActiveChallenge: IActiveChallenge = {
-      coach: data.userId,
-      challenge: data.challenge,
-      invited: [],
-      participants: [],
-      startDate: data.startDate,
-      cards: [],
-    };
-    return await this.controller.create(newActiveChallenge);
-  }
 
-  static async loveCard(challengeId: string): Promise<any> {
-    let challenge = await this.controller.readOne(challengeId, "participants");
-    if (!challenge) throw { code: 400, message: "go to hell!!!" };
-    let num = challenge.participants.length;
-    let user =
-      challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+    static async getStartDailyDeck(userId: ObjectId, id: string) {
 
-    return await this.memberController.readOne(String(user));
-  }
 
-  static async handleCardAnswer(
-    challengeId: string,
-    cardId: string,
-    answer: any
-  ): Promise<IActiveCard> {
-    console.log({ challengeId, cardId, answer });
-    if (!challengeId || !cardId) throw { code: 400, msg: "missing data" };
-    if (!isValidObjectId(challengeId))
-      throw { code: 400, msg: "challengeId is not ObjectId" };
-    if (!isValidObjectId(cardId))
-      throw { code: 400, msg: "cardId is not ObjectId" };
+        const activeChallenge: IActiveChallenge | null | undefined = await this.controller.readOneWithPopulate(id, { challenge: '_id cards', coach: 'fullName picture title' })
+        if (!activeChallenge) throw ''
 
-    // מציאת האתגר בדטאבייס
-    let challenge = await this.challengeController.readOne(challengeId);
-    if (!challenge) throw { code: 400, msg: "challenge not found" };
+        const challenge = activeChallenge.challenge as Partial<IChallenge>
+        if (!challenge.cards) throw ''
+        const coach: Partial<ICoach> = activeChallenge.coach as Partial<ICoach>
+        let cards: ICard[] = challenge.cards as ICard[]
 
-    // מציאת הכרטיס
-    let card = challenge.cards.find((card) => card._id == cardId);
-    if (!card) throw { code: 400, msg: "card not found" };
+        const numCardsOfDay: number[] = []
+        const completedDays: number[] = []
 
-    // מציאת האתגר הפעיל
-    let activeChallenge = await this.controller.read({
-      challenge: challengeId,
-    });
-    if (!activeChallenge[0])
-      throw { code: 400, msg: "Active challenge not found" };
+        cards?.forEach(card => {
+            (numCardsOfDay[card.day - 1] === undefined) ? numCardsOfDay[card.day - 1] = 1 : ++(numCardsOfDay[card.day - 1])
+        })
 
-    // יצירת הקלף להוספה לאתגר הפעיל
-    const cardToAdd: IActiveCard = {
-      member: answer.userId,
-      card: new ObjectId(card._id),
-      challengeDay: card.day,
-      coins: card.coins,
-      answerValue: answer.value,
-      answerMedia: [], //TODO: handle files
-    };
+        const memberCards: IActiveCard[] = activeChallenge.cards.filter(card => String(card.member) == String(userId))
 
-    console.log("value: ", answer.value);
-    // הוספת הקלף החדש לאתגר הפעיל
-    await this.controller.update(activeChallenge[0]._id as string, {
-      $push: { cards: cardToAdd },
-    });
-    return cardToAdd;
-  }
+        numCardsOfDay.forEach((num, day) => {
+            const activeCard: IActiveCard[] = memberCards.filter(c => c.challengeDay == day + 1)
+            if (activeCard.length == num) completedDays.push(day + 1)
+        })
+        let currentDay = Math.floor((Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24))
+        const currentCards: ICard[] = cards.filter(card => card.day == currentDay)
+        console.log('currentCards', currentCards.length);
+
+        const cardsStatus: ICard[] = currentCards.map(card => {
+            const done: IActiveCard | undefined = memberCards.find(c => String(c.card) == card._id)
+            return ({ ...card, done: Boolean(done) })
+        })
+        console.log('cardsStatus', cardsStatus.length);
+
+        return new GetStatusDoneCardsRes(cardsStatus, completedDays, coach)
+    }
+
+    static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
+        if (!data.challenge) {
+            throw { code: 400, msg: "challenge not found" };
+        }
+        if (!data.startDate) {
+            throw { code: 400, msg: "start date not found" };
+        }
+        let newActiveChallenge: IActiveChallenge = {
+            coach: data.userId,
+            challenge: data.challenge,
+            invited: [],
+            participants: [],
+            startDate: data.startDate,
+            cards: [],
+        };
+        return await this.controller.create(newActiveChallenge);
+    }
+
+    static async loveCard(challengeId: string): Promise<any> {
+        let challenge = await this.controller.readOne(challengeId, "participants");
+        if (!challenge) throw { code: 400, message: "go to hell!!!" };
+        let num = challenge.participants.length;
+        let user =
+            challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+
+        return await this.memberController.readOne(String(user));
+    }
+
+    static async handleCardAnswer(
+        challengeId: string,
+        cardId: string,
+        answer: any
+    ): Promise<IActiveCard> {
+        console.log({ challengeId, cardId, answer });
+        if (!challengeId || !cardId) throw { code: 400, msg: "missing data" };
+        if (!isValidObjectId(challengeId))
+            throw { code: 400, msg: "challengeId is not ObjectId" };
+        if (!isValidObjectId(cardId))
+            throw { code: 400, msg: "cardId is not ObjectId" };
+
+        // מציאת האתגר בדטאבייס
+        let challenge = await this.challengeController.readOne(challengeId);
+        if (!challenge) throw { code: 400, msg: "challenge not found" };
+
+        // מציאת הכרטיס
+        let card = challenge.cards.find((card) => card._id == cardId);
+        if (!card) throw { code: 400, msg: "card not found" };
+
+        // מציאת האתגר הפעיל
+        let activeChallenge = await this.controller.read({
+            challenge: challengeId,
+        });
+        if (!activeChallenge[0])
+            throw { code: 400, msg: "Active challenge not found" };
+
+        // יצירת הקלף להוספה לאתגר הפעיל
+        const cardToAdd: IActiveCard = {
+            member: answer.userId,
+            card: new MongoDBObjectId(card._id),
+            challengeDay: card.day,
+            coins: card.coins,
+            answerValue: answer.value,
+            answerMedia: [], //TODO: handle files
+        };
+
+        console.log("value: ", answer.value);
+        // הוספת הקלף החדש לאתגר הפעיל
+        await this.controller.update(activeChallenge[0]._id as string, {
+            $push: { cards: cardToAdd },
+        });
+        return cardToAdd;
+    }
+
+
 }
 // class checkWhyGetFeedback(userId: ObjectId, challenge: any): Promise<>{
 
