@@ -1,8 +1,8 @@
 import ICard from '../../interfaces/ICard';
 import IMedia from '../../interfaces/IMedia';
 
-type cardType = "question"| "task"| "media"| "study"| "support"| "share"| "lottery"
-type subType =  'multipleChoice'| 'url'| 'freeText'| 'upload'| 'multipleChoice+freeText'
+type cardType = "question" | "task" | "media" | "study" | "support" | "share" | "lottery"
+type subType = 'multipleChoice' | 'url' | 'freeText' | 'upload' | 'multipleChoice+freeText'
 
 export default class CreateCardRequest {
     challengeId: string;
@@ -19,7 +19,8 @@ export default class CreateCardRequest {
     drawProbability?: number; // אחוז הופעה (רק בקלף הגרלה)
     winProbability?: number; // אחוז זכייה (רק בקלף הגרלה)
     answers?: string[];
-userId: string
+    userId: string;
+    static _id: any;
     constructor() {
         this._id = undefined;
         this.day = 0;
@@ -27,7 +28,7 @@ userId: string
         this.cardType = 'question';
         this.challengeId = '';
         this.subType = undefined;
-        this.title = '';    
+        this.title = '';
         this.content = '';
         this.media = undefined;
         this.coins = 0;

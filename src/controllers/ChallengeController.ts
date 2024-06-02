@@ -1,4 +1,4 @@
-import { FilterQuery, UpdateQuery } from "mongoose";
+import { Document, FilterQuery, UpdateQuery } from "mongoose";
 import IChallenge from "../interfaces/IChallenge";
 import IController from "../interfaces/IController";
 import ChallengeModel from "../models/ChallengeModel";
@@ -46,6 +46,10 @@ export default class ChallengeController implements IController<IChallenge> {
         await ChallengeModel.updateOne({_id:id}, data)
         return await this.readOne(id)
     }
+    async updateByFilter(filter: FilterQuery<IChallenge>, data: UpdateQuery<IChallenge>): Promise<IChallenge | null> {
+        
+        return await ChallengeModel.findOneAndUpdate(filter, data, {new: true})
+    }
     async updateQuantity(challengeId:string,storeItemId:string,newQuantity: number): Promise<IChallenge | null>  {
        let challenge =  await ChallengeModel.findOneAndUpdate(
         { _id: challengeId, 'store._id': storeItemId },
@@ -55,6 +59,10 @@ export default class ChallengeController implements IController<IChallenge> {
     async del(id: string): Promise<boolean> {
         await ChallengeModel.deleteOne({_id:id})
         return true
+    }
+
+    async save(data: IChallenge | null): Promise<void> {
+        await (data as Document)?.save();
     }
 }
 
