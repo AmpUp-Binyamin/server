@@ -41,8 +41,6 @@ const saveFileUrlToBody = async (req: Request, res: Response, next: NextFunction
 
     if (req.file) {
         if (req.file.mimetype.split('/')[0] !== 'image') {
-            // throw new Error('Invalid file type');
-            // return next(new Error('Invalid file type'));
             return res.status(400).send(" error: Invalid file type");
         }
         console.log(req.file);
