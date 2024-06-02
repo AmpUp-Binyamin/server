@@ -1,5 +1,6 @@
 import { isObjectIdOrHexString, isValidObjectId } from "mongoose"
-import {ObjectId} from 'mongodb'
+import { ObjectId as MongoDBObjectId } from 'mongodb'
+import { ObjectId } from "mongoose"
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import ChallengeController from "../controllers/ChallengeController"
 import MemberController from "../controllers/MemberControllers"
@@ -12,13 +13,16 @@ import ICoach from "../interfaces/ICoach"
 import IMember from "../interfaces/IMember"
 
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge"
+import LuckService, { LuckHelper } from "./LuckService"
+import { DaysDoneHelper } from "../helpers/DaysDoneHelper"
+
 
 export default class ActiveChallegeService {
     static controller = new activeChallengeController();
     static challengeController = new ChallengeController();
     static RandomGenerator = new RandomNumberGenerator();
     static memberController = new MemberController();
-
+    static DaysDoneHelper = new DaysDoneHelper()
     static async getSingleActiveChallenge(id: string): Promise<IActiveChallenge | null> {
         return await this.controller.readOne(id)
     }
@@ -56,13 +60,22 @@ export default class ActiveChallegeService {
 
         let challenge = await this.controller.readOne(challengeId, 'participants')
         if (!challenge) throw { code: 400, message: "go to hell!!!" };
-        let num = challenge.participants.length
+        let num = challenge.participants?.length
         let user = challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+
+
+        // const chosenMember = await this.memberController.readOne((user))
+        //     let memberId = chosenMember?._id
+
+        let memberCards = this.DaysDoneHelper.getMemberCardsArray(user as unknown as ObjectId, challenge)
+        let daysDoneObject = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(memberCards, 'challengeDay')
+        let isInPositiveStreak = this.DaysDoneHelper.checkPositiveStreak(daysDoneObject, 5)
+        let isBackAfterNegativeStreak = this.DaysDoneHelper.checkNegativeStreakEnd(daysDoneObject, 5)
+
 
 
         return await this.memberController.readOne(String(user))
     }
-
     static async handleCardAnswer(challengeId: string, cardId: string, answer: any): Promise<IActiveCard> {
         console.log({ challengeId, cardId, answer });
         if (!challengeId || !cardId) throw { code: 400, msg: "missing data" };
@@ -84,7 +97,7 @@ export default class ActiveChallegeService {
         // יצירת הקלף להוספה לאתגר הפעיל
         const cardToAdd: IActiveCard = {
             member: answer.userId,
-            card: new ObjectId(card._id),
+            card: new MongoDBObjectId(card._id),
             challengeDay: card.day,
             coins: card.coins,
             answerValue: answer.value,
@@ -96,7 +109,20 @@ export default class ActiveChallegeService {
         await this.controller.update(activeChallenge[0]._id as string, { $push: { cards: cardToAdd } });
         return cardToAdd;
     }
+
+
+    // recieves the "loveCard" winning memberID and the same challenge, should check and return if the member have a positive streak  
+
+
 }
+// TODO: ADD IN THE SCHEMA HOW MANY CARDS ARE SUPPOSED TO BE IN EACH DAY,
+// TO ENABLE CHECK OF HOW MANY CARDS ANSWERED PER DAY (COMPLETE/INCOMPLETE)
+
+
+
+
+
+
 
 
 
