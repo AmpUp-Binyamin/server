@@ -6,9 +6,10 @@ import { loveCard } from '../services/LoveCardService'
 import IActiveChallenge from '../interfaces/IActiveChallenge'
 import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToStartReq'
 import AddUserRequest from '../dto/user/AddUserRequest'
+import { verifyTokenCoach } from '../middleware/coachAuth'
 const router = Router()
 
-router.get('/:activeChallengeId', async (req: Request, res: Response) => {
+router.get('/:activeChallengeId', verifyTokenCoach, async (req: Request, res: Response) => {
     try {
         let activeChallenge = await ActiveChallegeService.getSingleActiveChallenge(req.params.userId)
         res.send(activeChallenge)
@@ -20,8 +21,8 @@ router.get('/:activeChallengeId', async (req: Request, res: Response) => {
 
 router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
     try {
-        let activeChallenge: GetActiveChallToStartReq | null = await ActiveChallegeService.getActiveChallengeToStartScreen(req.params.activeChallengeId)
-        res.send(activeChallenge)
+        // let activeChallenge: GetActiveChallToStartReq | null = await ActiveChallegeService.getActiveChallengeToStartScreen(req.params.activeChallengeId)
+        // res.send(activeChallenge)
     }
     catch (error) {
         res.status(400).send(error)

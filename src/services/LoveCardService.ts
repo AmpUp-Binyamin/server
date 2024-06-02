@@ -12,16 +12,16 @@ export class loveCard {
     // בודק באופן רנדומלי למי להביא פירגון
 
     let challenge = await this.controller.readOne(challengeId);
-    console.log(challenge);
+    // console.log(challenge);
     
     if (!challenge) throw { code: 400, message: "go to hell!!!" };
     let num = challenge.participants.length;
     let random = this.RandomGenerator.getRandom(0, num - 1)
-    console.log({random});
-    console.log(challenge.participants);
+    // console.log({random});
+    // console.log(challenge.participants);
     
-    let userId = challenge.participants[random];
-    console.log({userId});
+    let userId : ObjectId= challenge.participants[random] as unknown as ObjectId;
+    // console.log({userId});
     
     if (!userId) {
       throw { code: 400, message: "go to hell!!!" };
@@ -29,12 +29,12 @@ export class loveCard {
     // מפה בדיקות למה להביא פירגון 1.אם יום ראשון
     // 2. אם התחלי X ימים ולא סיים
     //  3. לא עשה 3 ימים וחזר לעשות
-    if (await this.CheckingFristDay(userId, challenge)) return { userId: { "frist Day": "good luck" } };
-     this.DoNotFinish(userId, challenge);
+    if (await this.CheckingFristDay(userId , challenge )) return { userId: { "frist Day": "good luck" } };
+     this.DoNotFinish(userId , challenge);
 
     // return await  this.memberController.readOne((userId))
   }
-  static async CheckingFristDay(userId: ObjectId, challenge: any) {
+  static async CheckingFristDay( userId: ObjectId, challenge: any) {
     for (let i = 0; i < challenge.cards.length; i++) {
       const card = challenge.cards[i];
       if (card.challengeDay !== 1) {
@@ -44,7 +44,7 @@ export class loveCard {
     return true;
   }
 
-  static async DoNotFinish(userId: ObjectId, challenge: any): Promise<any> {
+  static async DoNotFinish( userId: ObjectId, challenge: any): Promise<any> {
 let startDate = challenge.startDate
 // console.log(challenge.cards);
 const maxChallengeDay = Math.max(...challenge.cards.map((card: any) => card.challengeDay));
@@ -62,7 +62,7 @@ challenge.cards.forEach((card: any) =>{
   // console.log({card});
   // console.log({userId});
   
-  if(card.member  === userId && card.challengeDay === i){
+  if(String(card.member)  === String(userId) && card.challengeDay === i){
     console.log({card});
 
     num++
