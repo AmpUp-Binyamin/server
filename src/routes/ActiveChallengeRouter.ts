@@ -6,6 +6,7 @@ import { loveCard } from '../services/LoveCardService'
 import IActiveChallenge from '../interfaces/IActiveChallenge'
 import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToStartReq'
 import AddUserRequest from '../dto/user/AddUserRequest'
+import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes'
 import { verifyTokenCoach } from '../middleware/coachAuth'
 const router = Router()
 
@@ -29,15 +30,17 @@ router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
     }
 })
 
-// router.get('/status/:activeChallengeId', async (req: Request, res: Response) => {
-//     try {
-//         let startDeilyDeck = await ActiveChallegeService.getStartDailyDeck(req.params.activeChallengeId)
-//         res.send(startDeilyDeck)
-//     }
-//     catch (error) {
-//         res.status(400).send(error)
-//     }
-// })
+router.get('/status/:activeChallengeId', async (req: Request, res: Response) => {
+    try {
+        let userId = req.body.userId
+
+        let startDeilyDeck: GetStatusDoneCardsRes = await ActiveChallegeService.getStartDailyDeck(userId, req.params.activeChallengeId)
+        res.send(startDeilyDeck)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
 
 router.post('/', async (req: Request, res: Response) => {
     try {
@@ -53,7 +56,7 @@ router.post('/', async (req: Request, res: Response) => {
 
 router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     try {
-   
+
         let luck = await loveCard.getLove(req.params.challengeId)
         res.send(luck)
 
