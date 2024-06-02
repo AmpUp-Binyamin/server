@@ -9,6 +9,7 @@ router.get('/start/:challengeId', async (req:Request, res:Response) => {
         res.send(challenge)
     }
     catch(error){
+        console.log(error);
         res.status(400).send(error)
     }
 })
