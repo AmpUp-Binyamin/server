@@ -58,6 +58,8 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
         res.send(luck)
 
     } catch (error) {
+        console.log(error);
+
         res.status(400).send(error)
     }
 })

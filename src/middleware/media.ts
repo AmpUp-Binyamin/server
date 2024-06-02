@@ -23,11 +23,11 @@ const imageFilter = (req: Request, file: Express.Multer.File, callback: multer.F
     }
 };
 // Initialize multer with custom file filter
-export const uploadImage: Multer = multer({
+export const uploadImageFS: Multer = multer({
     storage: storage,
     fileFilter: imageFilter // Apply custom file filter
 });
 
-export const uploadAnyFile: Multer = multer({
+export const uploadAnyFileFS: Multer = multer({
     storage: storage,
 });

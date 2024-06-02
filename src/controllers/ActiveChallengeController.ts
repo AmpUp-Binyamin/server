@@ -1,4 +1,4 @@
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
@@ -29,29 +29,29 @@ export default class activeChallengeController implements IController<IActiveCha
         throw new Error('Method not implemented.');
     }
 
-    
+
 
     async readOneWithPopulate(id: string, populate: PopulateProps, select: string): Promise<IActiveChallenge | null> {
         const activeChallenge = ActiveChallengeModel.findById(id).select(select)
-        if(populate.participants){
+        if (populate.participants) {
             activeChallenge.populate({
                 path: 'participants',
                 select: populate.participants
-              })
+            })
         }
-        
-        if(populate.coach){
+
+        if (populate.coach) {
             activeChallenge.populate({
                 path: 'coach',
                 select: populate.coach
-              })
+            })
         }
 
-        if(populate.challenge){
+        if (populate.challenge) {
             activeChallenge.populate({
                 path: 'challenge',
                 select: populate.challenge
-              })
+            })
         }
         return await activeChallenge.exec()
     }
