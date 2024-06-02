@@ -94,6 +94,12 @@ export default class ActiveChallegeService {
         let activeChallenge = await this.controller.read({ challenge: challengeId })
         if (!activeChallenge[0]) throw { code: 400, msg: "Active challenge not found" };
 
+        // TODO: להחזיר את זה בפרודקשיין
+        // בדיקה אם כבר ענו על הקלף
+        // if (activeChallenge[0].cards.some(c => String(c.card) == card._id && c.member == answer.userId)) {
+        //     throw { code: 400, msg: "The card has already been answered" };
+        // }
+
         // יצירת הקלף להוספה לאתגר הפעיל
         const cardToAdd: IActiveCard = {
             member: answer.userId,
