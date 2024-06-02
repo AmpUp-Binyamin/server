@@ -3,12 +3,13 @@ import CoachService from "../services/CoachService";
 import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
 import { uploadImageFS } from "../middleware/media"
+import { verifyTokenCoach } from "../middleware/coachAuth";
 
 
 const router = Router()
 
 
-router.get('/:userId', async (req: Request, res: Response) => {
+router.get('/:userId', verifyTokenCoach,  async (req: Request, res: Response) => {
     try {
         let coach = await CoachService.getSingleCoach(req.params.userId)
         res.send(coach)
