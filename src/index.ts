@@ -47,4 +47,10 @@ app.use('/luck', LuckRouter)
 import MemberRouter from './routes/MemberRouter'
 app.use('/member', MemberRouter)
 
+import CoinsRouter from './routes/CoinsRouter'
+app.use('/coins', CoinsRouter)
+
+import tokenTemporary from './test/tokenTemporary';
+tokenTemporary.tokenHamudi().then(res=>console.log('token: \n \n',res,'\n'))
+
 app.listen(3030, () => console.log("Server is UP : 3030"))
