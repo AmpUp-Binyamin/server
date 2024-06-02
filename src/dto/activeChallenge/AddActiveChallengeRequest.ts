@@ -4,7 +4,7 @@ import IActiveChallenge, { IActiveCard } from "../../interfaces/IActiveChallenge
 export default class AddActiveChallengeRequest implements IActiveChallenge {
     coach: ObjectId;
     challenge: ObjectId;
-    invited: ObjectId[];
+    invited: string[];
     participants: ObjectId[];
     startDate: Date;
     cards: AddActiveCardRequest[]
@@ -12,7 +12,7 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
     constructor(
         coach: ObjectId,
         challenge: ObjectId,
-        invited: ObjectId[],
+        invited: string[],
         participants: ObjectId[],
         startDate: Date,
         cards: AddActiveCardRequest[]
