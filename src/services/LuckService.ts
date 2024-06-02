@@ -1,6 +1,8 @@
 import ChallengeController from "../controllers/ChallengeController";
 import LuckResponse from "../dto/luck/LuckResponse";
-import  {RandomNumberGenerator}  from "../helpers/luck";
+import { RandomNumberGenerator } from "../helpers/luck";
+import { ObjectId } from "mongoose";
+import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
 export class LuckHelper {
   static RandomGenerator = new RandomNumberGenerator()
   static shapes: string[] = ["a", "b", "c", "d", "e", "f"];
@@ -57,4 +59,6 @@ export default class LuckService {
     }
     return LuckHelper.getWin(chance.winProbability);
   }
+
+
 }
