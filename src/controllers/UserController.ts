@@ -22,3 +22,5 @@ export default class UserController implements IController<IUser> {
         throw new Error('Method not implemented.');
     }
 }
+
+

@@ -4,7 +4,7 @@ export default interface ICard {
     _id?: string;
     day: number;
     cardOrder: number;
-    cardType: 'question' | 'task' | 'media' | 'study'  | 'support' | 'share' | 'lottery';
+    cardType: 'question' | 'task' | 'media' | 'study' | 'support' | 'share' | 'lottery';
     subType?: 'multipleChoice' | 'url' | 'freeText' | 'upload' | 'multipleChoice+freeText';
     title: string;
     content: string;
@@ -14,4 +14,5 @@ export default interface ICard {
     drawProbability?: number; // אחוז הופעה (רק בקלף הגרלה)
     winProbability?: number; // אחוז זכייה (רק בקלף הגרלה)
     answers?: string[];
+    done?: boolean;
 }
