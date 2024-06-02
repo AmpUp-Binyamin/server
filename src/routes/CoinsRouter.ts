@@ -13,7 +13,7 @@ router.put('/add-coins', async (req: Request, res: Response) => {
         console.log(2);
     }
     catch (error) {
-        console.log({error});
+        console.log({ error });
         res.status(400).send(error)
     }
 })
