@@ -46,7 +46,12 @@ export default class ChallengeController implements IController<IChallenge> {
         await ChallengeModel.updateOne({_id:id}, data)
         return await this.readOne(id)
     }
-
+    async updateQuantity(challengeId:string,storeItemId:string,newQuantity: number): Promise<IChallenge | null>  {
+       let challenge =  await ChallengeModel.findOneAndUpdate(
+        { _id: challengeId, 'store._id': storeItemId },
+        { $set: { 'store.$.quantity': newQuantity } },);
+        return challenge
+    }
     async del(id: string): Promise<boolean> {
         await ChallengeModel.deleteOne({_id:id})
         return true

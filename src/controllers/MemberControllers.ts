@@ -4,6 +4,7 @@ import IMember from "../interfaces/IMember";
 import MemberModel from "../models/MemberModel";
 import INotifications from "../interfaces/INotifications";
 import NotificationModel from "../models/MemberModel";
+import { Document, ObjectId } from "mongoose"
 
 export default class MemberController implements IController<IMember> {
   async create(data: IMember): Promise<IMember> {
@@ -17,6 +18,10 @@ export default class MemberController implements IController<IMember> {
   }
   async readWithChallenge(id: string): Promise<IMember | null> {
     return await MemberModel.findById(id).populate("myChallenge");
+  }
+
+  async readOneProj(id: string, projection: string): Promise<IMember | null> {
+    return await MemberModel.findById(id, projection);
   }
   async readNotifications(
     memberId: string,
@@ -53,6 +58,15 @@ export default class MemberController implements IController<IMember> {
   async update(id: string, data: Partial<IMember>): Promise<IMember | null> {
     await MemberModel.updateOne({ _id: id }, data);
     return await this.readOne(id);
+  }
+  async save(data: IMember | null): Promise<void> {
+      await (data as Document)?.save();
+  }
+  async updateStoreItem(id: string, data: string): Promise<IMember | null> {
+    return await MemberModel.findByIdAndUpdate(id,{ $push: { myItems: data } } );
+  }
+  async updateCoins(id: string, data: number): Promise<IMember | null> {
+    return await MemberModel.findByIdAndUpdate(id, { coins:data}  );
   }
   async del(id: string): Promise<boolean> {
     throw new Error("Method not implemented.");
