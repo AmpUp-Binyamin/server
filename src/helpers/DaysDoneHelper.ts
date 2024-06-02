@@ -1,20 +1,27 @@
 import { ObjectId } from "mongoose";
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
+import CoinsService from "../services/CoinsService";
 
 export class DaysDoneHelper {
+    static CoinsService = new CoinsService()
 
-    checkPositiveStreak(DaysObject: Object, streakNumber: number) {
+    async checkPositiveStreak(DaysObject: Object, streakNumber: number, activeChallenge: IActiveChallenge) {
         let answeredDaysList = Object.keys(DaysObject)
+        let currentChallengeDay = await CoinsService.getCurrentChallengeDay(activeChallenge)
+
+        const mostRecentAnswerDay: number = Number(answeredDaysList.slice(-1)[0])
+
+        if (mostRecentAnswerDay !== (currentChallengeDay)) {
+            console.log(`Member did not answer today's challenge (Today:${currentChallengeDay}, last answered: ${mostRecentAnswerDay})`);
+            return "Invalid Check, member didn't answer today"
+        }
 
         if (answeredDaysList.length < streakNumber) {
             console.log(`Member does not have a streak of ${streakNumber} or more`);
             return `Member does not have a streak of ${streakNumber} or more`
         }
-        const mostRecentAnswerDay: number = Number(answeredDaysList.slice(-1)[0])
 
         let streakCounter = 1
-
-        console.log(mostRecentAnswerDay);
 
         // SAVE HOW MANY MEMBER HAS DONE IN EACH DAY AND THEN COMPARE IT TO THE NUMBERS IN THE CHALLENGE ITSELF
         for (let i = (mostRecentAnswerDay - 1); i > 0; i--) {
@@ -32,17 +39,22 @@ export class DaysDoneHelper {
         }
     }
 
-    checkNegativeStreakEnd(DaysObject: Object, streakNumber: number) {
+    async checkNegativeStreakEnd(DaysObject: Object, streakNumber: number, activeChallenge: IActiveChallenge) {
         //----------------------a flat array of the days the Member answered 
         //---------------------- example : [1,5,7,9] < the member answered(partialy or completely), days 1, 5 ,7, 9
         let daysList = Object.keys(DaysObject)
-        console.log(daysList);
+        let currentChallengeDay = await CoinsService.getCurrentChallengeDay(activeChallenge)
         let numberTypeDaysList = []
         for (let i = 0; i < daysList.length; i++) {
             numberTypeDaysList.push(parseInt(daysList[i]))
         }
         const mostRecentAnswerDay: number = numberTypeDaysList.slice(-1)[0]
-        console.log({ mostRecentAnswerDay });
+
+        if (mostRecentAnswerDay !== (currentChallengeDay)) {
+            console.log(`Member did not answer today's challenge (Today:${currentChallengeDay}, last answered: ${mostRecentAnswerDay})`);
+            return "Invalid Check, member didn't answer today"
+        }
+
 
         let i = numberTypeDaysList.length
         console.log(numberTypeDaysList[i - 1]);
@@ -50,11 +62,11 @@ export class DaysDoneHelper {
 
         if (numberTypeDaysList[i - 1] && numberTypeDaysList[i - 2]) {
             if (Math.abs(numberTypeDaysList[i - 1] - numberTypeDaysList[i - 2]) >= streakNumber) {
-                console.log();
+                console.log(`Member returned after ${streakNumber} days!`);
                 return `Member returned after ${streakNumber} days!`
             } else {
-                console.log("Member does not have a negative streak from today");
-                return "Member does not have a negative streak from today"
+                console.log("Member does not have a negative streak comeback from today");
+                return "Member does not have a negative streak comeback from today"
             }
         }
 
@@ -64,6 +76,7 @@ export class DaysDoneHelper {
 
 
     getDaysAndDaysToBeDoneObject<T extends Record<K, number>, K extends keyof T>(objectList: T[], pointerKey: K) {
+
         const newObjectList: { [key: number]: number } = {}
         objectList.forEach(object => {
             let key = object[pointerKey]
@@ -76,14 +89,38 @@ export class DaysDoneHelper {
                 }
             }
         })
-        console.log(newObjectList);
+        // console.log(newObjectList);
 
         return newObjectList
     }
 
+    async checkMembersIncompleteStreaks(memberDaysObject: { [key: string]: number },
+        challengeDailyCardsOjbect: { [key: string]: number },
+        streakNumber: number) {
+        console.log({ memberDaysObject });
+        console.log({ challengeDailyCardsOjbect });
+        let streakCounter = 0
+        const challengeDaysList = Object.keys(challengeDailyCardsOjbect).reverse()
+        for (const key of challengeDaysList) {
+            console.log(key, challengeDailyCardsOjbect[key]);
+            console.log(key, memberDaysObject[key]);
+            if (!memberDaysObject[key]) {
+                console.log(`member did not participate on day ${key}`);
+                return `member did not participate on day ${key}`
+            }
+            if (challengeDailyCardsOjbect[key] !== memberDaysObject[key]) {
+                streakCounter++
+            }
+            if (streakCounter === streakNumber) {
+                console.log(`member has a streak of ${streakNumber} incomplete answer days`);
+                return `member has a streak of ${streakNumber} incomplete answer days`
+            }
+        }
+    }
+
+
     getMemberCardsArray(memberId: ObjectId, activeChallenge: IActiveChallenge) {
         const memberIdStr = typeof memberId === 'string' ? memberId : memberId.toString()
-        console.log("Chosen Member Id", memberIdStr);
         //------------------------------------- the full list of all the member's cards in this particular challenge
         const memberAnsweredCards: IActiveCard[] = activeChallenge.cards.reduce((prev: IActiveCard[], current: IActiveCard) => {
             const currentMemberIdStr = current.member.toString()
@@ -96,3 +133,4 @@ export class DaysDoneHelper {
         return memberAnsweredCards
     }
 }
+
