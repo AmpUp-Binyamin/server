@@ -6,4 +6,5 @@ export default interface IMedia {
     fileName?: string;
     path?: string;
     content?: string;
+    size?: string;
 }

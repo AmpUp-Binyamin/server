@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import multer from "multer";
 import multerS3 from 'multer-s3';
 import Media from "../types/Media";
+import bytesize from "byte-size";
 
 dotenv.config();
 
@@ -37,7 +38,7 @@ export const upload = multer({
 
 })
 
-const saveFileUrlToBody = async (req: Request, res: Response, next: NextFunction) => {
+const saveImgUrlToBody = async (req: Request, res: Response, next: NextFunction) => {
 
     if (req.file) {
         if (req.file.mimetype.split('/')[0] !== 'image') {
@@ -61,6 +62,31 @@ const saveFileUrlToBody = async (req: Request, res: Response, next: NextFunction
     }
     next();
 };
+const saveMediaUrlToBody = async (req: Request, res: Response, next: NextFunction) => {
+
+    if (req.file) {
+        console.log(req.file);
+        const Key = (req.file as any).key; // The key property is now recognized
+        const command = new GetObjectCommand({
+            Bucket: bucket,
+            Key
+        });
+        try {
+            // Generate a pre-signed URL for the uploaded file
+            const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+
+            req.body.path = signedUrl;
+            req.body.type = req.file.mimetype.split('/')[0];
+            req.body.fileName = req.file.originalname;
+            req.body.size = bytesize(req.file.size).toString();
+
+        } catch (error) {
+            console.error("Error generating pre-signed URL:", error);
+            return next(error);
+        }
+    }
+    next();
+};
 
 
 
@@ -74,8 +100,9 @@ export function deleteFile(fileName: string): Promise<any> {
 }
 
 const uploadimg = upload.single('img');       
+export const uploadImgAndSaveUrl = [uploadimg, saveImgUrlToBody];
 
-
-export const uploadImgAndSaveUrl = [uploadimg, saveFileUrlToBody];
+const uploadmedia = upload.single('media')
+export const uploadMediaAndSaveUrl = [uploadmedia, saveMediaUrlToBody];
 
 //todo: add delete file function

@@ -17,6 +17,9 @@ const activeMediaSchema = new mongoose.Schema<IMedia>({
         type: String,
         required: true,
         unique: true
+    },
+    size: {
+        type: String,
     }
 })
 
