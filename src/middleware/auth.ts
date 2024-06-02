@@ -18,7 +18,8 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         if (!authHeader) {
             return res.status(401).send('Unauthorized');
         }
-
+        
+        
         const token = authHeader.replace("Bearer ", "");
         const decoded = jwt.verify(token, JWT_SECRET) as UserAuth;
 
@@ -26,7 +27,7 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
             userId: decoded.userId,
             userPermission: decoded.userPermission as Permission,
         }
-        console.log(user);
+        // console.log(user);
 
         req.body = { ...req.body, ...user };
 

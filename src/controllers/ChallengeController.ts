@@ -32,7 +32,7 @@ export default class ChallengeController implements IController<IChallenge> {
 
         if (populate.coach) {
             challenge.populate({
-                path: 'coach',
+                path: 'creator',
                 select: populate.coach
             })
         }
