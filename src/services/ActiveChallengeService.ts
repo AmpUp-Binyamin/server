@@ -39,19 +39,20 @@ export default class ActiveChallegeService {
 
         let challenge = await this.challengeController.readOneWithPopulate(id, {}, 'cards')
 
-
         const numCardsOfDay: number[] = []
 
         challenge?.cards.forEach(card => {
             (numCardsOfDay[card.day - 1] === undefined) ? numCardsOfDay[card.day - 1] = 1 : ++(numCardsOfDay[card.day - 1])
-            // {
-            // numCardsOfDay[card.day - 1] = 1
-            // } else {
-            //     numCardsOfDay[card.day - 1] = (numCardsOfDay[card.day - 1] + 1)
-            // }
         })
 
-        console.log("hhhh", numCardsOfDay);
+        let activeChallenge = (await this.controller.read({ challeng: id }))[0]
+
+        console.log(activeChallenge);
+
+
+        // let currentDay = Math.floor((Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24))
+
+
 
 
 
