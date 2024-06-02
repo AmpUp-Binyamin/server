@@ -1,10 +1,19 @@
+import AuthService from '../services/AuthService'
 import { Request, Response, Router } from 'express'
 const router = Router()
 
 router.all('/checkEmail', async (req: Request, res: Response) => {
     try {
-console.log(15);
-
+        let member = (await AuthService.checkEmail(req.body.email))
+        let myChallenge = member.myChallenge
+        let myActivChallenge: any = []
+        await Promise.all(myChallenge.map(async challengeId => {
+            let memberActivChaleng = await AuthService.checkActivChaleng(challengeId)
+            if (memberActivChaleng.length > 0) {
+                myActivChallenge.push({ memberActivChaleng })
+            }
+        }))
+        res.send(myActivChallenge)
     }
     catch (error) {
         res.status(400).send(error)

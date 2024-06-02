@@ -11,12 +11,9 @@ app.use(express.json())
 // ###### ONLY FOR FAKE DATA
 // import go from './mockData/aviad';
 // go()
-<<<<<<< HEAD
 import AuthRouter from './routes/AuthRouter'
 app.use('/auth', AuthRouter)
-=======
-// ##########################
->>>>>>> fa8bff3374c197991373cfba2f4befb2c96aa8e1
+
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth'
