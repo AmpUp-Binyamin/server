@@ -1,5 +1,5 @@
 import { S3Client, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
-import  { Request, Response, NextFunction } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
 import multer from "multer";
@@ -26,6 +26,7 @@ export const upload = multer({
         s3,
         bucket,
         contentType: multerS3.AUTO_CONTENT_TYPE,
+
         metadata: function (req: Express.Request, file: Express.Multer.File, cb: (error: any, metadata?: any) => void) {
             cb(null, { fieldName: file.fieldname });
         },
@@ -36,8 +37,14 @@ export const upload = multer({
 
 })
 
-const saveFileUrlToBodyc = async (req: Request, res: Response, next: NextFunction) => {
+const saveFileUrlToBody = async (req: Request, res: Response, next: NextFunction) => {
+
     if (req.file) {
+        if (req.file.mimetype.split('/')[0] !== 'image') {
+            // throw new Error('Invalid file type');
+            // return next(new Error('Invalid file type'));
+            return res.status(400).send(" error: Invalid file type");
+        }
         console.log(req.file);
         const Key = (req.file as any).key; // The key property is now recognized
         const command = new GetObjectCommand({
@@ -46,8 +53,9 @@ const saveFileUrlToBodyc = async (req: Request, res: Response, next: NextFunctio
         });
         try {
             // Generate a pre-signed URL for the uploaded file
-            const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 }); // Adjust the expiration time (in seconds) as needed
-            req.body.media = signedUrl;
+            const signedUrl = await getSignedUrl(s3, command, { expiresIn: 3600 });
+
+            req.body.img = signedUrl;
         } catch (error) {
             console.error("Error generating pre-signed URL:", error);
             return next(error);
@@ -56,17 +64,7 @@ const saveFileUrlToBodyc = async (req: Request, res: Response, next: NextFunctio
     next();
 };
 
-export async function getObjectSignedUrl(key: string): Promise<string> {
-    const params = {
-        Bucket: bucket,
-        Key: key
-    };
-    const command = new GetObjectCommand(params);
-    const seconds = 60;
-    const url = await getSignedUrl(s3, command, { expiresIn: seconds });
 
-    return url;
-}
 
 
 export function deleteFile(fileName: string): Promise<any> {
@@ -77,6 +75,9 @@ export function deleteFile(fileName: string): Promise<any> {
     return s3.send(new DeleteObjectCommand(deleteParams));
 }
 
-const uploadFiletest = upload.single('file');
+const uploadimg = upload.single('img');       
 
-export const uploadAndSaveUrl = [uploadFiletest, saveFileUrlToBodyc];
+
+export const uploadImgAndSaveUrl = [uploadimg, saveFileUrlToBody];
+
+//todo: add delete file function

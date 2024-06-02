@@ -4,7 +4,7 @@ import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
 import { uploadImageFS } from "../middleware/media"
 import { verifyTokenCoach } from "../middleware/coachAuth";
-
+import { uploadImgAndSaveUrl } from "../middleware/s3";
 
 const router = Router()
 
@@ -18,9 +18,8 @@ router.get('/:userId', verifyTokenCoach,  async (req: Request, res: Response) =>
     }
 })
 
-router.post('/', uploadImageFS.single("img"), async (req: Request, res: Response) => {
+router.post('/', uploadImgAndSaveUrl, async (req: Request, res: Response) => {
     try {
-        req.body.picture = req.file?.path
         let request = Mapper<CreateCoachRequest>(new CreateCoachRequest(), req.body)
         let coach = await CoachService.createNewCoach(request)
         res.send(coach)

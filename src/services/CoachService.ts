@@ -16,7 +16,7 @@ export default class CoachService {
             email: data.email,
             title: data.title,
             phoneNumber: data.phoneNumber,
-            picture: data.picture,
+            picture: data.img,
             link: data.link,
             myChallenges: data.myChallenges
         }

@@ -1,16 +1,16 @@
 import { Request, Response, Router } from 'express';
 import { uploadImageFS, uploadAnyFileFS, } from "../middleware/media"
-import {   uploadAndSaveUrl } from '../middleware/s3';
+import {   uploadImgAndSaveUrl } from '../middleware/s3';
 
 const router: Router = Router();
 
-router.post("/img", uploadAndSaveUrl, async (req: Request, res: Response) => {
+router.post("/img", uploadImgAndSaveUrl, async (req: Request, res: Response) => {
     try {
         console.log(req.body)
         res.send("Files uploaded successfully.");
     } catch (error) {
         console.log('Error:', error);
-        res.status(500).send(error);
+        res.status(666).send("error not found");
     }
 });
 
