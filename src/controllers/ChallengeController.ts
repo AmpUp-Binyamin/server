@@ -3,6 +3,7 @@ import IChallenge from "../interfaces/IChallenge";
 import IController from "../interfaces/IController";
 import ChallengeModel from "../models/ChallengeModel";
 import UserModel from "../models/UserModel";
+import ICard from "../interfaces/ICard";
 
 interface PopulateProps {
     member?: string
@@ -31,7 +32,7 @@ export default class ChallengeController implements IController<IChallenge> {
 
         if (populate.coach) {
             challenge.populate({
-                path: 'coach',
+                path: 'creator',
                 select: populate.coach
             })
         }
