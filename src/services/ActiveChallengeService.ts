@@ -15,6 +15,7 @@ import IMember from "../interfaces/IMember"
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge"
 import LuckService, { LuckHelper } from "./LuckService"
 import { DaysDoneHelper } from "../helpers/DaysDoneHelper"
+import ICard from "../interfaces/ICard"
 
 
 export default class ActiveChallegeService {
@@ -58,20 +59,25 @@ export default class ActiveChallegeService {
 
     static async loveCard(challengeId: string): Promise<any> {
 
-        let challenge = await this.controller.readOne(challengeId, 'participants')
-        if (!challenge) throw { code: 400, message: "go to hell!!!" };
-        let num = challenge.participants?.length
-        let user = challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+        let activeChallenge = await this.controller.readOne(challengeId, 'participants')
+        if (!activeChallenge) throw { code: 400, message: "go to hell!!!" };
+        let num = activeChallenge.participants?.length
+        let user = activeChallenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
 
 
         // const chosenMember = await this.memberController.readOne((user))
         //     let memberId = chosenMember?._id
-
-        let memberCards = this.DaysDoneHelper.getMemberCardsArray(user as unknown as ObjectId, challenge)
-        let daysDoneObject = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(memberCards, 'challengeDay')
-        let isInPositiveStreak = this.DaysDoneHelper.checkPositiveStreak(daysDoneObject, 5)
-        let isBackAfterNegativeStreak = this.DaysDoneHelper.checkNegativeStreakEnd(daysDoneObject, 5)
-
+        const challenge = await this.challengeController.readOne(activeChallenge.challenge.toString())
+        const challengeCards: ICard[] | undefined = challenge?.cards
+        if (!challengeCards) {
+            throw `challenge cards no found`
+        }
+        const memberCards = this.DaysDoneHelper.getMemberCardsArray(user as unknown as ObjectId, activeChallenge)
+        const daysDoneObject = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(memberCards, 'challengeDay')
+        const challengeDailyCardsObject = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(challengeCards, 'day')
+        const isInPositiveStreak = this.DaysDoneHelper.checkPositiveStreak(daysDoneObject, 5, activeChallenge)
+        const isBackAfterNegativeStreak = this.DaysDoneHelper.checkNegativeStreakEnd(daysDoneObject, 5, activeChallenge)
+        const isOnIncompleteAnswerStreak = this.DaysDoneHelper.checkMembersIncompleteStreaks(daysDoneObject, challengeDailyCardsObject, 5)
 
 
         return await this.memberController.readOne(String(user))
