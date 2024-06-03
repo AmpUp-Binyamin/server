@@ -5,11 +5,11 @@ import IChallenge from "./IChallenge"
 export default interface IMember extends Partial<Document> {
   fullName: string;
   email: string;
-  phone: number;
+  phone?: number;
   img?: string;
   motto?: string;
   link?: string;
-  linksToSocialNetwork: string[];
+  linksToSocialNetwork?: string[];
   myChallenge: ObjectId[] | IChallenge[]
   myItems?: ObjectId[];
   coins: number;

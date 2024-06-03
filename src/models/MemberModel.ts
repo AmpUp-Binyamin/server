@@ -40,7 +40,6 @@ const memberSchema = new mongoose.Schema<IMember>({
     },
     phone: {
         type: Number,
-        required: true
     },
     img: {
         type: String,

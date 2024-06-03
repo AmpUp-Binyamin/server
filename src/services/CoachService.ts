@@ -16,15 +16,15 @@ export default class CoachService {
             email: data.email,
             title: data.title,
             phoneNumber: data.phoneNumber,
-            picture: data.picture,
+            picture: data.img,
             link: data.link,
             myChallenges: data.myChallenges
         }
         return await this.controller.create(newCoach)
     }
 
-    static async updateCoach(id: string): Promise<ICoach | null> {
-        return await this.controller.readOne(id)
+    static async updateCoach(id: string, data: Partial<ICoach>): Promise<ICoach | null> {
+        return await this.controller.update(id, data)
     }
 
 }
