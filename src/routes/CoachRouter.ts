@@ -3,7 +3,7 @@ import CoachService from "../services/CoachService";
 import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
 import { verifyTokenCoach } from "../middleware/coachAuth";
-import { temImgUpload, validateAndUploadImg } from "../middleware/S3";
+import { tempImgUpload as tempImgUpload, validateAndUploadImg } from "../middleware/s3";
 
 const router = Router()
 
@@ -17,7 +17,7 @@ router.get('/:userId', verifyTokenCoach, async (req: Request, res: Response) => 
     }
 })
 
-router.post('/', temImgUpload, async (req: Request, res: Response) => {
+router.post('/', tempImgUpload, async (req: Request, res: Response) => {
     try {
         let request = Mapper<CreateCoachRequest>(new CreateCoachRequest(), req.body)
         let coach = await CoachService.createNewCoach(request)
