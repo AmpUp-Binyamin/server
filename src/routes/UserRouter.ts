@@ -14,6 +14,7 @@ router.get('/:userId', async (req: Request, res: Response) => {
         res.status(400).send(error)
     }
 })
+
 router.post('/', async (req: Request, res: Response) => {
     try {
         let request = Mapper<AddUserRequest>(new AddUserRequest(), req.body)
@@ -25,6 +26,5 @@ router.post('/', async (req: Request, res: Response) => {
         res.status(400).send(error)
     }
 })
-
 
 export default router;
