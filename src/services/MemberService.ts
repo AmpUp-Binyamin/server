@@ -1,3 +1,6 @@
+import { ObjectId } from "mongoose";
+import activeChallengeController from "../controllers/ActiveChallengeController";
+import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
 import AddMemberRequest from "../dto/member/AddMemberRequest";
 import UpdateMemberRequest from "../dto/member/UpdateMemberRequest";
@@ -23,6 +26,7 @@ const validation: ValidationRules = {
 export default class MemberService {
 
     static controller = new MemberController();
+    static activeChallengeController = new activeChallengeController()
     static async getsingelMember(id: string): Promise<IMember | null> {
         return await this.controller.readOne(id)
     }
@@ -51,11 +55,28 @@ export default class MemberService {
             link: data.link,
             linksToSocialNetwork: data.linkToSocialNetworks,
             myChallenge: data.myChallenge,
+            myInvites: [],
             coins: data.coins,
             notifications: data.notifications
         }
         console.log(newMember)
-        return await this.controller.create(newMember)
+
+        const createdMember = await this.controller.create(newMember)
+
+        await this.findNewMemberInvites(createdMember._id as ObjectId)
+        return createdMember
+    }
+
+    static async findNewMemberInvites(createdMemberId: ObjectId): Promise<void> {
+        const newMember = await this.controller.readOne(createdMemberId)
+        if (newMember) {
+            const foundChallengesId = await this.activeChallengeController.readSelect({ invited: newMember.email, }, '_id')
+            console.log(foundChallengesId);
+
+            this.controller.update(createdMemberId, {
+                myInvites: foundChallengesId
+            })
+        }
     }
 
 
@@ -75,7 +96,24 @@ export default class MemberService {
         return member
     }
 
+    static async joinActiveChallenge(memberId: string | ObjectId, activeChallengeId: string | ObjectId) {
+        //the active challenge ID should come from the "myInvites" of the member, in the client
+        const member = await this.controller.readOne(memberId)
+        const activeChallenge = await this.activeChallengeController.readSelect({ _id: activeChallengeId }, '-cards')
+        if (member && activeChallenge) {
+            const inviteExists = member.myInvites.find(invite => invite === activeChallengeId)
+            console.log(inviteExists);
 
+            //     if (inviteExists) {
+            //         const updatedInvites = member.myInvites.filter(invite => invite !== activeChallengeId)
+            //         const updatedChallenges = [...member.myChallenge, activeChallengeId]
+            //         await this.controller.update(memberId, {
+            //             myInvites: updatedInvites as ObjectId[],
+            //             myChallenge: updatedChallenges as ObjectId[],
+            //         })
+            // }
+        }
+    }
 }
 
 

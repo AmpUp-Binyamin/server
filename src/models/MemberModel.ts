@@ -9,7 +9,7 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         required: true
     },
     type: {
-        type: String, 
+        type: String,
         required: true,
         enum: ["join", "sent support", "sent message"]
     },
@@ -21,7 +21,7 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         type: String,
         required: true
     },
-    
+
     sender: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true
@@ -56,11 +56,14 @@ const memberSchema = new mongoose.Schema<IMember>({
     }],
     myChallenge: [{
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'challenge',
-        required: true
+        ref: 'activeChallenge',
     }],
-    myItems:[{
-        type: mongoose.SchemaTypes.ObjectId, 
+    myInvites: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'activeChallenge',
+    }],
+    myItems: [{
+        type: mongoose.SchemaTypes.ObjectId,
     }],
     coins: {
         type: Number,
