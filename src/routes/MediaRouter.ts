@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { temImgUpload, tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
+import { tempImgUpload , tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
 
 const router: Router = Router();
 
