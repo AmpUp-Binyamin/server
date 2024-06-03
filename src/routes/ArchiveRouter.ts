@@ -11,6 +11,20 @@ router.get('/pastChallenges', async (req: Request, res: Response) => {
         let memberChallenges = await ArchiveService.getMemberChallenges(userId)
         res.send(memberChallenges)
     } catch (error) {
+        console.log({ error });
+        res.status(400).send(error)
+    }
+})
+
+router.get('/:challengeId', async (req: Request, res: Response) => {
+    try {
+        let challenge = await ArchiveService.getChallenge(req.params.challengeId)
+        if (challenge) {
+            res.send(challenge)
+        }
+    } catch (error) {
+        console.log({ error });
+
         res.status(400).send(error)
     }
 })

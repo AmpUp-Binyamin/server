@@ -20,7 +20,7 @@ export default class MemberController implements IController<IMember> {
         return await MemberModel.findById(id)
             .populate({
                 path: 'myChallenge',
-                select: 'challengeName creator duration cards.title cards.day cards.image cards.cardType  cards._id',
+                // select: 'challengeName _id creator duration cards.title cards.day cards.image cards.cardType cards._id',
                 populate: [{ path: 'creator', select: 'fullName picture' }]
             }).lean()
     }

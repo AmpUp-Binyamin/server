@@ -26,6 +26,11 @@ export default class ArchiveService {
             return null;
         }
         let memberChallenges = member?.myChallenge as IChallenge[]
+        console.log("challengessssssssssss",memberChallenges);
+        
+        if (!memberChallenges.length) {
+            return null;
+        }
 
         let startDates: Array<IActiveChallenge | null> = await Promise.all(
             memberChallenges.map((ch) => {
@@ -37,7 +42,8 @@ export default class ArchiveService {
 
         let finel = memberChallenges.map((ch, index) => ({
             ...ch,
-            startDate: startDates[index]?.startDate,
+            challengeId: ch._id,
+            startDate: this.formatDate(startDates[index]?.startDate),
             endDate: this.calculateEndDate(startDates[index]?.startDate, ch.duration),
             cards: ch.cards
                 .map((card) => ({
@@ -64,6 +70,10 @@ export default class ArchiveService {
         return finel;
     }
 
+    static async getChallenge(challengeId: string): Promise<IChallenge | null> {
+        return await this.challengeController.readOne(challengeId);
+    }
+
     static async getCard(challengeId: string, cardId: string): Promise<CardResponse> {
         const challenge = await this.challengeController.readOne(challengeId);
         if (!challenge) {
@@ -82,7 +92,7 @@ export default class ArchiveService {
             throw (`Invalid card ID format: ${card._id}`);
         }
 
-        return new CardResponse(challenge.challengeName, card.title, card.media, cardObjectId);
+        return new CardResponse(challenge.challengeName, card.title, card.media, cardObjectId, card.content);
     }
 
 
@@ -113,5 +123,22 @@ export default class ArchiveService {
 
         return inputDate < today;
     }
+
+    private static formatDate(isoString: Date | undefined): string | null {
+        if (!isoString || isNaN(isoString.getTime())) {
+            console.error('Invalid ISO date:', isoString);
+            return null;
+        }
+
+        const date = new Date(isoString);
+
+        const year: number = date.getFullYear();
+        const month: string = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() returns 0-based month
+        const day: string = String(date.getDate()).padStart(2, '0');
+
+        return `${year}-${month}-${day}`;
+    }
+
+
 
 }
