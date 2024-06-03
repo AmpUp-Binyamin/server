@@ -7,7 +7,7 @@ import UserController from "../controllers/UserController";
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // טוקן זמני לעכשיו
-const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4e2", userPermission: "user" });
+export const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4e2", userPermission: "user" });
 
 // console.log("temporaryToken: ", temporaryToken);
 
@@ -37,3 +37,5 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         res.status(401).send("Unauthorized");
     }
 }
+export { createToken };
+

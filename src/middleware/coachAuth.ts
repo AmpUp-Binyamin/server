@@ -9,7 +9,7 @@ import CoachController from "../controllers/CoachController";
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // טוקן זמני לעכשיו
-const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4ea", userPermission: "coach" });
+const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4ec", userPermission: "coach" });
 console.log("*********COACH******** \n ",temporaryToken);
 
 const controller = new CoachController()

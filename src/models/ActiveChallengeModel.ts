@@ -62,9 +62,7 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
         required: true
     },
     invited: [{
-        type: SchemaTypes.ObjectId,
-        ref: 'member',
-        required: true,
+        type: String, //נכנסים עם email
     }],
 
     participants: [{

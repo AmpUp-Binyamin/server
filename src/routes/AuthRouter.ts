@@ -5,18 +5,11 @@ const router = Router()
 
 router.all('/checkEmail', async (req: Request, res: Response) => {
     try {
-        let member = (await AuthService.checkEmail(req.body.email))
-        let myChallenge = member.myChallenge
-        let myActivChallenge: any = []
-        await Promise.all(myChallenge.map(async challengeId => {
-            let memberActivChaleng = await AuthService.checkActivChaleng(challengeId as ObjectId)
-            if (memberActivChaleng.length > 0) {
-                myActivChallenge.push({ memberActivChaleng })
-            }
-        }))
+        let myActivChallenge = (await AuthService.checkEmail(req.body))
         res.send(myActivChallenge)
     }
     catch (error) {
+        console.log(error);
         res.status(400).send(error)
     }
 })
