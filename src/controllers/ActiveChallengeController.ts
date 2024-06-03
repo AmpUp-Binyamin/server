@@ -16,9 +16,8 @@ export default class activeChallengeController implements IController<IActiveCha
     async read(filter: FilterQuery<IActiveChallenge>): Promise<IActiveChallenge[]> {
         return await ActiveChallengeModel.find(filter)
     }
-    async readOne(id: string, populate?: string | undefined): Promise<IActiveChallenge | null> { //@ts-ignore
+    async readOne(id: string, populate?: string | undefined): Promise<IActiveChallenge | null> {
         return await ActiveChallengeModel.findById({ _id: id })
-        //.populate?(populate) //@ts-ignore
 
     } //@ts-ignore
     async update(id: string, data: UpdateQuery<IActiveChallenge>): Promise<IActiveChallenge | null> {
@@ -32,8 +31,8 @@ export default class activeChallengeController implements IController<IActiveCha
 
 
 
-    async readOneWithPopulate(id: string, populate: PopulateProps, select: string): Promise<IActiveChallenge | null> {
-        const activeChallenge = ActiveChallengeModel.findById(id).select(select)
+    async readOneWithPopulate(id: string, populate: PopulateProps, select?: string): Promise<IActiveChallenge | null | undefined> {
+        const activeChallenge = ActiveChallengeModel.findById(id).select(select as string)
         if (populate.participants) {
             activeChallenge.populate({
                 path: 'participants',
@@ -54,7 +53,7 @@ export default class activeChallengeController implements IController<IActiveCha
                 select: populate.challenge
             })
         }
-        return await activeChallenge.exec()
+        return (await activeChallenge.exec())?.toObject()
     }
 
 }

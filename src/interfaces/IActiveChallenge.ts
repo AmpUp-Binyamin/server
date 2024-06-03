@@ -5,10 +5,11 @@ import IMember from "./IMember"
 import IChallenge from "./IChallenge"
 import ICoach from "./ICoach"
 
+
 export default interface IActiveChallenge extends Partial<Document> {
-    coach: ObjectId | Partial<ICoach> | ICoach  ;
+    coach: ObjectId | Partial<ICoach> | ICoach;
     challenge: Partial<IChallenge> | IChallenge | ObjectId
-    invited: ObjectId[] | Partial<IMember>[] | IMember[]
+    invited: string[]
     participants: ObjectId[] | Partial<IMember>[] | IMember[]
     startDate: Date
     cards: IActiveCard[]

@@ -1,4 +1,5 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, Document } from "mongoose";
+import { ObjectId } from "mongodb";
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import IController from "../interfaces/IController";
 import IMember from "../interfaces/IMember";
@@ -31,11 +32,9 @@ export default class MemberController implements IController<IMember> {
         }
         return activeChallenge;
     }
-
     async del(id: string): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
-
     async readOneProj(id: string, projection: string): Promise<IMember | null> {
         return await MemberModel.findById(id, projection);
     }
@@ -75,8 +74,6 @@ export default class MemberController implements IController<IMember> {
         await MemberModel.updateOne({ _id: id }, data);
         return await this.readOne(id);
     }
-
-
     async updateStoreItem(id: string, data: string): Promise<IMember | null> {
         return await MemberModel.findByIdAndUpdate(id, { $push: { myItems: data } });
     }
@@ -90,7 +87,6 @@ export default class MemberController implements IController<IMember> {
         // TODO - fix that!!!
         await (data as Document)?.save();
     }
-
 }
 
 

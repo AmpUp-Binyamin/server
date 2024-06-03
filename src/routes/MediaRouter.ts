@@ -1,39 +1,66 @@
 import { Request, Response, Router } from 'express';
-import { Mapper } from '../helpers/Mapper';
-import { uploadImage, uploadAnyFile, } from "../middleware/media"
+import { temImgUpload, tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
 
 const router: Router = Router();
 
-router.post("/", uploadAnyFile.any(), (req: Request, res: Response) => {
+router.post("/img", temImgUpload, async (req: Request, res: Response) => {
     try {
-        let files = req.files as Express.Multer.File[];
-        console.log(files[0].mimetype);
+        if (req.file) {
+            let url = await validateAndUploadImg(req.file)
+            console.log(url)
+
+        }
         res.send("Files uploaded successfully.");
     } catch (error) {
         console.log('Error:', error);
-        res.status(500).send("An error occurred during file upload.");
+        res.status(666).send("error not found");
     }
 });
-router.post("/img", uploadImage.any(), (req: Request, res: Response) => {
+router.post("/media", tempMediaUpload, async (req: Request, res: Response) => {
     try {
-        let files = req.files as Express.Multer.File[];
-        console.log(files[0].mimetype);
+        if (req.file) {
+            let media = await validateAndUploadMedia(req.file)
+            console.log(media)
+        }
         res.send("Files uploaded successfully.");
     } catch (error) {
         console.log('Error:', error);
-        res.status(500).send("An error occurred during file upload.");
+        res.status(666).send("error not found");
     }
 });
 
+// router.post("/", uploadAnyFileFS.any(), (req: Request, res: Response) => {
+//     try {
+//         let files = req.files as Express.Multer.File[];
+//         console.log(files[0].mimetype);
+//         res.send("Files uploaded successfully.");
+//     } catch (error) {
+//         console.log('Error:', error);
+//         res.status(500).send("An error occurred during file upload.");
+//     }
+// });
 
 
-router.get("/", (req: Request, res: Response) => {
-    try {
-        res.send("yep");
-    } catch (error) {
-        console.log(error);
-    }
-});
+// router.post("/img", uploadImageFS.any(), (req: Request, res: Response) => {
+//     try {
+//         let files = req.files as Express.Multer.File[];
+//         console.log(files[0].mimetype);
+//         res.send("Files uploaded successfully.");
+//     } catch (error) {
+//         console.log('Error:', error);
+//         res.status(500).send("An error occurred during file upload.");
+//     }
+// });
+
+
+
+// router.get("/", (req: Request, res: Response) => {
+//     try {
+//         res.send("yep");
+//     } catch (error) {
+//         console.log(error);
+//     }
+// });
 
 
 
