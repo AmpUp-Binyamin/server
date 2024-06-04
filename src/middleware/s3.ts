@@ -63,7 +63,7 @@ export function deleteFile(fileName: string): Promise<any> {
     return s3.send(new DeleteObjectCommand(deleteParams));
 }
 
-export const temImgUpload = multerUpload.single('img');
+export const tempImgUpload = multerUpload.single('img');
 
 export const tempMediaUpload = multerUpload.single('media')
 

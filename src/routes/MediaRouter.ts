@@ -1,14 +1,13 @@
 import { Request, Response, Router } from 'express';
-import { temImgUpload, tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
+import { tempImgUpload , tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
 
 const router: Router = Router();
 
-router.post("/img", temImgUpload, async (req: Request, res: Response) => {
+router.post("/img", tempImgUpload, async (req: Request, res: Response) => {
     try {
         if (req.file) {
             let url = await validateAndUploadImg(req.file)
             console.log(url)
-
         }
         res.send("Files uploaded successfully.");
     } catch (error) {
