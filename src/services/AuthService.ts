@@ -20,17 +20,12 @@ export default class AuthService {
             await Promise.all(myChallenge.map(async challengeId => {
                 let memberActivChaleng = await AuthService.checkActivChaleng(challengeId as ObjectId)
                 if (memberActivChaleng.length > 0) {
-                    myActivChallenge.push( memberActivChaleng[0] )
+                    myActivChallenge.push(memberActivChaleng[0])
                 }
             }))
         }
 
         let invited = await AuthService.findInvitedActivChaleng(email)
-<<<<<<< HEAD
-
-
-=======
->>>>>>> 3a3160d0a74c3b1d2f9737ff9bbf55cee473c84c
         if (invited.length > 0) {
             console.log({ invited: invited });
             if (!member) {
@@ -47,14 +42,8 @@ export default class AuthService {
         }
 
         member = (await this.MemberController.read({ email }))[0]
-<<<<<<< HEAD
         if (member == undefined) { throw ({ status: 407, msg: "mamber not exist" }) }
-        console.log({ member: member });
         const token = createToken({ userId: member.id, userPermission: "user" })
-=======
-       if (member == undefined) {throw({status:407,msg:"mamber not exist"})}
-        const token = createToken( {userId:member.id ,userPermission: "user"})
->>>>>>> 3a3160d0a74c3b1d2f9737ff9bbf55cee473c84c
         return ({ myActivChallenge, member, token })
     }
 
