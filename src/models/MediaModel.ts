@@ -17,6 +17,9 @@ const mediaSchema = new mongoose.Schema<IMedia>({
         unique: true,
         required: true
     },
+    size: {
+        type: String,
+    }
 })
 
 export default mongoose.model<IMedia>('Media', mediaSchema)

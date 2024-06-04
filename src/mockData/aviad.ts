@@ -10,13 +10,13 @@ export default async function go() {
 
     console.log("###########  START  #########");
 
-    const cardTypes = ['question', 'challenge', 'media', 'study', 'support', 'share'] as const;
+    const cardTypes = ['question', 'task', 'media', 'study', 'support', 'share'] as const;
     const cardData = {
         question: {
             title: 'Daily Fitness Question',
             content: 'What motivates you to stay fit?'
         },
-        challenge: {
+        task: {
             title: 'Daily Fitness Challenge',
             content: 'Complete 30 minutes of cardio exercise.'
         },
@@ -68,7 +68,7 @@ export default async function go() {
     const member = new ObjectId('6656df1b8437151db0cce4e4');
     const answers = {
         question: 'Staying healthy and active motivates me.',
-        challenge: 'Completed the 30 minutes of cardio.',
+        task: 'Completed the 30 minutes of cardio.',
         media: 'Watched the video on push-up form.',
         study: 'Read the article on exercise benefits.',
         support: 'Shared my progress and received encouragement.',

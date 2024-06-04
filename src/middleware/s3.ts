@@ -1,25 +1,18 @@
-import { S3Client, PutObjectCommand, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, PutObjectCommandOutput } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
 import multer from "multer";
-import crypto from 'crypto';
+import bytesize from "byte-size";
 import IMedia from "../interfaces/IMedia";
-import Media from "../types/Media";
-
-const storage = multer.memoryStorage()
-export const upload = multer({ storage: storage })
-
-const generateFileNamePrefex = (bytes = 3) => crypto.randomBytes(bytes).toString('hex')
-
 
 dotenv.config();
 
-const bucketName: string = process.env.AWS_BUCKET_NAME!;
+const bucket: string = process.env.AWS_BUCKET_NAME!;
 const region: string = process.env.AWS_BUCKET_REGION!;
 const accessKeyId: string = process.env.AWS_ACCESS_KEY!;
 const secretAccessKey: string = process.env.AWS_SECRET_ACCESS_KEY!;
 
-const s3Client = new S3Client({
+const s3 = new S3Client({
     region,
     credentials: {
         accessKeyId,
@@ -27,63 +20,79 @@ const s3Client = new S3Client({
     }
 });
 
-export async function uploadFileToAWS(fileBuffer: Buffer, fileName: string, mimetype: string): Promise<any> {
+const multerUpload = multer({
+    storage: multer.memoryStorage(), limits: {
+        fileSize: 1024 * 1024 * 1024 // 1GB
+    }
+})
+
+export function uploadFileToAWS(fileBuffer: Buffer, fileName: string, mimetype: string) {
     const uploadParams = {
-        Bucket: bucketName,
+        Bucket: bucket,
         Body: fileBuffer,
         Key: fileName,
         ContentType: mimetype
-    };
+    }
 
-    return s3Client.send(new PutObjectCommand(uploadParams));
+    return s3.send(new PutObjectCommand(uploadParams));
 }
+
+const getImgUrl = async (Key: string): Promise<string | void> => {
+
+    if (Key) {
+        const command = new GetObjectCommand({
+            Bucket: bucket,
+            Key
+        });
+        try {
+            const signedUrl: string = await getSignedUrl(s3, command);
+            return signedUrl;
+        } catch (error: any) {
+            console.error("Error generating pre-signed URL:", error);
+            return (error);
+        }
+    }
+};
 
 
 export function deleteFile(fileName: string): Promise<any> {
     const deleteParams = {
-        Bucket: bucketName,
+        Bucket: bucket,
         Key: fileName,
     };
-    return s3Client.send(new DeleteObjectCommand(deleteParams));
+    return s3.send(new DeleteObjectCommand(deleteParams));
 }
 
+export const tempImgUpload = multerUpload.single('img');
 
-export async function getObjectSignedUrl(key: string): Promise<string> {
-    const params = {
-        Bucket: bucketName,
-        Key: key
-    };
+export const tempMediaUpload = multerUpload.single('media')
 
-    const command = new GetObjectCommand(params);
-    const seconds = 60;
-    const url = await getSignedUrl(s3Client, command, { expiresIn: seconds });
-
-    return url;
-}
-
-
-
-
-export async function uploadImage(imageData: Express.Multer.File): Promise<string | void> {
+export async function validateAndUploadImg(imageData: Express.Multer.File): Promise<void | string> {
     if (!imageData) return;
-    if (!imageData.mimetype.startsWith('image') || !imageData.buffer) { throw new Error('File is not an image') };
     const { buffer, mimetype } = imageData;
-    const imageNamePrefex = generateFileNamePrefex();
-    const imageName = `${imageNamePrefex}_${imageData.originalname}`;
-    // const height = 1080, width = 1920
-    // const fileBuffer = await sharp(buffer).resize( height, width ).toBuffer();
+    if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type')
+    const imageName = Date.now() + "_" + imageData.originalname
     await uploadFileToAWS(buffer, imageName, mimetype);
-    return await getObjectSignedUrl(imageName);
+    return await getImgUrl(imageName)
+}
+export async function validateAndUploadMedia(mediaData: Express.Multer.File): Promise<void | IMedia> {
+    if (!mediaData) return;
+    const { buffer, mimetype, size } = mediaData;
+    const imageName = Date.now() + "_" + mediaData.originalname
+    await uploadFileToAWS(buffer, imageName, mimetype);
+    try {
+        let path = await getImgUrl(imageName)
+        if (!path) return;
+        let media: IMedia = {
+            type: mimetype.split('/')[0], // "image", "video", "audio", "document", "other"
+            fileName: imageName,
+            path,
+            size: bytesize(size).toString()
+        }
+        return media;
+    } catch (error) {
+        console.log(error);
+    }
+
 }
 
-export async function uploadFile(fileData: Express.Multer.File, fileType: null | Media = null): Promise<string | void> {
-    if (!fileData || !fileData.buffer ) return;
-    if (fileType){
-        if (fileType !== fileData.mimetype.split('/')[0] ) throw new Error('incorrect file type')
-    }
-    const { buffer, mimetype } = fileData;
-    const FileNamePrefex = generateFileNamePrefex();
-    const fileName = `${FileNamePrefex}_${fileData.originalname}`;
-    await uploadFileToAWS(buffer, fileName, mimetype);
-    return await getObjectSignedUrl(fileName);
-}
