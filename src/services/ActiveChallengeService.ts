@@ -40,6 +40,7 @@ export default class ActiveChallegeService {
                 "startDate participants"
             );
         if (!activeChallenge) return null;
+
         if (!("_id" in activeChallenge.challenge)) return null;
         const duration = (activeChallenge.challenge as IChallenge)
             .duration as number;
@@ -122,7 +123,7 @@ export default class ActiveChallegeService {
         let num = challenge.participants.length;
         let user =
             challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
-console.log({user});
+        console.log({ user });
 
         return await this.memberController.readOne(String(user));
     }
@@ -141,7 +142,7 @@ console.log({user});
         // מציאת האתגר בדטאבייס
         // מציאת האתגר הפעיל
         let activeChallenge = await this.controller.readOne(activeChallengeId);
-        if (!activeChallenge)throw { code: 400, msg: "Active challenge not found" };
+        if (!activeChallenge) throw { code: 400, msg: "Active challenge not found" };
         let challenge = await this.challengeController.readOne(String(activeChallenge.challenge))
         if (!challenge) throw { code: 400, msg: "challenge not found" };
 
