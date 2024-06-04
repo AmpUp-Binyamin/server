@@ -10,7 +10,7 @@ export default interface IChallenge extends Partial<Document> {
     tags: string[];
     isPublic: boolean;
     isTemplate: boolean;
-    creator?: ObjectId; 
+    creator?: ObjectId | string; 
     store: IStoreItem[];
     cards: ICard[];
 }
