@@ -160,7 +160,7 @@ export default class ActiveChallegeService {
             challengeDay: card.day,
             coins: card.coins,
             answerValue: answer.value,
-            answerMedia: [], //TODO: handle files
+            answerMedia: [answer.media],
         };
 
         console.log("value: ", answer.value);

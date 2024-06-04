@@ -8,6 +8,7 @@ import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToSta
 import AddUserRequest from '../dto/user/AddUserRequest'
 import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes'
 import { verifyTokenCoach } from '../middleware/coachAuth'
+import { tempMediaUpload, validateAndUploadMedia } from '../middleware/s3'
 const router = Router()
 
 router.get('/:activeChallengeId', verifyTokenCoach, async (req: Request, res: Response) => {
@@ -68,11 +69,12 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
 })
 
 // תשובה על קלף ספציפי
-router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) => {
+router.post('/:challengeId/card/:cardId', tempMediaUpload, async (req: Request, res: Response) => {
     try {
         let challengeId = req.params.challengeId;
         let cardId = req.params.cardId;
-        // await ActiveChallegeService.handleCardAnswer(challengeId, cardId, req.body);
+        req.body.media = await validateAndUploadMedia(req.file, req.body.userId)
+        await ActiveChallegeService.handleCardAnswer(challengeId, cardId, req.body);
         res.send('sucsses');
     }
     catch (error) {
