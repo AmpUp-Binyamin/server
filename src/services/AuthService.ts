@@ -12,7 +12,6 @@ export default class AuthService {
         let email = body.email
 
         let member = (await this.MemberController.read({ email }))[0]
-        console.log({ member: member });
         let myActivChallenge: any = []
         if (member) {
             if (!member.fullName) { await this.MemberController.update(member.id, { fullName }) }
@@ -27,8 +26,6 @@ export default class AuthService {
         }
 
         let invited = await AuthService.findInvitedActivChaleng(email)
-        
-        
         if (invited.length > 0) {
             console.log({invited:invited});
             if (!member) {
@@ -46,10 +43,10 @@ export default class AuthService {
 
         member = (await this.MemberController.read({ email }))[0]
        if (member == undefined) {throw({status:407,msg:"mamber not exist"})}
-        console.log({ member: member });
         const token = createToken( {userId:member.id ,userPermission: "user"})
         return ({ myActivChallenge, member, token })
     }
+
     static activeChallengeController = new activeChallengeController();
 
     static async checkActivChaleng(challenge: ObjectId) {
