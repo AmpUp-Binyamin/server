@@ -61,13 +61,17 @@ export default class ActiveChallegeService {
     static async getStartDailyDeck(userId: ObjectId, id: string) {
 
 
-        const activeChallenge: IActiveChallenge | null | undefined = await this.controller.readOneWithPopulate(id, { challenge: '_id cards', coach: 'fullName picture title' })
+        const activeChallenge: IActiveChallenge | null | undefined = await this.controller.readOneWithPopulate(id, { challenge: '_id cards duration challengeName', coach: 'fullName picture title' })
         if (!activeChallenge) throw ''
 
         const challenge = activeChallenge.challenge as Partial<IChallenge>
         if (!challenge.cards) throw ''
         const coach: Partial<ICoach> = activeChallenge.coach as Partial<ICoach>
         let cards: ICard[] = challenge.cards as ICard[]
+        const totalDays: number = challenge.duration as number
+        const challengeName: string = challenge.challengeName as string
+
+
 
         const numCardsOfDay: number[] = []
         const completedDays: number[] = []
@@ -84,15 +88,12 @@ export default class ActiveChallegeService {
         })
         let currentDay = Math.floor((Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24))
         const currentCards: ICard[] = cards.filter(card => card.day == currentDay)
-        console.log('currentCards', currentCards.length);
-
         const cardsStatus: ICard[] = currentCards.map(card => {
             const done: IActiveCard | undefined = memberCards.find(c => String(c.card) == card._id)
             return ({ ...card, done: Boolean(done) })
         })
-        console.log('cardsStatus', cardsStatus.length);
 
-        return new GetStatusDoneCardsRes(cardsStatus, completedDays, coach)
+        return new GetStatusDoneCardsRes(cardsStatus, totalDays, completedDays, coach, challengeName)
     }
 
     // static async getStartDailyDeck(id: string): Promise<>
