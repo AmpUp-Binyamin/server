@@ -1,5 +1,5 @@
 import { FilterQuery, Document } from "mongoose";
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongoose";
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import IController from "../interfaces/IController";
 import IMember from "../interfaces/IMember";
@@ -16,7 +16,7 @@ export default class MemberController implements IController<IMember> {
     async read(filter: FilterQuery<IMember>): Promise<IMember[]> {
         return await MemberModel.find(filter)
     }
-    async readOne(id: string): Promise<IMember | null> {
+    async readOne(id: string | ObjectId): Promise<IMember | null> {
         return await MemberModel.findById(id)
     }
     async readWithChallenge(id: string): Promise<IMember | null> {
@@ -72,7 +72,7 @@ export default class MemberController implements IController<IMember> {
             $pull: { notifications: { _id: notificationId } },
         });
     }
-    async update(id: string, data: Partial<IMember>): Promise<IMember | null> {
+    async update(id: string | ObjectId, data: Partial<IMember>): Promise<IMember | null> {
         await MemberModel.updateOne({ _id: id }, data);
         return await this.readOne(id);
     }

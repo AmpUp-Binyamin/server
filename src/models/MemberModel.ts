@@ -79,9 +79,18 @@ const memberSchema = new mongoose.Schema<IMember>({
     myChallenge: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'challenge',
-        required: true
     }],
-    myItems: [memberItem],
+    myActiveChallenge: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'activeChallenge',
+    }],
+    myInvites: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'activeChallenge',
+    }],
+    myItems: [{
+        type: mongoose.SchemaTypes.ObjectId,
+    }],
     coins: {
         type: Number,
         required: true,

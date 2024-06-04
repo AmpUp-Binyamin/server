@@ -1,3 +1,6 @@
+import { ObjectId } from "mongoose";
+import activeChallengeController from "../controllers/ActiveChallengeController";
+import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
 import AddMemberRequest from "../dto/member/AddMemberRequest";
 import UpdateMemberRequest from "../dto/member/UpdateMemberRequest";
@@ -24,6 +27,7 @@ const validation: ValidationRules = {
 export default class MemberService {
 
     static controller = new MemberController();
+    static activeChallengeController = new activeChallengeController()
     static async getsingelMember(id: string): Promise<IMember | null> {
         // {member , token, myActivChallenges}
         return await this.controller.readOne(id)
@@ -53,11 +57,29 @@ export default class MemberService {
             link: data.link,
             linksToSocialNetwork: data.linkToSocialNetworks,
             myChallenge: data.myChallenge,
+            myActiveChallenge: [],
+            myInvites: [],
             coins: data.coins,
             notifications: data.notifications
         }
         console.log(newMember)
-        return await this.controller.create(newMember)
+
+        const createdMember = await this.controller.create(newMember)
+
+        await this.findNewMemberInvites(createdMember._id as ObjectId)
+        return createdMember
+    }
+
+    static async findNewMemberInvites(createdMemberId: string | ObjectId): Promise<void> {
+        const newMember = await this.controller.readOne(createdMemberId)
+        if (newMember) {
+            const foundChallengesId = await this.activeChallengeController.readSelect({ invited: newMember.email, }, '_id')
+            console.log(foundChallengesId);
+
+            this.controller.update(createdMemberId, {
+                myInvites: foundChallengesId
+            })
+        }
     }
 
 

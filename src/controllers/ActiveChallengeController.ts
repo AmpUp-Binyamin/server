@@ -2,6 +2,7 @@ import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
+import { ObjectId } from 'mongoose';
 
 interface PopulateProps {
     participants?: string
@@ -16,7 +17,11 @@ export default class activeChallengeController implements IController<IActiveCha
     async read(filter: FilterQuery<IActiveChallenge>): Promise<IActiveChallenge[]> {
         return await ActiveChallengeModel.find(filter)
     }
-    async readOne(id: string, populate?: string | undefined): Promise<IActiveChallenge | null> {
+
+    async readSelect(filter: FilterQuery<IActiveChallenge>, keyToReturn: keyof IActiveChallenge | string): Promise<ObjectId[] | IActiveChallenge[]> {
+        return await ActiveChallengeModel.find(filter).select(keyToReturn)
+    }
+    async readOne(id: string | ObjectId, populate?: string | undefined): Promise<IActiveChallenge | null> {
         return await ActiveChallengeModel.findById({ _id: id })
 
     } //@ts-ignore
