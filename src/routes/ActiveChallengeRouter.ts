@@ -8,6 +8,7 @@ import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToSta
 import AddUserRequest from '../dto/user/AddUserRequest'
 import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes'
 import { verifyTokenCoach } from '../middleware/coachAuth'
+import { tempMediaUpload, validateAndUploadMedia } from '../middleware/s3'
 const router = Router()
 
 router.get('/:activeChallengeId', verifyTokenCoach, async (req: Request, res: Response) => {

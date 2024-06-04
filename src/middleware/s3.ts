@@ -36,7 +36,7 @@ export function uploadFileToAWS(fileBuffer: Buffer, fileName: string, mimetype: 
     return s3.send(new PutObjectCommand(uploadParams));
 }
 
-const getImgUrl = async (Key: string): Promise<string | void> => {
+const getFileUrl = async (Key: string): Promise<string | void> => {
 
     if (Key) {
         const command = new GetObjectCommand({
@@ -84,20 +84,20 @@ export async function validateAndUploadImg(imageData: Express.Multer.File, userI
     if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type');
     const imageName = `${userId}_${Date.now().toString()}_${imageData.originalname}`;
     await uploadFileToAWS(buffer, imageName, mimetype);
-    return await getImgUrl(imageName);
+    return await getFileUrl(imageName);
 }
 
-export async function validateAndUploadMedia(mediaData: Express.Multer.File, userId: string): Promise<void | IMedia> {
+export async function validateAndUploadMedia(mediaData: Express.Multer.File | undefined, userId: string): Promise<void | IMedia> {
     if (!mediaData) return;
     const { buffer, mimetype, size } = mediaData;
-    const imageName = `${userId}_${Date.now().toString()}_${mediaData.originalname}`;
-    await uploadFileToAWS(buffer, imageName, mimetype);
+    const fileName = `${userId}_${Date.now().toString()}_${mediaData.originalname}`;
+    await uploadFileToAWS(buffer, fileName, mimetype);
     try {
-        let path = await getImgUrl(imageName);
+        let path = await getFileUrl(fileName);
         if (!path) return;
         let media: IMedia = {
             type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
-            fileName: imageName,
+            fileName: fileName,
             path,
             size,
         };
