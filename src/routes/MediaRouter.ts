@@ -12,7 +12,13 @@ router.post("/img", tempImgUpload, verifyToken, async (req: Request, res: Respon
         if (req.file) {
             let url = await validateAndUploadImg(req.file, userId)
             console.log(url)
+            if (url) {
+                const fileName = url.split('/').pop()?.split('?')[0];
+                console.log({ fileName });
+
+            }
         }
+
         res.send("Files uploaded successfully.");
     } catch (error) {
         console.log('Error:', error);
@@ -34,11 +40,13 @@ router.post("/media", tempMediaUpload, async (req: Request, res: Response) => {
     }
 });
 
-router.delete("/:fileName", async (req: Request, res: Response) => {
-    const { fileName } = req.params;
+router.delete("/img", async (req: Request, res: Response) => {
+    console.log("req.body: ", req.body);
+    const fileUrl  = req.body.fileUrl;
+    console.log("fileUrl: ", fileUrl);
     try {
-        await valadateAndDeleteMedia(fileName, req.body);
-        res.send(`File ${fileName} deleted successfully.`);
+        await valadateAndDeleteMedia(req.body);
+        res.send(`File ${fileUrl} deleted successfully.`);
     } catch (error) {
         console.log('Error:', error);
         res.status(500).send("Error deleting file.");

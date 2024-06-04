@@ -2,7 +2,6 @@ import { S3Client, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, PutO
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
 import multer from "multer";
-import bytesize from "byte-size";
 import IMedia from "../interfaces/IMedia";
 
 dotenv.config();
@@ -54,9 +53,11 @@ const getImgUrl = async (Key: string): Promise<string | void> => {
     }
 };
 
-export function valadateAndDeleteMedia(fileName: string, user: any): string | undefined | Promise<any> {
-    if (!fileName || !user) return;
-    const { userId, userPermission } = user
+export function valadateAndDeleteMedia(request: any): string | Promise<any> {
+    if (!request) return "file not found";
+    const { userId, userPermission, fileUrl } = request
+    const fileName = fileUrl.split('/').pop()?.split('?')[0];
+    if (!fileName) return "file not found";
     const fileOwnerId = fileName.split('_')[0];
     if (userId !== fileOwnerId && userPermission !== 'admin') {
         return "You do not have permission to delete this file."
@@ -98,7 +99,7 @@ export async function validateAndUploadMedia(mediaData: Express.Multer.File, use
             type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
             fileName: imageName,
             path,
-            size: bytesize(size).toString()
+            size,
         };
         return media;
     } catch (error) {
