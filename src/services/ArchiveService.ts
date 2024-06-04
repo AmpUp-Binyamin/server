@@ -26,7 +26,6 @@ export default class ArchiveService {
             return null;
         }
         let memberChallenges = member?.myChallenge as IChallenge[]
-        console.log("challengessssssssssss",memberChallenges);
         
         if (!memberChallenges.length) {
             return null;
