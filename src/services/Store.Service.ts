@@ -3,6 +3,7 @@ import MemberController from "../controllers/MemberControllers";
 import IChallenge from "../interfaces/IChallenge";
 import IMember from "../interfaces/IMember";
 import IStoreItem from "../interfaces/IStoreItem";
+import { IMyCoins } from "../models/MemberModel";
 import MemberService from "../services/MemberService";
 
 export default class StoreService {
@@ -25,39 +26,28 @@ export default class StoreService {
     memberId: string,
     challengeId: string,
     storeItemId: string
-  ): Promise<IMember | IChallenge | null> {
+  ): Promise<IChallenge | null> {
+
     const memberController = new MemberController();
     const challengeController = new ChallengeController();
     // try{
-    let member = await memberController.readOne(memberId);
-    console.log("member befor:", member);
-    let memberCoins = member?.coins;
-    console.log('memberCoins', memberCoins);
-
+    let m = await memberController.readOne(memberId);
+    if (!m) return null;
+    const member: IMember = m?.toObject?.() as IMember
+    let memberCoinsObj: IMyCoins | undefined = member?.myCoins.find(obj => obj.challengeId == challengeId);
+    let memberCoins: number | undefined = memberCoinsObj?.coins
     let challenge: IChallenge | null = await challengeController.readOne(challengeId);
-    console.log('1');
+
     let price = challenge?.store.find((c) => c._id == storeItemId)?.coins;
-    console.log('2', price);
     let quantity = challenge?.store.find((c) => c._id == storeItemId)?.quantity;
-    console.log('3', quantity);
 
     if (memberCoins && price && challenge) {
       if (memberCoins > price) {
-        //             // todo - update - myitems in member
+        const coinsUpdate = member?.myCoins?.map?.(c => c.challengeId === challengeId ? { ...c, coins: c.coins - price } : c) || []
         let newStoreItem = await MemberService.addNewStoreItem(memberId, { cardId: storeItemId, challengeId: challengeId });
-        // member = await memberController.readOne(memberId);
-        console.log('newStoreItem', newStoreItem);
-
-        let newCoineSum = await MemberService.updateMemberCoins(memberId, memberCoins - price);
-        console.log('newCoineSum', newCoineSum);
-
+        let newCoineSum = await MemberService.updateMemberCoins(memberId, coinsUpdate);
         let newQuantity = await challengeController.updateQuantity(challengeId, storeItemId, quantity ? quantity - 1 : 0)
-        console.log('newQuantity', newQuantity);
-
-        let updatedChallenge = await challengeController.readOne(challengeId);
-        console.log("challenge after:", updatedChallenge)
-        // console.log("member after:", member);
-        return updatedChallenge;
+        return await challengeController.readOne(challengeId);
       }
     } return null
   }

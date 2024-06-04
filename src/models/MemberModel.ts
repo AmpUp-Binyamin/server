@@ -1,8 +1,24 @@
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 import IMember from '../interfaces/IMember'
 import INotifications from '../interfaces/INotifications'
 import IStoreItem from '../interfaces/IStoreItem'
 import IMemberItem from '../interfaces/IMemberItem'
+
+export interface IMyCoins {
+    challengeId: ObjectId | string
+    coins: number
+}
+
+const myCoinsSchema = new mongoose.Schema<IMyCoins>({
+    challengeId: {
+        type: String,
+        required: true
+    },
+    coins: {
+        type: Number,
+        default: 0
+    }
+})
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
     challenge: {
@@ -32,7 +48,6 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
 const memberItem = new mongoose.Schema<IMemberItem>({
     cardId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: '???',
         required: true
     },
     challengeId: {
@@ -87,6 +102,7 @@ const memberSchema = new mongoose.Schema<IMember>({
         required: true,
         default: 0
     },
+    myCoins: [myCoinsSchema],
     notifications: [notificationsSchema]
 })
 
