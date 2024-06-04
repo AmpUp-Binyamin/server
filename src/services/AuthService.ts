@@ -21,7 +21,7 @@ export default class AuthService {
             await Promise.all(myChallenge.map(async challengeId => {
                 let memberActivChaleng = await AuthService.checkActivChaleng(challengeId as ObjectId)
                 if (memberActivChaleng.length > 0) {
-                    myActivChallenge.push({ memberActivChaleng })
+                    myActivChallenge.push( memberActivChaleng[0] )
                 }
             }))
         }
