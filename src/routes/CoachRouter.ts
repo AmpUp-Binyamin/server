@@ -25,7 +25,7 @@ router.post('/', tempImgUpload, async (req: Request, res: Response) => {
         let request = Mapper<CreateCoachRequest>(new CreateCoachRequest(), req.body)
         let coach = await CoachService.createNewCoach(request)
         if (req.file) {
-            let url = await validateAndUploadImg(req.file)
+            let url = await validateAndUploadImg(req.file, coach?._id as string)
             if (url)  coach = await CoachService.updateCoach(coach?._id as string, { picture: url })
         }
         res.send(coach)
