@@ -6,7 +6,9 @@ export default class UserService {
     static controller = new UserController()
 
     static async getSingleUser(id: string): Promise<IUser | null> {
-        return await this.controller.readOne(id)
+        let user = await this.controller.readOne(id);
+        if (!user) throw { code: 400, message: "User not found" }
+        return user;
     }
     static async createNewUser(data : AddUserRequest): Promise<IUser | null> {
         let newUser : IUser = {

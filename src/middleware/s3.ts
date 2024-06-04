@@ -54,8 +54,18 @@ const getImgUrl = async (Key: string): Promise<string | void> => {
     }
 };
 
+export function valadateAndDeleteMedia(fileName: string, user: any): string | undefined | Promise<any> {
+    if (!fileName || !user) return;
+    const { userId, userPermission } = user
+    const fileOwnerId = fileName.split('_')[0];
+    if (userId !== fileOwnerId && userPermission !== 'admin') {
+        return "You do not have permission to delete this file."
+    }
+    return deleteFile(fileName);
+}
 
-export function deleteFile(fileName: string): Promise<any> {
+
+function deleteFile(fileName: string): Promise<any> {
     const deleteParams = {
         Bucket: bucket,
         Key: fileName,
@@ -67,32 +77,31 @@ export const tempImgUpload = multerUpload.single('img');
 
 export const tempMediaUpload = multerUpload.single('media')
 
-export async function validateAndUploadImg(imageData: Express.Multer.File): Promise<void | string> {
+export async function validateAndUploadImg(imageData: Express.Multer.File, userId: string): Promise<void | string> {
     if (!imageData) return;
     const { buffer, mimetype } = imageData;
-    if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type')
-    const imageName = Date.now() + "_" + imageData.originalname
+    if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type');
+    const imageName = `${userId}_${Date.now().toString()}_${imageData.originalname}`;
     await uploadFileToAWS(buffer, imageName, mimetype);
-    return await getImgUrl(imageName)
+    return await getImgUrl(imageName);
 }
-export async function validateAndUploadMedia(mediaData: Express.Multer.File): Promise<void | IMedia> {
+
+export async function validateAndUploadMedia(mediaData: Express.Multer.File, userId: string): Promise<void | IMedia> {
     if (!mediaData) return;
     const { buffer, mimetype, size } = mediaData;
-    const imageName = Date.now() + "_" + mediaData.originalname
+    const imageName = `${userId}_${Date.now().toString()}_${mediaData.originalname}`;
     await uploadFileToAWS(buffer, imageName, mimetype);
     try {
-        let path = await getImgUrl(imageName)
+        let path = await getImgUrl(imageName);
         if (!path) return;
         let media: IMedia = {
-            type: mimetype.split('/')[0], // "image", "video", "audio", "document", "other"
+            type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
             fileName: imageName,
             path,
             size: bytesize(size).toString()
-        }
+        };
         return media;
     } catch (error) {
         console.log(error);
     }
-
 }
-
