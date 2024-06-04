@@ -8,6 +8,7 @@ import GetActiveChallToStartReq from '../dto/activeChallenge/GetActiveChallToSta
 import AddUserRequest from '../dto/user/AddUserRequest'
 import GetStatusDoneCardsRes from '../dto/activeChallenge/GetStatusDoneCardsRes'
 import { verifyTokenCoach } from '../middleware/coachAuth'
+import { tempMediaUpload, validateAndUploadMedia } from '../middleware/s3'
 const router = Router()
 
 router.get('/:activeChallengeId', verifyTokenCoach, async (req: Request, res: Response) => {
@@ -60,6 +61,7 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     try {
 
         let luck = await loveCard.getLove(req.params.challengeId)
+        console.log({luck})
         res.send(luck)
 
     } catch (error) {
@@ -70,11 +72,11 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
 })
 
 // תשובה על קלף ספציפי
-router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) => {
+router.post('/:activeChallengeId/card/:cardId', async (req: Request, res: Response) => {
     try {
-        let challengeId = req.params.challengeId;
+        let activeChallengeId = req.params.activeChallengeId;
         let cardId = req.params.cardId;
-        // await ActiveChallegeService.handleCardAnswer(challengeId, cardId, req.body);
+        await ActiveChallegeService.handleCardAnswer(activeChallengeId, cardId, req.body);
         res.send('sucsses');
     }
     catch (error) {

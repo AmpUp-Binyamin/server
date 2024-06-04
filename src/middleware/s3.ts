@@ -2,7 +2,6 @@ import { S3Client, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, PutO
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
 import multer from "multer";
-import bytesize from "byte-size";
 import IMedia from "../interfaces/IMedia";
 
 dotenv.config();
@@ -37,7 +36,7 @@ export function uploadFileToAWS(fileBuffer: Buffer, fileName: string, mimetype: 
     return s3.send(new PutObjectCommand(uploadParams));
 }
 
-const getImgUrl = async (Key: string): Promise<string | void> => {
+const getFileUrl = async (Key: string): Promise<string | void> => {
 
     if (Key) {
         const command = new GetObjectCommand({
@@ -54,8 +53,20 @@ const getImgUrl = async (Key: string): Promise<string | void> => {
     }
 };
 
+export function valadateAndDeleteMedia(request: any): string | Promise<any> {
+    if (!request) return "file not found";
+    const { userId, userPermission, fileUrl } = request
+    const fileName = fileUrl.split('/').pop()?.split('?')[0];
+    if (!fileName) return "file not found";
+    const fileOwnerId = fileName.split('_')[0];
+    if (userId !== fileOwnerId && userPermission !== 'admin') {
+        return "You do not have permission to delete this file."
+    }
+    return deleteFile(fileName);
+}
 
-export function deleteFile(fileName: string): Promise<any> {
+
+function deleteFile(fileName: string): Promise<any> {
     const deleteParams = {
         Bucket: bucket,
         Key: fileName,
@@ -67,32 +78,31 @@ export const tempImgUpload = multerUpload.single('img');
 
 export const tempMediaUpload = multerUpload.single('media')
 
-export async function validateAndUploadImg(imageData: Express.Multer.File): Promise<void | string> {
+export async function validateAndUploadImg(imageData: Express.Multer.File, userId: string): Promise<void | string> {
     if (!imageData) return;
     const { buffer, mimetype } = imageData;
-    if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type')
-    const imageName = Date.now() + "_" + imageData.originalname
+    if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type');
+    const imageName = `${userId}_${Date.now().toString()}_${imageData.originalname}`;
     await uploadFileToAWS(buffer, imageName, mimetype);
-    return await getImgUrl(imageName)
+    return await getFileUrl(imageName);
 }
-export async function validateAndUploadMedia(mediaData: Express.Multer.File): Promise<void | IMedia> {
+
+export async function validateAndUploadMedia(mediaData: Express.Multer.File | undefined, userId: string): Promise<void | IMedia> {
     if (!mediaData) return;
     const { buffer, mimetype, size } = mediaData;
-    const imageName = Date.now() + "_" + mediaData.originalname
-    await uploadFileToAWS(buffer, imageName, mimetype);
+    const fileName = `${userId}_${Date.now().toString()}_${mediaData.originalname}`;
+    await uploadFileToAWS(buffer, fileName, mimetype);
     try {
-        let path = await getImgUrl(imageName)
+        let path = await getFileUrl(fileName);
         if (!path) return;
         let media: IMedia = {
-            type: mimetype.split('/')[0], // "image", "video", "audio", "document", "other"
-            fileName: imageName,
+            type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
+            fileName: fileName,
             path,
-            size: bytesize(size).toString()
-        }
+            size,
+        };
         return media;
     } catch (error) {
         console.log(error);
     }
-
 }
-

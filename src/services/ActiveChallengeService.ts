@@ -61,13 +61,17 @@ export default class ActiveChallegeService {
     static async getStartDailyDeck(userId: ObjectId, id: string) {
 
 
-        const activeChallenge: IActiveChallenge | null | undefined = await this.controller.readOneWithPopulate(id, { challenge: '_id cards', coach: 'fullName picture title' })
+        const activeChallenge: IActiveChallenge | null | undefined = await this.controller.readOneWithPopulate(id, { challenge: '_id cards duration challengeName', coach: 'fullName picture title' })
         if (!activeChallenge) throw ''
 
         const challenge = activeChallenge.challenge as Partial<IChallenge>
         if (!challenge.cards) throw ''
         const coach: Partial<ICoach> = activeChallenge.coach as Partial<ICoach>
         let cards: ICard[] = challenge.cards as ICard[]
+        const totalDays: number = challenge.duration as number
+        const challengeName: string = challenge.challengeName as string
+
+
 
         const numCardsOfDay: number[] = []
         const completedDays: number[] = []
@@ -84,16 +88,15 @@ export default class ActiveChallegeService {
         })
         let currentDay = Math.floor((Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24))
         const currentCards: ICard[] = cards.filter(card => card.day == currentDay)
-        console.log('currentCards', currentCards.length);
-
         const cardsStatus: ICard[] = currentCards.map(card => {
             const done: IActiveCard | undefined = memberCards.find(c => String(c.card) == card._id)
             return ({ ...card, done: Boolean(done) })
         })
-        console.log('cardsStatus', cardsStatus.length);
 
-        return new GetStatusDoneCardsRes(cardsStatus, completedDays, coach)
+        return new GetStatusDoneCardsRes(cardsStatus, totalDays, completedDays, coach, challengeName)
     }
+
+    // static async getStartDailyDeck(id: string): Promise<>
 
     static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
         if (!data.challenge) {
@@ -119,36 +122,34 @@ export default class ActiveChallegeService {
         let num = challenge.participants.length;
         let user =
             challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+console.log({user});
 
         return await this.memberController.readOne(String(user));
     }
 
     static async handleCardAnswer(
-        challengeId: string,
+        activeChallengeId: string,
         cardId: string,
         answer: any
     ): Promise<IActiveCard> {
-        console.log({ challengeId, cardId, answer });
-        if (!challengeId || !cardId) throw { code: 400, msg: "missing data" };
-        if (!isValidObjectId(challengeId))
+        if (!activeChallengeId || !cardId) throw { code: 400, msg: "missing data" };
+        if (!isValidObjectId(activeChallengeId))
             throw { code: 400, msg: "challengeId is not ObjectId" };
         if (!isValidObjectId(cardId))
             throw { code: 400, msg: "cardId is not ObjectId" };
 
         // מציאת האתגר בדטאבייס
-        let challenge = await this.challengeController.readOne(challengeId);
+        // מציאת האתגר הפעיל
+        let activeChallenge = await this.controller.readOne(activeChallengeId);
+        if (!activeChallenge)throw { code: 400, msg: "Active challenge not found" };
+        let challenge = await this.challengeController.readOne(String(activeChallenge.challenge))
         if (!challenge) throw { code: 400, msg: "challenge not found" };
 
         // מציאת הכרטיס
         let card = challenge.cards.find((card) => card._id == cardId);
         if (!card) throw { code: 400, msg: "card not found" };
 
-        // מציאת האתגר הפעיל
-        let activeChallenge = await this.controller.read({
-            challenge: challengeId,
-        });
-        if (!activeChallenge[0])
-            throw { code: 400, msg: "Active challenge not found" };
+
 
         // יצירת הקלף להוספה לאתגר הפעיל
         const cardToAdd: IActiveCard = {
@@ -157,12 +158,12 @@ export default class ActiveChallegeService {
             challengeDay: card.day,
             coins: card.coins,
             answerValue: answer.value,
-            answerMedia: [], //TODO: handle files
+            answerMedia: [answer.media],
         };
 
         console.log("value: ", answer.value);
         // הוספת הקלף החדש לאתגר הפעיל
-        await this.controller.update(activeChallenge[0]._id as string, {
+        await this.controller.update(activeChallenge._id as string, {
             $push: { cards: cardToAdd },
         });
         return cardToAdd;
