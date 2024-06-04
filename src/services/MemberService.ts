@@ -2,6 +2,7 @@ import MemberController from "../controllers/MemberControllers";
 import AddMemberRequest from "../dto/member/AddMemberRequest";
 import UpdateMemberRequest from "../dto/member/UpdateMemberRequest";
 import IMember from "../interfaces/IMember";
+import IMemberItem from "../interfaces/IMemberItem";
 
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const regexPhone = /^[1-9]\d{1,14}$/;
@@ -24,6 +25,7 @@ export default class MemberService {
 
     static controller = new MemberController();
     static async getsingelMember(id: string): Promise<IMember | null> {
+        // {member , token, myActivChallenges}
         return await this.controller.readOne(id)
     }
 
@@ -31,8 +33,8 @@ export default class MemberService {
         return await this.controller.readWithChallenge(id)
     }
 
-    static async addNewStoreItem(memberId: string, storeItemId: string): Promise<IMember | null> {
-        return await this.controller.updateStoreItem(memberId, storeItemId)
+    static async addNewStoreItem(memberId: string, storeItem: IMemberItem): Promise<IMember | null> {
+        return await this.controller.updateStoreItem(memberId, storeItem)
     }
     static async updateMemberCoins(memberId: string, newCoins: number): Promise<IMember | null> {
         return await this.controller.updateCoins(memberId, newCoins)

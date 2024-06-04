@@ -1,6 +1,7 @@
 import { Document, ObjectId } from "mongoose"
 import INotifications from "./INotifications"
 import IChallenge from "./IChallenge"
+import IMemberItem from "./IMemberItem";
 
 export default interface IMember extends Partial<Document> {
   fullName: string;
@@ -11,7 +12,7 @@ export default interface IMember extends Partial<Document> {
   link?: string;
   linksToSocialNetwork?: string[];
   myChallenge: ObjectId[] | IChallenge[]
-  myItems?: ObjectId[];
+  myItems?: IMemberItem[];
   coins: number;
   notifications: INotifications[];
 }

@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import IMember from '../interfaces/IMember'
 import INotifications from '../interfaces/INotifications'
 import IStoreItem from '../interfaces/IStoreItem'
+import IMemberItem from '../interfaces/IMemberItem'
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
     challenge: {
@@ -9,7 +10,7 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         required: true
     },
     type: {
-        type: String, 
+        type: String,
         required: true,
         enum: ["join", "sent support", "sent message"]
     },
@@ -21,12 +22,33 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         type: String,
         required: true
     },
-    
+
     sender: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
 })
+
+const memberItem = new mongoose.Schema<IMemberItem>({
+    cardId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: '???',
+        required: true
+    },
+    challengeId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'challenge',
+        required: true
+    },
+    isActive: {
+        type: Boolean,
+        default: false
+    },
+    activeDate: {
+        type: Date
+    }
+})
+
 
 const memberSchema = new mongoose.Schema<IMember>({
     fullName: {
@@ -59,9 +81,7 @@ const memberSchema = new mongoose.Schema<IMember>({
         ref: 'challenge',
         required: true
     }],
-    myItems:[{
-        type: mongoose.SchemaTypes.ObjectId, 
-    }],
+    myItems: [memberItem],
     coins: {
         type: Number,
         required: true,

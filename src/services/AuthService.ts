@@ -1,7 +1,7 @@
 import MemberController from "../controllers/MemberControllers";
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import { ObjectId } from "mongoose";
-import { createToken}  from "../middleware/auth"
+import { createToken } from "../middleware/auth"
 import { Code } from "mongodb";
 
 export default class AuthService {
@@ -27,10 +27,10 @@ export default class AuthService {
         }
 
         let invited = await AuthService.findInvitedActivChaleng(email)
-        
-        
+
+
         if (invited.length > 0) {
-            console.log({invited:invited});
+            console.log({ invited: invited });
             if (!member) {
                 await this.MemberController.create({
                     email: email,
@@ -45,9 +45,9 @@ export default class AuthService {
         }
 
         member = (await this.MemberController.read({ email }))[0]
-       if (member == undefined) {throw({status:407,msg:"mamber not exist"})}
+        if (member == undefined) { throw ({ status: 407, msg: "mamber not exist" }) }
         console.log({ member: member });
-        const token = createToken( {userId:member.id ,userPermission: "user"})
+        const token = createToken({ userId: member.id, userPermission: "user" })
         return ({ myActivChallenge, member, token })
     }
     static activeChallengeController = new activeChallengeController();

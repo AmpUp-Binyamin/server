@@ -32,34 +32,34 @@ export default class StoreService {
     let member = await memberController.readOne(memberId);
     console.log("member befor:", member);
     let memberCoins = member?.coins;
-console.log('memberCoins',memberCoins);
+    console.log('memberCoins', memberCoins);
 
-    let challenge = await challengeController.readOne(challengeId);
+    let challenge: IChallenge | null = await challengeController.readOne(challengeId);
     console.log('1');
-        let price = challenge?.store.find((c) => c._id == storeItemId)?.coins;
-        console.log('2', price);
-       let quantity = challenge?.store.find((c) => c._id == storeItemId)?.quantity;
-console.log('3', quantity);
+    let price = challenge?.store.find((c) => c._id == storeItemId)?.coins;
+    console.log('2', price);
+    let quantity = challenge?.store.find((c) => c._id == storeItemId)?.quantity;
+    console.log('3', quantity);
 
-    if (memberCoins && price) {
+    if (memberCoins && price && challenge) {
       if (memberCoins > price) {
         //             // todo - update - myitems in member
-       let newStoreItem= await MemberService.addNewStoreItem(memberId, storeItemId);
+        let newStoreItem = await MemberService.addNewStoreItem(memberId, { cardId: storeItemId, challengeId: challengeId });
         // member = await memberController.readOne(memberId);
-        console.log('newStoreItem',newStoreItem);
-        
-       let newCoineSum = await MemberService.updateMemberCoins(memberId, memberCoins - price);
-        console.log('newCoineSum',newCoineSum);
-        
-       let newQuantity= await challengeController.updateQuantity(challengeId,storeItemId,quantity?quantity-1:0)
-       console.log('newQuantity',newQuantity);
-       
+        console.log('newStoreItem', newStoreItem);
+
+        let newCoineSum = await MemberService.updateMemberCoins(memberId, memberCoins - price);
+        console.log('newCoineSum', newCoineSum);
+
+        let newQuantity = await challengeController.updateQuantity(challengeId, storeItemId, quantity ? quantity - 1 : 0)
+        console.log('newQuantity', newQuantity);
+
         let updatedChallenge = await challengeController.readOne(challengeId);
-        console.log("challenge after:",updatedChallenge )
+        console.log("challenge after:", updatedChallenge)
         // console.log("member after:", member);
         return updatedChallenge;
       }
-    }return null
+    } return null
   }
 }
 

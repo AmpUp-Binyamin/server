@@ -6,6 +6,8 @@ import IMember from "../interfaces/IMember";
 import INotifications from "../interfaces/INotifications";
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
 import { default as MemberModel, default as NotificationModel } from "../models/MemberModel";
+import IStoreItem from "../interfaces/IStoreItem";
+import IMemberItem from "../interfaces/IMemberItem";
 
 export default class MemberController implements IController<IMember> {
     async create(data: IMember): Promise<IMember> {
@@ -74,7 +76,7 @@ export default class MemberController implements IController<IMember> {
         await MemberModel.updateOne({ _id: id }, data);
         return await this.readOne(id);
     }
-    async updateStoreItem(id: string, data: string): Promise<IMember | null> {
+    async updateStoreItem(id: string, data: IMemberItem): Promise<IMember | null> {
         return await MemberModel.findByIdAndUpdate(id, { $push: { myItems: data } });
     }
     async updateCoins(id: string, data: number): Promise<IMember | null> {
