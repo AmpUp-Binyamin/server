@@ -13,6 +13,8 @@ const router = Router()
 router.get('/:activeChallengeId', verifyTokenCoach, async (req: Request, res: Response) => {
     try {
         let activeChallenge = await ActiveChallegeService.getSingleActiveChallenge(req.params.userId)
+        console.log("hi");
+
         res.send(activeChallenge)
     }
     catch (error) {
@@ -22,8 +24,8 @@ router.get('/:activeChallengeId', verifyTokenCoach, async (req: Request, res: Re
 
 router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
     try {
-        // let activeChallenge: GetActiveChallToStartReq | null = await ActiveChallegeService.getActiveChallengeToStartScreen(req.params.activeChallengeId)
-        // res.send(activeChallenge)
+        let activeChallenge: GetActiveChallToStartReq | null = await ActiveChallegeService.getActiveChallengeToStartScreen(req.params.activeChallengeId)
+        res.send(activeChallenge)
     }
     catch (error) {
         res.status(400).send(error)
@@ -76,6 +78,19 @@ router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) =>
         res.send('sucsses');
     }
     catch (error) {
+        console.log(error);
+        res.status(400).send(error)
+    }
+})
+
+router.post('/join/:challengeId', async (req: Request, res: Response) => {
+    try {
+        let userId = req.body.userId
+        // let userId = '665c8b2bd125fccc69966357'
+        let activeChallengeId = req.params.challengeId
+        const result = await ActiveChallegeService.joinActiveChallenge(userId, activeChallengeId)
+        res.send(result)
+    } catch (error) {
         console.log(error);
         res.status(400).send(error)
     }

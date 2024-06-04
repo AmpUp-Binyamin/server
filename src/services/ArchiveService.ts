@@ -20,12 +20,12 @@ export default class ArchiveService {
 
 
 
-    static async getMemberChallenges(id: string): Promise<IActiveChallenge[] | null> {
+    static async getMemberChallenges(id: string): Promise<IChallenge[] | null> {
         let member = await this.memberController.readWithChallenge(id)
         if (!member) {
             return null;
         }
-        let memberChallenges = member?.myChallenge as IActiveChallenge[]
+        let memberChallenges = member?.myChallenge as IChallenge[]
 
         let startDates: Array<IActiveChallenge | null> = await Promise.all(
             memberChallenges.map((ch) => {

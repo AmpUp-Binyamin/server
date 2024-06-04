@@ -11,7 +11,8 @@ export default interface IMember extends Partial<Document> {
   motto?: string;
   link?: string;
   linksToSocialNetwork?: string[];
-  myChallenge: ObjectId[] | IActiveChallenge[]; //NEEDS TO BE ACTIVE CHALLENGE
+  myChallenge: ObjectId[] | IChallenge[]; //NEEDS TO BE ACTIVE CHALLENGE
+  myActiveChallenge: ObjectId[] | IActiveChallenge[]
   myInvites: ObjectId[] | IActiveChallenge[];//NEEDS TO BE ACTIVE CHALLENGE
   myItems?: ObjectId[];
   coins: number;

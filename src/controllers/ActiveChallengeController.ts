@@ -18,7 +18,7 @@ export default class activeChallengeController implements IController<IActiveCha
         return await ActiveChallengeModel.find(filter)
     }
 
-    async readSelect(filter: FilterQuery<IActiveChallenge>, keyToReturn: keyof IActiveChallenge | string): Promise<ObjectId[]> {
+    async readSelect(filter: FilterQuery<IActiveChallenge>, keyToReturn: keyof IActiveChallenge | string): Promise<ObjectId[] | IActiveChallenge[]> {
         return await ActiveChallengeModel.find(filter).select(keyToReturn)
     }
     async readOne(id: string | ObjectId, populate?: string | undefined): Promise<IActiveChallenge | null> {

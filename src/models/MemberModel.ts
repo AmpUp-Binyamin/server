@@ -56,6 +56,10 @@ const memberSchema = new mongoose.Schema<IMember>({
     }],
     myChallenge: [{
         type: mongoose.SchemaTypes.ObjectId,
+        ref: 'challenge',
+    }],
+    myActiveChallenge: [{
+        type: mongoose.SchemaTypes.ObjectId,
         ref: 'activeChallenge',
     }],
     myInvites: [{
