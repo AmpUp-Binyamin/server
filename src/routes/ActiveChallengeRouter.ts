@@ -58,6 +58,7 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     try {
 
         let luck = await loveCard.getLove(req.params.challengeId)
+        console.log({luck})
         res.send(luck)
 
     } catch (error) {

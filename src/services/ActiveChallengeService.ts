@@ -119,6 +119,7 @@ export default class ActiveChallegeService {
         let num = challenge.participants.length;
         let user =
             challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+console.log({user});
 
         return await this.memberController.readOne(String(user));
     }
