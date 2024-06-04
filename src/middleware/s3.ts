@@ -2,7 +2,6 @@ import { S3Client, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, PutO
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
 import multer from "multer";
-import bytesize from "byte-size";
 import IMedia from "../interfaces/IMedia";
 
 dotenv.config();
@@ -44,8 +43,9 @@ const getImgUrl = async (Key: string): Promise<string | void> => {
             Bucket: bucket,
             Key
         });
+        const week: number  = 604800;
         try {
-            const signedUrl: string = await getSignedUrl(s3, command);
+            const signedUrl: string = await getSignedUrl(s3, command, { expiresIn: week });
             return signedUrl;
         } catch (error: any) {
             console.error("Error generating pre-signed URL:", error);
@@ -87,7 +87,7 @@ export async function validateAndUploadMedia(mediaData: Express.Multer.File): Pr
             type: mimetype.split('/')[0], // "image", "video", "audio", "document", "other"
             fileName: imageName,
             path,
-            size: bytesize(size).toString()
+            size
         }
         return media;
     } catch (error) {
