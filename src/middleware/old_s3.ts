@@ -105,4 +105,3 @@
 // const uploadmedia = upload.single('media')
 // export const uploadMediaAndSaveUrl = [uploadmedia, saveMediaUrlToBody];
 
-// //todo: add delete file function
