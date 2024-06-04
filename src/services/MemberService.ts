@@ -6,6 +6,7 @@ import AddMemberRequest from "../dto/member/AddMemberRequest";
 import UpdateMemberRequest from "../dto/member/UpdateMemberRequest";
 import IMember from "../interfaces/IMember";
 import IMemberItem from "../interfaces/IMemberItem";
+import { IMyCoins } from "../models/MemberModel";
 
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const regexPhone = /^[1-9]\d{1,14}$/;
@@ -40,7 +41,7 @@ export default class MemberService {
     static async addNewStoreItem(memberId: string, storeItem: IMemberItem): Promise<IMember | null> {
         return await this.controller.updateStoreItem(memberId, storeItem)
     }
-    static async updateMemberCoins(memberId: string, newCoins: number): Promise<IMember | null> {
+    static async updateMemberCoins(memberId: string, newCoins: IMyCoins[]): Promise<IMember | null> {
         return await this.controller.updateCoins(memberId, newCoins)
     }
     static async getPersonalInfo(id: string): Promise<IMember | null> {
@@ -60,6 +61,7 @@ export default class MemberService {
             myActiveChallenge: [],
             myInvites: [],
             coins: data.coins,
+            myCoins: [{ challengeId: 'data.myChallenge._id', coins: 0 }],
             notifications: data.notifications
         }
         console.log(newMember)

@@ -3,6 +3,7 @@ import INotifications from "./INotifications"
 import IChallenge from "./IChallenge"
 import IMemberItem from "./IMemberItem";
 import IActiveChallenge from "./IActiveChallenge";
+import { IMyCoins } from "../models/MemberModel";
 
 export default interface IMember extends Partial<Document> {
   fullName: string;
@@ -17,5 +18,6 @@ export default interface IMember extends Partial<Document> {
   myActiveChallenge: ObjectId[] | IActiveChallenge[]
   myInvites: ObjectId[] | IActiveChallenge[];//NEEDS TO BE ACTIVE CHALLENGE
   coins: number;
+  myCoins: IMyCoins[];
   notifications: INotifications[];
 }

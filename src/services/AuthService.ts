@@ -37,7 +37,8 @@ export default class AuthService {
                     coins: 0,
                     notifications: [],
                     myActiveChallenge: [],
-                    myInvites: []
+                    myInvites: [],
+                    myCoins: [],
                 })
             }
             myActivChallenge.push({ invited })
