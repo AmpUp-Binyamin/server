@@ -38,6 +38,7 @@ import MediaRouter from './routes/MediaRouter';
 import MemberRouter from './routes/MemberRouter';
 import StoreRouter from './routes/StoreRouter';
 import CoinsRouter from './routes/CoinsRouter'
+import TeamRouter from './routes/TeamRouter'
 
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
@@ -51,6 +52,7 @@ app.use('/challenge', ChallengeRouter)
 app.use('/luck', LuckRouter)
 app.use('/member', MemberRouter)
 app.use('/coins', CoinsRouter)
+app.use('/team', TeamRouter)
 // ################################################
 // ################################################
 
