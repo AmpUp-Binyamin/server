@@ -127,31 +127,28 @@ export default class ActiveChallegeService {
     }
 
     static async handleCardAnswer(
-        challengeId: string,
+        activeChallengeId: string,
         cardId: string,
         answer: any
     ): Promise<IActiveCard> {
-        console.log({ challengeId, cardId, answer });
-        if (!challengeId || !cardId) throw { code: 400, msg: "missing data" };
-        if (!isValidObjectId(challengeId))
+        if (!activeChallengeId || !cardId) throw { code: 400, msg: "missing data" };
+        if (!isValidObjectId(activeChallengeId))
             throw { code: 400, msg: "challengeId is not ObjectId" };
         if (!isValidObjectId(cardId))
             throw { code: 400, msg: "cardId is not ObjectId" };
 
         // מציאת האתגר בדטאבייס
-        let challenge = await this.challengeController.readOne(challengeId);
+        // מציאת האתגר הפעיל
+        let activeChallenge = await this.controller.readOne(activeChallengeId);
+        if (!activeChallenge)throw { code: 400, msg: "Active challenge not found" };
+        let challenge = await this.challengeController.readOne(String(activeChallenge.challenge))
         if (!challenge) throw { code: 400, msg: "challenge not found" };
 
         // מציאת הכרטיס
         let card = challenge.cards.find((card) => card._id == cardId);
         if (!card) throw { code: 400, msg: "card not found" };
 
-        // מציאת האתגר הפעיל
-        let activeChallenge = await this.controller.read({
-            challenge: challengeId,
-        });
-        if (!activeChallenge[0])
-            throw { code: 400, msg: "Active challenge not found" };
+
 
         // יצירת הקלף להוספה לאתגר הפעיל
         const cardToAdd: IActiveCard = {
@@ -165,7 +162,7 @@ export default class ActiveChallegeService {
 
         console.log("value: ", answer.value);
         // הוספת הקלף החדש לאתגר הפעיל
-        await this.controller.update(activeChallenge[0]._id as string, {
+        await this.controller.update(activeChallenge._id as string, {
             $push: { cards: cardToAdd },
         });
         return cardToAdd;

@@ -68,11 +68,11 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
 })
 
 // תשובה על קלף ספציפי
-router.post('/:challengeId/card/:cardId', async (req: Request, res: Response) => {
+router.post('/:activeChallengeId/card/:cardId', async (req: Request, res: Response) => {
     try {
-        let challengeId = req.params.challengeId;
+        let activeChallengeId = req.params.activeChallengeId;
         let cardId = req.params.cardId;
-        // await ActiveChallegeService.handleCardAnswer(challengeId, cardId, req.body);
+        await ActiveChallegeService.handleCardAnswer(activeChallengeId, cardId, req.body);
         res.send('sucsses');
     }
     catch (error) {
