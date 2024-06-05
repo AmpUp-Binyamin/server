@@ -95,7 +95,7 @@ export default class ArchiveService {
     }
 
 
-    private static calculateEndDate(startDate: Date | undefined, duration: number): string | null {
+     static calculateEndDate(startDate: Date | undefined, duration: number): string | null {
         if (!startDate || isNaN(startDate.getTime())) {
             console.error('Invalid startDate:', startDate);
             return null;
@@ -116,14 +116,14 @@ export default class ArchiveService {
         return [formattedYear, formattedMonth, formattedDay].join("-");
     }
 
-    private static isDateBeforeToday(date: Date | string): boolean {
+     static isDateBeforeToday(date: Date | string): boolean {
         const today = new Date();
         const inputDate = typeof date === 'string' ? new Date(date) : date;
 
         return inputDate < today;
     }
 
-    private static formatDate(isoString: Date | undefined): string | null {
+     static formatDate(isoString: Date | undefined): string | null {
         if (!isoString || isNaN(isoString.getTime())) {
             console.error('Invalid ISO date:', isoString);
             return null;

@@ -65,4 +65,68 @@ router.get('/token/toMember', async (req: Request, res: Response) => {
     }
 })
 
+// שירות שמביא את כל האתגרים - האקטייבים ושלא
+// מחזיר את המידע עם תאריכים, מאמן, תמונה וכו'
+
+router.get('/personal-info/challenges', async (req: Request, res: Response) => {
+    try {
+        let userId = req.body.userId
+        let memberChallenges = await MemberService.getMemberChallenges(userId)
+        res.send(memberChallenges)
+    } catch (error) {
+        console.log({ error });
+        res.status(400).send(error)
+    }
+})
+
 export default router;
+
+// static async getMemberChallenges(id: string): Promise<IChallenge[] | null> {
+//     let member = await this.memberController.readWithChallenge(id, "myActiveChallenge")
+//     let member = await this.memberController.readWithChallenge(id, "myChallenge")
+//     if (!member) {
+//         return null;
+//     }
+//     let memberChallenges = member?.myChallenge as IChallenge[]
+    
+//     if (!memberChallenges.length) {
+//         return null;
+//     }
+
+//     let startDates: Array<IActiveChallenge | null> = await Promise.all(
+//         memberChallenges.map((ch) => {
+//             const challengeId = (ch as { _id: ObjectId })._id.toString();
+//             return this.memberController.readStartDate(challengeId);
+
+//         })
+//     );
+
+//     let finel = memberChallenges.map((ch, index) => ({
+//         ...ch,
+//         challengeId: ch._id,
+//         startDate: this.formatDate(startDates[index]?.startDate),
+//         endDate: this.calculateEndDate(startDates[index]?.startDate, ch.duration),
+//         cards: ch.cards
+//             .map((card) => ({
+//                 ...card,
+//                 date: this.calculateEndDate(startDates[index]?.startDate, card.day)
+//             }))
+//             .filter((card) => {
+//                 if (typeof card.date === 'string') {
+//                     const dateObj = new Date(card.date);
+//                     if (!isNaN(dateObj.getTime())) {
+//                         return this.isDateBeforeToday(dateObj);
+//                     }
+//                     if (dateObj === new Date()) {
+//                         startDates[index]?.cards.find(c => {
+//                             if (String(c.member) === id) {
+//                                 return c
+//                             }
+//                         })
+//                     }
+//                 }
+//                 return false;
+//             }).filter((card) => card.cardType === "study")
+//     }));
+//     return finel;
+// }
