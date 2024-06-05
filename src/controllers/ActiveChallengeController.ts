@@ -1,8 +1,7 @@
-import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
-import { ObjectId } from 'mongoose';
+import { FilterQuery, ObjectId } from 'mongoose';
 
 interface PopulateProps {
     participants?: string

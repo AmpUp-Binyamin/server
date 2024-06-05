@@ -41,7 +41,8 @@ import CoinsRouter from './routes/CoinsRouter'
 import RegisterRouter from './routes/RegisterRouter'
 import TeamRouter from './routes/TeamRouter'
 import ChallengeModel from './coach/router/challengeRouter';
-
+import TehillRouter from './routes/TehillRouter';
+app.use('/Tehill', TehillRouter)
 app.use('/user', UserRouter)
 app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
