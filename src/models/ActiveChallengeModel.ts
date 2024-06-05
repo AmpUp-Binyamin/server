@@ -43,7 +43,6 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
         type: Boolean,
         required: true,
     }
-
 })
 
 const activeMediaSchema = new mongoose.Schema<IMedia>({

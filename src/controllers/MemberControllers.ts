@@ -1,5 +1,5 @@
 import { FilterQuery, Document } from "mongoose";
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import IController from "../interfaces/IController";
 import IMember from "../interfaces/IMember";

@@ -1,7 +1,7 @@
 import ChallengeController from "../controllers/ChallengeController";
 import LuckResponse from "../dto/luck/LuckResponse";
 import { RandomNumberGenerator } from "../helpers/luck";
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
 export class LuckHelper {
   static RandomGenerator = new RandomNumberGenerator()

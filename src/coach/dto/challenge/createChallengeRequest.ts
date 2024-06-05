@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import IChallenge from "../../../interfaces/IChallenge";
 import IStoreItem from "../../../interfaces/IStoreItem";
 import ICard from "../../../interfaces/ICard";

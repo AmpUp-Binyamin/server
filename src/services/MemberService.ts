@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import activeChallengeController from "../controllers/ActiveChallengeController";
 import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
@@ -7,6 +7,9 @@ import UpdateMemberRequest from "../dto/member/UpdateMemberRequest";
 import IMember from "../interfaces/IMember";
 import IMemberItem from "../interfaces/IMemberItem";
 import { IMyCoins } from "../models/MemberModel";
+import IStoreItem from "../interfaces/IStoreItem";
+import IActiveChallenge from "../interfaces/IActiveChallenge";
+import  GetMemberStoreCardsRes from "../dto/member/GetMemberStoreCardsRes";
 
 const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const regexPhone = /^[1-9]\d{1,14}$/;
@@ -61,7 +64,9 @@ export default class MemberService {
             myActiveChallenge: [],
             myInvites: [],
             coins: data.coins,
-            myCoins: [{ challengeId: 'data.myChallenge._id', coins: 0 }],
+            // ??????
+            //myCoins: [{ challengeId: 'data.myChallenge._id', coins: 0 }],
+            myCoins: [{ activeChallengeId: 'data.myActiveChallenge._id', coins: 0 }],
             notifications: data.notifications
         }
         console.log(newMember)
@@ -99,6 +104,27 @@ export default class MemberService {
         console.log(member);
 
         return member
+    }
+
+    static async getStoreCardsPreMember(memberId: string, activeChallengeId: string): Promise<GetMemberStoreCardsRes[] | undefined> {
+        const member : IMember | null = (await this.controller.readOne(memberId)) 
+        // console.log('member', member);
+        const myCards = member?.myItems?.filter(c => c.activeChallengeId == activeChallengeId) as IMemberItem[]
+        // console.log('myCards', myCards);
+        const activeChallenge = await this.activeChallengeController.readOneSelect({_id: activeChallengeId}, 'store')
+        const store = (activeChallenge as IActiveChallenge)?.store;
+        let result:GetMemberStoreCardsRes[] = []
+        
+        myCards?.forEach(async c => {
+            const cardFromStore = store.find(item => String(item._id) == String(c.cardId))
+            if (!cardFromStore) return '';
+            const fullCard = {memberCard: c, fullCard: cardFromStore}
+            result.push(fullCard) 
+        })
+
+        if(result.length > 0) return result;
+
+
     }
 
 

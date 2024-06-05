@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import ChallengeController from "../controllers/ChallengeController";
 import StoreService from "../services/Store.Service";
 import IChallenge from "../interfaces/IChallenge";
+import IActiveChallenge from "../interfaces/IActiveChallenge";
 
 const router = Router();
 
@@ -19,10 +20,11 @@ router.get("/:challenge_id", async (req: Request, res: Response) => {
 router.put('/:storeItemId', async (req: Request, res: Response) => {
   try {
     let memberId = req.body.userId
-    let challengeId = req.body.challengeId
+    // שימו לב- השתנה לאקטיב
+    let activeChallengeId = req.body.activeChallengeId
     let storeItemId = req.params.storeItemId
-    let updatedChallenge: IChallenge | null = await StoreService.updateMemberItems(memberId, challengeId, storeItemId)
-    res.send(updatedChallenge)
+    let updatedActiveChallenge: IActiveChallenge | null = await StoreService.updateMemberItems(memberId, activeChallengeId, storeItemId)
+    res.send(updatedActiveChallenge)
   }
   catch (error) {
     res.status(400).send(error)

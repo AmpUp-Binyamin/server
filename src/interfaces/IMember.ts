@@ -1,4 +1,5 @@
-import { Document, ObjectId } from "mongoose"
+import { Document } from "mongoose"
+import {  ObjectId } from "mongodb"
 import INotifications from "./INotifications"
 import IChallenge from "./IChallenge"
 import IMemberItem from "./IMemberItem";

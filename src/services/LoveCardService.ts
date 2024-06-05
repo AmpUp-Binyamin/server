@@ -3,7 +3,7 @@ import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
 import { DaysDoneHelper } from "../helpers/DaysDoneHelper";
 import { RandomNumberGenerator } from "../helpers/luck";
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import ICard from "../interfaces/ICard";
 
 export class loveCard {

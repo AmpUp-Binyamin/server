@@ -4,6 +4,7 @@ import { Mapper } from '../helpers/Mapper'
 import UpdateMemberRequest from '../dto/member/UpdateMemberRequest'
 import createToken from '../middleware/createToken'
 import AddMemberRequest from '../dto/member/AddMemberRequest'
+import GetMemberStoreCardsRes  from '../dto/member/GetMemberStoreCardsRes'
 const router = Router()
 
 router.put('/personal-info', async (req: Request, res: Response) => {
@@ -69,9 +70,8 @@ router.get('/:memberId/myCards/:activeChallengeId', async (req: Request, res: Re
     try {
         const memberId = req.params.memberId
         const activeChallengeId = req.params.activeChallengeId        
-        // let member = await MemberService.getStoreCardsPreMember(memberId, activeChallengeId)
-        // console.log(member)
-        // res.send(member)
+        let cardsArr = await MemberService.getStoreCardsPreMember(memberId, activeChallengeId)
+        res.send(cardsArr)
     }
     catch (error) {
         res.status(400).send(error)

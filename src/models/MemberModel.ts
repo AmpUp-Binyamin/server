@@ -5,12 +5,12 @@ import IStoreItem from '../interfaces/IStoreItem'
 import IMemberItem from '../interfaces/IMemberItem'
 
 export interface IMyCoins {
-    challengeId: ObjectId | string
+    activeChallengeId: ObjectId | string
     coins: number
 }
 
 const myCoinsSchema = new mongoose.Schema<IMyCoins>({
-    challengeId: {
+    activeChallengeId: {
         type: String,
         required: true
     },
@@ -50,9 +50,9 @@ const memberItem = new mongoose.Schema<IMemberItem>({
         type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
-    challengeId: {
+    activeChallengeId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: 'challenge',
+        ref: 'activeChallenge',
         required: true
     },
     isActive: {
@@ -103,9 +103,7 @@ const memberSchema = new mongoose.Schema<IMember>({
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'activeChallenge',
     }],
-    myItems: [{
-        type: mongoose.SchemaTypes.ObjectId,
-    }],
+    myItems: [memberItem],
     coins: {
         type: Number,
         required: true,

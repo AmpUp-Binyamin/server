@@ -1,5 +1,5 @@
-import { ObjectId as MongoDBObjectId } from 'mongodb';
-import { ObjectId, isValidObjectId } from "mongoose";
+import { ObjectId } from 'mongodb';
+import {  isValidObjectId } from "mongoose";
 import activeChallengeController from "../controllers/ActiveChallengeController";
 import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
@@ -156,7 +156,7 @@ export default class ActiveChallegeService {
         // יצירת הקלף להוספה לאתגר הפעיל
         const cardToAdd: IActiveCard = {
             member: answer.userId,
-            card: new MongoDBObjectId(card._id),
+            card: new ObjectId(card._id),
             challengeDay: card.day,
             coins: card.coins,
             answerValue: answer.value,

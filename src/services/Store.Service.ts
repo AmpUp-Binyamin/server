@@ -1,5 +1,7 @@
+import activeChallengeController from "../controllers/ActiveChallengeController";
 import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
+import IActiveChallenge from "../interfaces/IActiveChallenge";
 import IChallenge from "../interfaces/IChallenge";
 import IMember from "../interfaces/IMember";
 import IStoreItem from "../interfaces/IStoreItem";
@@ -24,30 +26,30 @@ export default class StoreService {
   }
   static async updateMemberItems(
     memberId: string,
-    challengeId: string,
+    activeChallengeId: string,
     storeItemId: string
-  ): Promise<IChallenge | null> {
+  ): Promise<IActiveChallenge | null> {
 
     const memberController = new MemberController();
-    const challengeController = new ChallengeController();
-    // try{
+    const activeChallController = new activeChallengeController();
+    
     let m = await memberController.readOne(memberId);
     if (!m) return null;
     const member: IMember = m?.toObject?.() as IMember
-    let memberCoinsObj: IMyCoins | undefined = member?.myCoins.find(obj => obj.challengeId == challengeId);
+    let memberCoinsObj: IMyCoins | undefined = member?.myCoins.find(obj => obj.activeChallengeId == activeChallengeId);
     let memberCoins: number | undefined = memberCoinsObj?.coins
-    let challenge: IChallenge | null = await challengeController.readOne(challengeId);
+    let activeChallenge: IActiveChallenge | null = await activeChallController.readOne(activeChallengeId);
 
-    let price = challenge?.store.find((c) => c._id == storeItemId)?.coins;
-    let quantity = challenge?.store.find((c) => c._id == storeItemId)?.quantity;
+    let price = activeChallenge?.store.find((c) => c._id == storeItemId)?.coins;
+    let quantity = activeChallenge?.store.find((c) => c._id == storeItemId)?.quantity;
 
-    if (memberCoins && price && challenge) {
+    if (memberCoins && price && activeChallenge) {
       if (memberCoins > price) {
-        const coinsUpdate = member?.myCoins?.map?.(c => c.challengeId === challengeId ? { ...c, coins: c.coins - price } : c) || []
-        let newStoreItem = await MemberService.addNewStoreItem(memberId, { cardId: storeItemId, challengeId: challengeId });
+        const coinsUpdate = member?.myCoins?.map?.(c => c.activeChallengeId === activeChallengeId ? { ...c, coins: c.coins - price } : c) || []
+        let newStoreItem = await MemberService.addNewStoreItem(memberId, { cardId: storeItemId, activeChallengeId: activeChallengeId });
         let newCoineSum = await MemberService.updateMemberCoins(memberId, coinsUpdate);
-        let newQuantity = await challengeController.updateQuantity(challengeId, storeItemId, quantity ? quantity - 1 : 0)
-        return await challengeController.readOne(challengeId);
+        let newQuantity = await activeChallController.updateQuantity(activeChallengeId, storeItemId, quantity ? quantity - 1 : 0)
+        return await activeChallController.readOne(activeChallengeId);
       }
     } return null
   }

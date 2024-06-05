@@ -2,7 +2,7 @@ import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 interface PopulateProps {
     participants?: string
@@ -59,6 +59,17 @@ export default class activeChallengeController implements IController<IActiveCha
             })
         }
         return (await activeChallenge.exec())?.toObject()
+    }
+
+    async updateQuantity(activeChallengeId:string, storeItemId:string, newQuantity: number): Promise<IActiveChallenge | null>  {
+        let updated =  await ActiveChallengeModel.findOneAndUpdate(
+         { _id: activeChallengeId, 'store._id': storeItemId },
+         { $set: { 'store.$.quantity': newQuantity } },);
+         return updated
+     }
+
+     async readOneSelect(filter: FilterQuery<IActiveChallenge>, keyToReturn: keyof IActiveChallenge | string): Promise<ObjectId | IActiveChallenge> {
+        return await ActiveChallengeModel.findOne(filter).select(keyToReturn)
     }
 
 }

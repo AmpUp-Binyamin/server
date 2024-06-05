@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongoose'
+import { ObjectId } from 'mongodb'
 import AuthService from '../services/AuthService'
 import { Request, Response, Router } from 'express'
 const router = Router()

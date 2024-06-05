@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import ChallengeController from "../controllers/ChallengeController";
 import IChallenge from "../interfaces/IChallenge";
 import { DaysDoneHelper } from "../helpers/DaysDoneHelper";
