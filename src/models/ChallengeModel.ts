@@ -148,7 +148,7 @@ const challengeSchema = new mongoose.Schema<IChallenge>({
     creator: {
         type: SchemaTypes.ObjectId,
         ref: 'coach'
-    },
+    }, 
     store: [storeItemSchema],
     cards: [cardSchema],
 })

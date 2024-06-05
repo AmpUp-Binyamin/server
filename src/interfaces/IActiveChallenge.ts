@@ -5,6 +5,7 @@ import IMember from "./IMember"
 import IChallenge from "./IChallenge"
 import ICoach from "./ICoach"
 import IMedia from "./IMedia"
+import IStoreItem from "./IStoreItem"
 
 
 export default interface IActiveChallenge extends Partial<Document> {
@@ -14,6 +15,7 @@ export default interface IActiveChallenge extends Partial<Document> {
     participants: ObjectId[] | Partial<IMember>[] | IMember[]
     startDate: Date
     cards: IActiveCard[]
+    store: IStoreItem[],
 }
 
 //----sub Interface for each answered card within the running challenge

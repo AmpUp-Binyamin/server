@@ -113,6 +113,7 @@ export default class ActiveChallegeService {
             participants: [],
             startDate: data.startDate,
             cards: [],
+            store: []
         };
         return await this.controller.create(newActiveChallenge);
     }
