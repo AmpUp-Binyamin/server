@@ -1,13 +1,17 @@
 import activeChallengeController from "../controllers/ActiveChallengeController";
+import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
+import { DaysDoneHelper } from "../helpers/DaysDoneHelper";
 import { RandomNumberGenerator } from "../helpers/luck";
 import { ObjectId } from "mongoose";
+import ICard from "../interfaces/ICard";
 
 export class loveCard {
   static controller = new activeChallengeController();
   static RandomGenerator = new RandomNumberGenerator();
   static memberController = new MemberController();
-
+  static challengeController = new ChallengeController()
+static DaysDoneHelper = new DaysDoneHelper()
   static async getLove(challengeId: string): Promise<any> {
     // בודק באופן רנדומלי למי להביא פירגון
 
@@ -32,7 +36,19 @@ export class loveCard {
     if (await this.CheckingFristDay(userId , challenge )) return { userId: { "frist Day": "good luck" } };
      this.DoNotFinish(userId , challenge);
 
-    // return await  this.memberController.readOne((userId))
+     console.log(userId);
+     
+const regularChallenge = await this.challengeController.readOne(challenge.challenge.toString())
+const regularChallengeCards = regularChallenge?.cards
+
+const regularChallengeCardsObj = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(regularChallengeCards as ICard[], 'day')
+    const user = await this.memberController.readOne(String(userId))
+    const memberCards = this.DaysDoneHelper.getMemberCardsArray(user?._id as ObjectId, challenge)
+    const memberDaysDoneObj = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(memberCards, 'challengeDay')
+    const result1 =await this.DaysDoneHelper.checkPositiveStreak(memberDaysDoneObj, 3,challenge)
+    const result2 =await this.DaysDoneHelper.checkNegativeStreakEnd(memberDaysDoneObj, 3,challenge)
+    const result3 =await this.DaysDoneHelper.checkMembersIncompleteStreaks(memberDaysDoneObj,regularChallengeCardsObj,3,)
+    return {user: user, res: result1}
   }
   static async CheckingFristDay( userId: ObjectId, challenge: any) {
     for (let i = 0; i < challenge.cards.length; i++) {
@@ -48,13 +64,13 @@ export class loveCard {
 let startDate = challenge.startDate
 // console.log(challenge.cards);
 const maxChallengeDay = Math.max(...challenge.cards.map((card: any) => card.challengeDay));
-console.log("***********************************");
+// console.log("***********************************");
 let x= 3
 console.log(maxChallengeDay);
 let total = 0
 for (let i = maxChallengeDay; i > maxChallengeDay-x; i--){
 let num =0
-console.log("&&&&");
+// console.log("&&&&");
 
 
 challenge.cards.forEach((card: any) =>{
@@ -63,10 +79,10 @@ challenge.cards.forEach((card: any) =>{
   // console.log({userId});
   
   if(String(card.member)  === String(userId) && card.challengeDay === i){
-    console.log({card});
+    // console.log({card});
 
     num++
-    console.log(num);
+    // console.log(num);
   }
   if (num < 6 && num > 0)  total++
 })

@@ -2,16 +2,16 @@ import { Request, Response, Router } from "express";
 import CoachService from "../services/CoachService";
 import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
-import { uploadImage } from "../middleware/media"
 import { verifyTokenCoach } from "../middleware/coachAuth";
+import { tempImgUpload, validateAndUploadImg } from "../middleware/s3";
 import CreateCardRequest from "../coach/dto/CreateCardRequest";
-import CardService from "../coach/service/CardService";
 import AddMemberService from '../coach/service/AddMemberService'
+import CardService from "../coach/service/CardService";
 
 const router = Router()
 
 
-router.get('/:userId', verifyTokenCoach,  async (req: Request, res: Response) => {
+router.get('/:userId', verifyTokenCoach, async (req: Request, res: Response) => {
     try {
         let coach = await CoachService.getSingleCoach(req.params.userId)
         res.send(coach)
@@ -20,45 +20,48 @@ router.get('/:userId', verifyTokenCoach,  async (req: Request, res: Response) =>
     }
 })
 
-router.post('/', uploadImage.single("img"), async (req: Request, res: Response) => {
+router.post('/', tempImgUpload, async (req: Request, res: Response) => {
     try {
-        req.body.picture = req.file?.path
         let request = Mapper<CreateCoachRequest>(new CreateCoachRequest(), req.body)
         let coach = await CoachService.createNewCoach(request)
+        if (req.file) {
+            let url = await validateAndUploadImg(req.file, coach?._id as string)
+            if (url)  coach = await CoachService.updateCoach(coach?._id as string, { picture: url })
+        }
         res.send(coach)
     } catch (error) {
         res.status(400).send(error)
     }
 })
 
-router.put('/newCard/:challengeId',verifyTokenCoach, async (req: Request, res: Response) => {
+router.put('/newCard/:challengeId', verifyTokenCoach, async (req: Request, res: Response) => {
 
     try {
-let request= Mapper<CreateCardRequest>(new CreateCardRequest(), req.body)
-request.challengeId =req.params.challengeId
-request.userId= req.body.userId
-        let coach = await CardService.crateCard( request)
+        let request = Mapper<CreateCardRequest>(new CreateCardRequest(), req.body)
+        request.challengeId = req.params.challengeId
+        request.userId = req.body.userId
+        let coach = await CardService.crateCard(request)
         res.send(coach)
     } catch (error) {
         res.status(400).send(error)
     }
 })
 
-router.put('/newMember/:challengeId',verifyTokenCoach, async (req: Request , res: Response)=>{
-try{
-    
-    let newMember = req.body.email
-    let challengeId = req.params.challengeId
-    
-    let coach = await AddMemberService.addMember(challengeId, newMember)
-    res.send(coach)
+router.put('/newMember/:challengeId', verifyTokenCoach, async (req: Request, res: Response) => {
+    try {
 
-}catch (error) {
-    res.status(400).send(error)
-}
+        let newMember = req.body.email
+        let challengeId = req.params.challengeId
+
+        let coach = await AddMemberService.addMember(challengeId, newMember)
+        res.send(coach)
+
+    } catch (error) {
+        res.status(400).send(error)
+    }
 })
 
-router.put('/updateCard/:challengeId/card/:cardId',verifyTokenCoach, async (req: Request, res: Response) => {
+router.put('/updateCard/:challengeId/card/:cardId', verifyTokenCoach, async (req: Request, res: Response) => {
 
     try {
 let request= Mapper<CreateCardRequest>(new CreateCardRequest(), req.body)
@@ -66,11 +69,11 @@ request.challengeId =req.params.challengeId
 request._id =req.params.cardId
 request.userId= req.body.userId
 
-        let coach = await CardService.updateCard( request)
+        let coach = await CardService.updateCard(request)
         res.send(coach)
     } catch (error) {
         console.log(error);
-        
+
         res.status(400).send(error)
     }
 })

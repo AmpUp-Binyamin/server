@@ -25,14 +25,26 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
         type: Number,
         required: true,
     },
-    expiryDay :{
-        type : Date,
-        
+    expiryDay: {
+        type: Date,
     },
     quantity: {
         type: Number,
         required: true,
     },
+    cardType: {
+        type: String,
+        enum: ['streak2', 'streak4']
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
+    isAction: {
+        type: Boolean,
+        required: true,
+    }
+
 })
 
 const mediaSchema = new mongoose.Schema<IMedia>({
@@ -50,6 +62,9 @@ const mediaSchema = new mongoose.Schema<IMedia>({
         type: String,
         required: true,
         unique: true
+    },
+    size: {
+        type: String,
     }
 })
 
@@ -66,14 +81,14 @@ const cardSchema = new mongoose.Schema<ICard>({
     cardType: {
         type: String,
         required: true,
-        enum: ['question', 'task', 'media', 'study' , 'support', 'share', 'lottery']
+        enum: ['question', 'task', 'media', 'study', 'support', 'share', 'lottery']
     },
     subType: {
         type: String,
         enum: ['multipleChoice', 'url', 'freeText', 'upload', 'multipleChoice+freeText']
     },
-    answers:{
-        type: [String],        
+    answers: {
+        type: [String],
     },
     title: {
         type: String,

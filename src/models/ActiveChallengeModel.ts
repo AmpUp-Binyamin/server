@@ -17,6 +17,9 @@ const activeMediaSchema = new mongoose.Schema<IMedia>({
         type: String,
         required: true,
         unique: true
+    },
+    size: {
+        type: String,
     }
 })
 
@@ -61,10 +64,10 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
     invited: [{
         type: String, //נכנסים עם email
     }],
-    // 
-    participants: [{ 
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "member"
+
+    participants: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "member"
     }],
     startDate: {
         type: Date,
@@ -72,5 +75,6 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
     },
     cards: [activeCardSchema]
 })
+
 
 export default mongoose.model<IActiveChallenge>('activeChallenge', ActiveChallengeSchema)
