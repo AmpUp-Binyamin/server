@@ -48,7 +48,7 @@ export default class AuthService {
         member = (await this.MemberController.read({ email }))[0]
         if (member == undefined) { throw ({ status: 407, msg: "mamber not exist" }) }
 
-        return ({ member })
+        return member
     }
 
     static activeChallengeController = new activeChallengeController();

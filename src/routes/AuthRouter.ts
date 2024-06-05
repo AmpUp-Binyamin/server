@@ -4,11 +4,11 @@ import { Request, Response, Router } from 'express'
 import IMember from '../interfaces/IMember'
 const router = Router()
 
-router.all('/checkEmail', async (req: Request, res: Response) => {
+router.post('/checkEmail', async (req: Request, res: Response) => {
     try {
-     let mamber=   await AuthService.checkEmail(req.body)
-     if (mamber) 
-        res.send(await AuthService.getMyInvitesAndMyActiveChallenge(req.body.email))
+        let member = await AuthService.checkEmail(req.body)
+        let fullMember = await AuthService.getMyInvitesAndMyActiveChallenge(req.body.email)
+        res.send(fullMember)
     }
     catch (error) {
         console.log(error);
