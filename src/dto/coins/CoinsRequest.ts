@@ -1,11 +1,11 @@
 import UserAuth from "../../middleware/UserAuth"
 
 export default class CoinsRequest extends UserAuth {
-    challengeId:string
+    activeChallengeId:string
 
 
-    constructor(challengeId = '') {
+    constructor(activeChallengeId = '') {
         super()
-        this.challengeId = challengeId
+        this.activeChallengeId = activeChallengeId
     }
 }

@@ -73,6 +73,7 @@ export default class ActiveChallegeService {
 
 
 
+
         const numCardsOfDay: number[] = []
         const completedDays: number[] = []
 
@@ -87,12 +88,12 @@ export default class ActiveChallegeService {
             if (activeCard.length == num) completedDays.push(day + 1)
         })
         let currentDay = Math.floor((Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24))
+        
         const currentCards: ICard[] = cards.filter(card => card.day == currentDay)
         const cardsStatus: ICard[] = currentCards.map(card => {
             const done: IActiveCard | undefined = memberCards.find(c => String(c.card) == card._id)
             return ({ ...card, done: Boolean(done) })
         })
-
         return new GetStatusDoneCardsRes(cardsStatus, totalDays, completedDays, coach, challengeName)
     }
 

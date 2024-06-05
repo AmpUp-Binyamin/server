@@ -10,7 +10,6 @@ router.put('/add-coins', async (req: Request, res: Response) => {
         let request = Mapper<CoinsRequest>(new (CoinsRequest), req.body)
         let coins = await CoinsService.addCoins(request)
         res.send(coins)
-        console.log(2);
     }
     catch (error) {
         console.log({ error });
