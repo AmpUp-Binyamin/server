@@ -88,15 +88,12 @@ export default class MemberController implements IController<IMember> {
     async addNotifications(memberId: string, notifications: INotifications[]): Promise<void> {
         try {
             const member = await MemberModel.findById(memberId);
-            console.log("jacb")
             if (member) {
                 notifications.forEach(notification => {
                     member.notifications.push(notification);
                 });
                 await member.save();
-                console.log('Notifications added successfully');
             } else {
-                console.log('Member not found');
             }
         } catch (error) {
             console.error('Error adding notifications:', error);
@@ -104,29 +101,28 @@ export default class MemberController implements IController<IMember> {
     }
 }
 
-async function run() {
-    const notifications: INotifications[] = [{
-        challenge: "6656df1b8437151db0cce539",
-        type: "sent support",
-        title: "Support Notification",
-        content: 'sent you "🤘 Rock on!"',
-        isRead: false,
-        date: new Date("2024-05-18T20:26:00.000Z"),
-        sender: "6656df1b8437151db0cce4e8"
-    },
-    {
-        challenge: "6656df1b8437151db0cce539",
-        type: "sent message",
-        title: "Yoga Session",
-        content: 'Join the team yoga session today',
-        isRead: false,
-        date: new Date("2024-05-18T20:32:00.000Z"),
-        sender: "6656df1b8437151db0cce4e6"
-    }
-    ];
+// async function run() {
+//     const notifications: INotifications[] = [{
+//         challenge: "6656df1b8437151db0cce539",
+//         type: "sent support",
+//         title: "Support Notification",
+//         content: 'sent you "🤘 Rock on!"',
+//         isRead: false,
+//         date: new Date("2024-05-18T20:26:00.000Z"),
+//         sender: "6656df1b8437151db0cce4e8"
+//     },
+//     {
+//         challenge: "6656df1b8437151db0cce539",
+//         type: "sent message",
+//         title: "Yoga Session",
+//         content: 'Join the team yoga session today',
+//         isRead: false,
+//         date: new Date("2024-05-18T20:32:00.000Z"),
+//         sender: "6656df1b8437151db0cce4e6"
+//     }
+//     ];
 
-    const memberController = new MemberController();
-    await memberController.addNotifications("6656df1b8437151db0cce4e6", notifications);
-}
+//     const memberController = new MemberController();
+//     await memberController.addNotifications("6656df1b8437151db0cce4e6", notifications);
+// }
 
-run();
