@@ -1,6 +1,7 @@
 import { ObjectId } from "mongodb";
 import IActiveChallenge, { IActiveCard } from "../../interfaces/IActiveChallenge";
 import IMedia from "../../interfaces/IMedia";
+import IStoreItem from "../../interfaces/IStoreItem";
 
 export default class AddActiveChallengeRequest implements IActiveChallenge {
     coach: ObjectId;
@@ -9,14 +10,15 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
     participants: ObjectId[];
     startDate: Date;
     cards: IActiveCard[]
-
+    store?: IStoreItem[]
     constructor(
         coach: ObjectId,
         challenge: ObjectId,
         invited: string[],
         participants: ObjectId[],
         startDate: Date,
-        cards: IActiveCard[]
+        cards: IActiveCard[],
+        store: IStoreItem[]
     ) {
         this.coach = coach;
         this.challenge = challenge;
@@ -24,6 +26,7 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
         this.participants = participants;
         this.startDate = startDate;
         this.cards = cards;
+        this.store = store;
     }
 }
 
