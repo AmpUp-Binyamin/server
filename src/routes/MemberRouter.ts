@@ -4,6 +4,7 @@ import { Mapper } from '../helpers/Mapper'
 import UpdateMemberRequest from '../dto/member/UpdateMemberRequest'
 import createToken from '../middleware/createToken'
 import AddMemberRequest from '../dto/member/AddMemberRequest'
+import AuthService from '../services/AuthService'
 const router = Router()
 
 router.put('/personal-info', async (req: Request, res: Response) => {
@@ -57,7 +58,10 @@ router.post('/', async (req: Request, res: Response) => {
 router.get('/token/toMember', async (req: Request, res: Response) => {
     try {
         let member = await MemberService.getsingelMember(req.body.userId);
-        res.send(member);
+        if(!member)throw({code:400, msg:""})
+        // TODO
+       let memberInfo = await AuthService.getMyInvitesAndMyActiveChallenge(member.email)
+        res.send(memberInfo);
     }
     catch (error) {
         console.log(error);
