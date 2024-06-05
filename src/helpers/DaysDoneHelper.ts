@@ -124,6 +124,7 @@ export class DaysDoneHelper {
         //------------------------------------- the full list of all the member's cards in this particular challenge
         const memberAnsweredCards: IActiveCard[] = activeChallenge.cards.reduce((prev: IActiveCard[], current: IActiveCard) => {
             const currentMemberIdStr = current.member.toString()
+            
             if (currentMemberIdStr === memberIdStr) {
                 prev.push(current)
             }

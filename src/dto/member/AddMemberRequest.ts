@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from 'mongoose'
+import  { ObjectId } from 'mongodb'
 import INotifications from '../../interfaces/INotifications'
 
 export default class AddMemberRequest {

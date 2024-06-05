@@ -1,5 +1,4 @@
-import { FilterQuery, Document } from "mongoose";
-import { ObjectId } from "mongoose";
+import mongoose, { FilterQuery, Document } from "mongoose";
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import IController from "../interfaces/IController";
 import IMember from "../interfaces/IMember";
@@ -8,6 +7,7 @@ import ActiveChallengeModel from '../models/ActiveChallengeModel';
 import { IMyCoins, default as MemberModel, default as NotificationModel } from "../models/MemberModel";
 import IStoreItem from "../interfaces/IStoreItem";
 import IMemberItem from "../interfaces/IMemberItem";
+import { ObjectId } from "mongodb";
 
 export default class MemberController implements IController<IMember> {
     async create(data: IMember): Promise<IMember> {
@@ -85,6 +85,48 @@ export default class MemberController implements IController<IMember> {
     async save(data: IMember | null): Promise<void> {
         await (data as Document)?.save();
     }
+    async addNotifications(memberId: string, notifications: INotifications[]): Promise<void> {
+        try {
+            const member = await MemberModel.findById(memberId);
+            console.log("jacb")
+            if (member) {
+                notifications.forEach(notification => {
+                    member.notifications.push(notification);
+                });
+                await member.save();
+                console.log('Notifications added successfully');
+            } else {
+                console.log('Member not found');
+            }
+        } catch (error) {
+            console.error('Error adding notifications:', error);
+        }
+    }
 }
 
+async function run() {
+    const notifications: INotifications[] = [{
+        challenge: "6656df1b8437151db0cce539",
+        type: "sent support",
+        title: "Support Notification",
+        content: 'sent you "🤘 Rock on!"',
+        isRead: false,
+        date: new Date("2024-05-18T20:26:00.000Z"),
+        sender: "6656df1b8437151db0cce4e8"
+    },
+    {
+        challenge: "6656df1b8437151db0cce539",
+        type: "sent message",
+        title: "Yoga Session",
+        content: 'Join the team yoga session today',
+        isRead: false,
+        date: new Date("2024-05-18T20:32:00.000Z"),
+        sender: "6656df1b8437151db0cce4e6"
+    }
+    ];
 
+    const memberController = new MemberController();
+    await memberController.addNotifications("6656df1b8437151db0cce4e6", notifications);
+}
+
+run();

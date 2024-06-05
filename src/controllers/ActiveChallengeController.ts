@@ -2,7 +2,7 @@ import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
-import { ObjectId } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 interface PopulateProps {
     participants?: string

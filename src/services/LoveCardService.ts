@@ -39,6 +39,7 @@ static DaysDoneHelper = new DaysDoneHelper()
      console.log(userId);
      
 const regularChallenge = await this.challengeController.readOne(challenge.challenge.toString())
+    console.log({regularChallenge});
 const regularChallengeCards = regularChallenge?.cards
 
 const regularChallengeCardsObj = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(regularChallengeCards as ICard[], 'day')

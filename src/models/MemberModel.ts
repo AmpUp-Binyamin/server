@@ -1,4 +1,4 @@
-import mongoose, { ObjectId } from 'mongoose'
+import mongoose, { Model, ObjectId } from 'mongoose'
 import IMember from '../interfaces/IMember'
 import INotifications from '../interfaces/INotifications'
 import IStoreItem from '../interfaces/IStoreItem'
@@ -43,6 +43,14 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
+    isRead: {
+        type: Boolean,
+        default: false
+    },
+    date: {
+        type: Date,
+        default: Date.now
+    }
 })
 
 const memberItem = new mongoose.Schema<IMemberItem>({
@@ -116,3 +124,9 @@ const memberSchema = new mongoose.Schema<IMember>({
 })
 
 export default mongoose.model<IMember>('member', memberSchema)
+
+
+
+
+
+
