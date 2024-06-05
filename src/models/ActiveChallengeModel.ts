@@ -1,6 +1,50 @@
 import mongoose, { Mongoose, SchemaTypes } from 'mongoose'
 import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
 import IMedia from '../interfaces/IMedia';
+import IStoreItem from '../interfaces/IStoreItem';
+
+const storeItemSchema = new mongoose.Schema<IStoreItem>({
+    name: {
+        type: String,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    image: {
+        type: String,
+        required: true,
+    },
+    coins: {
+        type: Number,
+        required: true,
+    },
+    daysToExpiry: {
+        type: Number,
+        required: true,
+    },
+    expiryDay: {
+        type: Date,
+    },
+    quantity: {
+        type: Number,
+        required: true,
+    },
+    cardType: {
+        type: String,
+        enum: ['streak2', 'streak4']
+    },
+    isActive: {
+        type: Boolean,
+        default: true,
+    },
+    isAction: {
+        type: Boolean,
+        required: true,
+    }
+
+})
 
 const activeMediaSchema = new mongoose.Schema<IMedia>({
     type: {
@@ -73,7 +117,9 @@ const ActiveChallengeSchema = new mongoose.Schema<IActiveChallenge>({
         type: Date,
         required: true
     },
-    cards: [activeCardSchema]
+    cards: [activeCardSchema],
+    store: [storeItemSchema],
+
 })
 
 

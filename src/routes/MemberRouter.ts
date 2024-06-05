@@ -65,4 +65,17 @@ router.get('/token/toMember', async (req: Request, res: Response) => {
     }
 })
 
+router.get('/:memberId/myCards/:activeChallengeId', async (req: Request, res: Response) => {
+    try {
+        const memberId = req.params.memberId
+        const activeChallengeId = req.params.activeChallengeId        
+        // let member = await MemberService.getStoreCardsPreMember(memberId, activeChallengeId)
+        // console.log(member)
+        // res.send(member)
+    }
+    catch (error) {
+        res.status(400).send(error)
+    }
+})
+
 export default router;
