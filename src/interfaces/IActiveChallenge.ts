@@ -4,11 +4,13 @@ import ICard from "./ICard"
 import IMember from "./IMember"
 import IChallenge from "./IChallenge"
 import ICoach from "./ICoach"
+import IMedia from "./IMedia"
+
 
 export default interface IActiveChallenge extends Partial<Document> {
-    coach: ObjectId | Partial<ICoach> | ICoach  ;
+    coach: ObjectId | Partial<ICoach> | ICoach;
     challenge: Partial<IChallenge> | IChallenge | ObjectId
-    invited: ObjectId[] | Partial<IMember>[] | IMember[]
+    invited: string[]
     participants: ObjectId[] | Partial<IMember>[] | IMember[]
     startDate: Date
     cards: IActiveCard[]
@@ -21,6 +23,6 @@ export interface IActiveCard {
     challengeDay: number
     coins: number
     answerValue: string
-    answerMedia?: string[]
+    answerMedia?: IMedia[]
 }
 

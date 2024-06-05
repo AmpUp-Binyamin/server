@@ -7,17 +7,18 @@ import UserController from "../controllers/UserController";
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 // טוקן זמני לעכשיו
-const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4e2", userPermission: "user" });
+export const temporaryToken = createToken({ userId: "6656df1b8437151db0cce4e2", userPermission: "user" });
 
 // console.log("temporaryToken: ", temporaryToken);
 
 // middleware - token to user
 export const verifyToken = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const authHeader =  req.headers.authorization || temporaryToken;
+        const authHeader = req.headers.authorization || temporaryToken;
         if (!authHeader) {
             return res.status(401).send('Unauthorized');
         }
+
 
         const token = authHeader.replace("Bearer ", "");
         const decoded = jwt.verify(token, JWT_SECRET) as UserAuth;
@@ -26,7 +27,6 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
             userId: decoded.userId,
             userPermission: decoded.userPermission as Permission,
         }
-        console.log(user);
 
         req.body = { ...req.body, ...user };
 
@@ -37,3 +37,5 @@ export const verifyToken = async (req: Request, res: Response, next: NextFunctio
         res.status(401).send("Unauthorized");
     }
 }
+export { createToken };
+

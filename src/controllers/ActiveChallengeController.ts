@@ -1,7 +1,8 @@
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import mongoose, { FilterQuery, UpdateQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
+import { ObjectId } from 'mongoose';
 
 interface PopulateProps {
     participants?: string
@@ -16,10 +17,13 @@ export default class activeChallengeController implements IController<IActiveCha
     async read(filter: FilterQuery<IActiveChallenge>): Promise<IActiveChallenge[]> {
         return await ActiveChallengeModel.find(filter)
     }
-    async readOne(id: string , populate?: string | undefined): Promise<IActiveChallenge | null> { //@ts-ignore
-       return await ActiveChallengeModel.findById({ _id: id })
-       //.populate?(populate) //@ts-ignore
-         
+
+    async readSelect(filter: FilterQuery<IActiveChallenge>, keyToReturn: keyof IActiveChallenge | string): Promise<ObjectId[] | IActiveChallenge[]> {
+        return await ActiveChallengeModel.find(filter).select(keyToReturn)
+    }
+    async readOne(id: string | ObjectId, populate?: string | undefined): Promise<IActiveChallenge | null> {
+        return await ActiveChallengeModel.findById({ _id: id })
+
     } //@ts-ignore
     async update(id: string, data: UpdateQuery<IActiveChallenge>): Promise<IActiveChallenge | null> {
         await ActiveChallengeModel.updateOne({ _id: id }, data)
@@ -30,31 +34,31 @@ export default class activeChallengeController implements IController<IActiveCha
         throw new Error('Method not implemented.');
     }
 
-    
 
-    async readOneWithPopulate(id: string, populate: PopulateProps, select: string): Promise<IActiveChallenge | null> {
-        const activeChallenge = ActiveChallengeModel.findById(id).select(select)
-        if(populate.participants){
+
+    async readOneWithPopulate(id: string, populate: PopulateProps, select?: string): Promise<IActiveChallenge | null | undefined> {
+        const activeChallenge = ActiveChallengeModel.findById(id).select(select as string)
+        if (populate.participants) {
             activeChallenge.populate({
                 path: 'participants',
                 select: populate.participants
-              })
+            })
         }
-        
-        if(populate.coach){
+
+        if (populate.coach) {
             activeChallenge.populate({
                 path: 'coach',
                 select: populate.coach
-              })
+            })
         }
 
-        if(populate.challenge){
+        if (populate.challenge) {
             activeChallenge.populate({
                 path: 'challenge',
                 select: populate.challenge
-              })
+            })
         }
-        return await activeChallenge.exec()
+        return (await activeChallenge.exec())?.toObject()
     }
 
 }

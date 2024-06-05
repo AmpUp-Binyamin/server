@@ -53,4 +53,16 @@ router.post('/', async (req: Request, res: Response) => {
     }
 });
 
+// קבלת היוזר על פי טוקן
+router.get('/token/toMember', async (req: Request, res: Response) => {
+    try {
+        let member = await MemberService.getsingelMember(req.body.userId);
+        res.send(member);
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).send(error);
+    }
+})
+
 export default router;

@@ -11,13 +11,13 @@ export default class CoachController implements IController<ICoach> {
         return await CoachModel.find(filter)
     }
     async readOne(id: string): Promise<ICoach | null> {
-       return await CoachModel.findById(id)
+        return await CoachModel.findById(id)
     }
-    async update(id: string, data:ICoach): Promise<ICoach | null>{
-        await CoachModel.updateOne({_id:id}, data)
+    async update(id: string, data: Partial<ICoach>): Promise<ICoach | null> {
+        await CoachModel.updateOne({ _id: id }, data)
         return await this.readOne(id)
     }
-    async del(id: string) : Promise<boolean>{
+    async del(id: string): Promise<boolean> {
         throw new Error('Method not implemented.');
     }
 }
