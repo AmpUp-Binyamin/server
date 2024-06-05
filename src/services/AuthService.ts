@@ -1,6 +1,6 @@
 import MemberController from "../controllers/MemberControllers";
 import activeChallengeController from "../controllers/ActiveChallengeController"
-import { ObjectId } from "mongoose";
+import { ObjectId } from "mongodb";
 import { createToken } from "../middleware/auth"
 import { Code } from "mongodb";
 
