@@ -65,7 +65,6 @@ let request= Mapper<CreateCardRequest>(new CreateCardRequest(), req.body)
 request.challengeId =req.params.challengeId
 request._id =req.params.cardId
 request.userId= req.body.userId
-console.log({request});
 
         let coach = await CardService.updateCard( request)
         res.send(coach)
@@ -75,7 +74,20 @@ console.log({request});
         res.status(400).send(error)
     }
 })
+router.delete('/deleteCard/:challengeId/card/:cardId', verifyTokenCoach, async (req: Request, res: Response) => {
+    try{
+        let challengeId = req.params.challengeId
+        let cardId = req.params.cardId
+        let userId= req.body.userId
+        let coach = await CardService.delCard(challengeId, cardId , userId)
+        res.send(coach)
 
+    }catch(error) {
+        console.log(error);
+        res.status(400).send(error)
+        
+    }
+})
 
 // router.put("/img", uploadImage.any(), (req: Request, res: Response) => {
 //     try {

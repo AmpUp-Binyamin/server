@@ -46,9 +46,7 @@ export default class CardService {
         const challenge = await this.controller.readOne(data.challengeId);
         if (!challenge) throw { code: 400, message: "not found challenge" }
         if (String(data.userId) != String(challenge.creator)) throw { code: 400, message: "not creator" }
-        // console.log({ data , c: challenge.cards});
         let oldCard = challenge.cards.find((c) => String(c._id) === String(data._id))
-        console.log({ oldCard });
 
         if (!oldCard) throw { code: 400, messege: " not fond old card" }
         const updatedCard: Partial<ICard> = {
@@ -73,16 +71,17 @@ export default class CardService {
         if (existingCard) {
             throw { code: 400, message: `A card of type ${data.cardType} already exists for day ${data.day}` };
         }
-
         if (updatedCard.cardType === 'media' && !updatedCard.media) throw { code: 400, message: "type card media bat not found media" }
-console.log({updatedCard});
-
         const updatedChallenge = await this.controller.updateByFilter(
-            { _id: data.challengeId , 'cards._id':data._id } ,
-            { $set: { 'cards.$': updatedCard , } });
+            { _id: data.challengeId, 'cards._id': data._id },
+            { $set: { 'cards.$': updatedCard, } });
 
         return updatedChallenge;
     }
+static async delCard(challengeId : string, cardId :string  , userId : string){
+    
+}
+
 }
 
 // עריכה
