@@ -1,5 +1,4 @@
-import { S3Client, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, PutObjectCommandOutput } from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { S3Client, DeleteObjectCommand, GetObjectCommand, PutObjectCommand, ObjectCannedACL } from "@aws-sdk/client-s3";
 import dotenv from 'dotenv';
 import multer from "multer";
 import IMedia from "../interfaces/IMedia";
@@ -20,51 +19,42 @@ const s3 = new S3Client({
 });
 
 const multerUpload = multer({
-    storage: multer.memoryStorage(), limits: {
+    storage: multer.memoryStorage(), 
+    limits: {
         fileSize: 1024 * 1024 * 1024 // 1GB
     }
-})
+});
 
 export function uploadFileToAWS(fileBuffer: Buffer, fileName: string, mimetype: string) {
     const uploadParams = {
         Bucket: bucket,
         Body: fileBuffer,
         Key: fileName,
-        ContentType: mimetype
-    }
+        ContentType: mimetype,
+
+    };
 
     return s3.send(new PutObjectCommand(uploadParams));
 }
 
-const getFileUrl = async (Key: string): Promise<string | void> => {
-
+const getFileUrl = (Key: string): string => {
     if (Key) {
-        const command = new GetObjectCommand({
-            Bucket: bucket,
-            Key
-        });
-        try {
-            const signedUrl: string = await getSignedUrl(s3, command);
-            return signedUrl;
-        } catch (error: any) {
-            console.error("Error generating pre-signed URL:", error);
-            return (error);
-        }
+        return `https://${bucket}.s3.${region}.amazonaws.com/${Key}`;
     }
+    return '';
 };
 
-export function valadateAndDeleteMedia(request: any): string | Promise<any> {
+export function validateAndDeleteMedia(request: any): string | Promise<any> {
     if (!request) return "file not found";
-    const { userId, userPermission, fileUrl } = request
+    const { userId, userPermission, fileUrl } = request;
     const fileName = fileUrl.split('/').pop()?.split('?')[0];
     if (!fileName) return "file not found";
     const fileOwnerId = fileName.split('_')[0];
     if (userId !== fileOwnerId && userPermission !== 'admin') {
-        return "You do not have permission to delete this file."
+        return "You do not have permission to delete this file.";
     }
     return deleteFile(fileName);
 }
-
 
 function deleteFile(fileName: string): Promise<any> {
     const deleteParams = {
@@ -76,7 +66,7 @@ function deleteFile(fileName: string): Promise<any> {
 
 export const tempImgUpload = multerUpload.single('img');
 
-export const tempMediaUpload = multerUpload.single('media')
+export const tempMediaUpload = multerUpload.single('media');
 
 export async function validateAndUploadImg(imageData: Express.Multer.File, userId: string): Promise<void | string> {
     if (!imageData) return;
@@ -84,7 +74,7 @@ export async function validateAndUploadImg(imageData: Express.Multer.File, userI
     if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type');
     const imageName = `${userId}_${Date.now().toString()}_${imageData.originalname}`;
     await uploadFileToAWS(buffer, imageName, mimetype);
-    return await getFileUrl(imageName);
+    return getFileUrl(imageName);
 }
 
 export async function validateAndUploadMedia(mediaData: Express.Multer.File | undefined, userId: string): Promise<void | IMedia> {
@@ -92,17 +82,12 @@ export async function validateAndUploadMedia(mediaData: Express.Multer.File | un
     const { buffer, mimetype, size } = mediaData;
     const fileName = `${userId}_${Date.now().toString()}_${mediaData.originalname}`;
     await uploadFileToAWS(buffer, fileName, mimetype);
-    try {
-        let path = await getFileUrl(fileName);
-        if (!path) return;
-        let media: IMedia = {
-            type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
-            fileName: fileName,
-            path,
-            size,
-        };
-        return media;
-    } catch (error) {
-        console.log(error);
-    }
+    const path = getFileUrl(fileName);
+    let media: IMedia = {
+        type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
+        fileName: fileName,
+        path,
+        size,
+    };
+    return media;
 }

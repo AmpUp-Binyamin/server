@@ -1,5 +1,5 @@
 import { Request, Response, Router } from 'express';
-import { valadateAndDeleteMedia, tempImgUpload, tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
+import { validateAndDeleteMedia, tempImgUpload, tempMediaUpload, validateAndUploadImg, validateAndUploadMedia } from '../middleware/s3';
 import { verifyToken } from '../middleware/auth';
 
 const router: Router = Router();
@@ -45,7 +45,7 @@ router.delete("/img", async (req: Request, res: Response) => {
     const fileUrl  = req.body.fileUrl;
     console.log("fileUrl: ", fileUrl);
     try {
-        await valadateAndDeleteMedia(req.body);
+        await validateAndDeleteMedia(req.body);
         res.send(`File ${fileUrl} deleted successfully.`);
     } catch (error) {
         console.log('Error:', error);
