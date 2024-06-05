@@ -29,6 +29,19 @@ router.put('/:storeItemId', async (req: Request, res: Response) => {
   }
 })
 
+// router.put('active/:storeItemId', async (req: Request, res: Response) => {
+//   try {
+//     let memberId = req.body.userId
+//     let challengeId = req.body.challengeId
+//     let storeItemId = req.params.storeItemId
+//     let updatedChallenge: IChallenge | null = await StoreService.updateMemberItems(memberId, challengeId, storeItemId)
+//     res.send(updatedChallenge)
+//   }
+//   catch (error) {
+//     res.status(400).send(error)
+//   }
+// })
+
 
 
 
