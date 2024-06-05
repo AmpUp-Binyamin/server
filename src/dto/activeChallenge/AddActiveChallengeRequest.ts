@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import IActiveChallenge, { IActiveCard } from "../../interfaces/IActiveChallenge";
+import IMedia from "../../interfaces/IMedia";
 
 export default class AddActiveChallengeRequest implements IActiveChallenge {
     coach: ObjectId;
@@ -7,7 +8,7 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
     invited: string[];
     participants: ObjectId[];
     startDate: Date;
-    cards: AddActiveCardRequest[]
+    cards: IActiveCard[]
 
     constructor(
         coach: ObjectId,
@@ -15,7 +16,7 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
         invited: string[],
         participants: ObjectId[],
         startDate: Date,
-        cards: AddActiveCardRequest[]
+        cards: IActiveCard[]
     ) {
         this.coach = coach;
         this.challenge = challenge;
@@ -32,7 +33,7 @@ class AddActiveCardRequest implements IActiveCard {
     challengeDay: number;
     coins: number;
     answerValue: string;
-    answerMedia?: string[];
+    answerMedia?: IMedia[];
 
     constructor(
         member: ObjectId,
@@ -40,7 +41,7 @@ class AddActiveCardRequest implements IActiveCard {
         challengeDay: number,
         coins: number,
         answerValue: string,
-        answerMedia?: string[]
+        answerMedia?: IMedia[]
     ) {
         this.member = member;
         this.card = card;
