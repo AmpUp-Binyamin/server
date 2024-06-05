@@ -5,20 +5,35 @@ import ArchiveService from "../services/ArchiveService";
 
 const router = Router()
 
-router.get('/:userId/pastChallenges', async (req: Request, res: Response) => {
+router.get('/pastChallenges', async (req: Request, res: Response) => {
     try {
-        let memberChallenges = await ArchiveService.getMemberChallenges(req.params.userId)
+        let userId = req.body.userId
+        let memberChallenges = await ArchiveService.getMemberChallenges(userId)
         res.send(memberChallenges)
     } catch (error) {
+        console.log({ error });
+        res.status(400).send(error)
+    }
+})
+
+router.get('/:challengeId', async (req: Request, res: Response) => {
+    try {
+        let challenge = await ArchiveService.getChallenge(req.params.challengeId)
+        if (challenge) {
+            res.send(challenge)
+        }
+    } catch (error) {
+        console.log({ error });
+
         res.status(400).send(error)
     }
 })
 
 router.get('/:challengeId/:cardId', async (req: Request, res: Response) => {
     try {
-        let card = await ArchiveService.getCard(req.params.challengeId, req.params.cardId) 
-        if(card){
-            res.send(card)  
+        let card = await ArchiveService.getCard(req.params.challengeId, req.params.cardId)
+        if (card) {
+            res.send(card)
         }
     } catch (error) {
         res.status(400).send(error)

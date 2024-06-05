@@ -40,6 +40,7 @@ export default class ActiveChallegeService {
                 "startDate participants"
             );
         if (!activeChallenge) return null;
+
         if (!("_id" in activeChallenge.challenge)) return null;
         const duration = (activeChallenge.challenge as IChallenge)
             .duration as number;
@@ -123,6 +124,7 @@ export default class ActiveChallegeService {
         let num = challenge.participants.length;
         let user =
             challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
+        console.log({ user });
 
         return await this.memberController.readOne(String(user));
     }
@@ -141,7 +143,7 @@ export default class ActiveChallegeService {
         // מציאת האתגר בדטאבייס
         // מציאת האתגר הפעיל
         let activeChallenge = await this.controller.readOne(activeChallengeId);
-        if (!activeChallenge)throw { code: 400, msg: "Active challenge not found" };
+        if (!activeChallenge) throw { code: 400, msg: "Active challenge not found" };
         let challenge = await this.challengeController.readOne(String(activeChallenge.challenge))
         if (!challenge) throw { code: 400, msg: "challenge not found" };
 
@@ -158,7 +160,7 @@ export default class ActiveChallegeService {
             challengeDay: card.day,
             coins: card.coins,
             answerValue: answer.value,
-            answerMedia: [], //TODO: handle files
+            answerMedia: [answer.media],
         };
 
         console.log("value: ", answer.value);
@@ -169,7 +171,46 @@ export default class ActiveChallegeService {
         return cardToAdd;
     }
 
+    static async joinActiveChallenge(memberId: string | ObjectId, activeChallengeId: string | ObjectId) {
+        const member = await this.memberController.readOne(memberId)
+        const activeChallengeResult = await this.controller.readSelect({ _id: activeChallengeId }, '-cards')
+        const activeChallenge = activeChallengeResult[0]
+        if (member && activeChallenge) {
 
+            const inviteExists = member.myInvites.find(invite => invite.toString() === activeChallengeId)
+            if (inviteExists) {
+                const updatedMyInvites = member.myInvites.filter(invite => invite.toString() !== activeChallengeId)
+                const updatedActiveChallenges = [...member.myActiveChallenge, activeChallengeId]
+                const challengeId = (activeChallenge as IActiveChallenge).challenge
+                const updatedChallenges = [...member.myChallenge, challengeId]
+
+                const updatedInvited = (activeChallenge as IActiveChallenge).invited.filter(email => email !== member.email)
+
+                await this.memberController.update(memberId, {
+                    myInvites: updatedMyInvites as ObjectId[],
+                    myActiveChallenge: updatedActiveChallenges as ObjectId[],
+                    myChallenge: updatedChallenges as ObjectId[]
+                })
+
+                const result = (activeChallenge as IActiveChallenge).participants.find(memberId => memberId.toString() === (member._id as IMember).toString())
+
+                if (!result) {
+                    await this.controller.update(activeChallengeId as string, {
+                        invited: updatedInvited,
+                        $push: { participants: member._id }
+                    })
+                    return { success: true }
+                } else {
+                    return { success: false }
+                }
+
+            } else {
+                return { success: false, msg: 'member does not have a valid invite to this challenge' }
+            }
+        } else {
+            return { success: false, msg: 'member or challenge not found' }
+        }
+    }
 }
 // class checkWhyGetFeedback(userId: ObjectId, challenge: any): Promise<>{
 

@@ -1,7 +1,24 @@
-import mongoose from 'mongoose'
+import mongoose, { ObjectId } from 'mongoose'
 import IMember from '../interfaces/IMember'
 import INotifications from '../interfaces/INotifications'
 import IStoreItem from '../interfaces/IStoreItem'
+import IMemberItem from '../interfaces/IMemberItem'
+
+export interface IMyCoins {
+    challengeId: ObjectId | string
+    coins: number
+}
+
+const myCoinsSchema = new mongoose.Schema<IMyCoins>({
+    challengeId: {
+        type: String,
+        required: true
+    },
+    coins: {
+        type: Number,
+        default: 0
+    }
+})
 
 const notificationsSchema = new mongoose.Schema<INotifications>({
     challenge: {
@@ -9,7 +26,7 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         required: true
     },
     type: {
-        type: String, 
+        type: String,
         required: true,
         enum: ["join", "sent support", "sent message"]
     },
@@ -21,12 +38,32 @@ const notificationsSchema = new mongoose.Schema<INotifications>({
         type: String,
         required: true
     },
-    
+
     sender: {
         type: mongoose.SchemaTypes.ObjectId,
         required: true
     },
 })
+
+const memberItem = new mongoose.Schema<IMemberItem>({
+    cardId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        required: true
+    },
+    challengeId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'challenge',
+        required: true
+    },
+    isActive: {
+        type: Boolean,
+        default: false
+    },
+    activeDate: {
+        type: Date
+    }
+})
+
 
 const memberSchema = new mongoose.Schema<IMember>({
     fullName: {
@@ -57,16 +94,24 @@ const memberSchema = new mongoose.Schema<IMember>({
     myChallenge: [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: 'challenge',
-        required: true
     }],
-    myItems:[{
-        type: mongoose.SchemaTypes.ObjectId, 
+    myActiveChallenge: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'activeChallenge',
+    }],
+    myInvites: [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'activeChallenge',
+    }],
+    myItems: [{
+        type: mongoose.SchemaTypes.ObjectId,
     }],
     coins: {
         type: Number,
         required: true,
         default: 0
     },
+    myCoins: [myCoinsSchema],
     notifications: [notificationsSchema]
 })
 

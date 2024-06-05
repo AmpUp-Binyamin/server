@@ -1,11 +1,13 @@
 import { FilterQuery, Document } from "mongoose";
-import { ObjectId } from "mongodb";
+import { ObjectId } from "mongoose";
 import IActiveChallenge from '../interfaces/IActiveChallenge';
 import IController from "../interfaces/IController";
 import IMember from "../interfaces/IMember";
 import INotifications from "../interfaces/INotifications";
 import ActiveChallengeModel from '../models/ActiveChallengeModel';
-import { default as MemberModel, default as NotificationModel } from "../models/MemberModel";
+import { IMyCoins, default as MemberModel, default as NotificationModel } from "../models/MemberModel";
+import IStoreItem from "../interfaces/IStoreItem";
+import IMemberItem from "../interfaces/IMemberItem";
 
 export default class MemberController implements IController<IMember> {
     async create(data: IMember): Promise<IMember> {
@@ -14,7 +16,7 @@ export default class MemberController implements IController<IMember> {
     async read(filter: FilterQuery<IMember>): Promise<IMember[]> {
         return await MemberModel.find(filter)
     }
-    async readOne(id: string): Promise<IMember | null> {
+    async readOne(id: string | ObjectId): Promise<IMember | null> {
         return await MemberModel.findById(id)
     }
     async readWithChallenge(id: string): Promise<IMember | null> {
@@ -70,15 +72,15 @@ export default class MemberController implements IController<IMember> {
             $pull: { notifications: { _id: notificationId } },
         });
     }
-    async update(id: string, data: Partial<IMember>): Promise<IMember | null> {
+    async update(id: string | ObjectId, data: Partial<IMember>): Promise<IMember | null> {
         await MemberModel.updateOne({ _id: id }, data);
         return await this.readOne(id);
     }
-    async updateStoreItem(id: string, data: string): Promise<IMember | null> {
+    async updateStoreItem(id: string, data: IMemberItem): Promise<IMember | null> {
         return await MemberModel.findByIdAndUpdate(id, { $push: { myItems: data } });
     }
-    async updateCoins(id: string, data: number): Promise<IMember | null> {
-        return await MemberModel.findByIdAndUpdate(id, { coins: data });
+    async updateCoins(id: string, data: IMyCoins[]): Promise<IMember | null> {
+        return await MemberModel.findByIdAndUpdate(id, { myCoins: data });
     }
     async save(data: IMember | null): Promise<void> {
         await (data as Document)?.save();

@@ -1,7 +1,7 @@
 import MemberController from "../controllers/MemberControllers";
 import activeChallengeController from "../controllers/ActiveChallengeController"
 import { ObjectId } from "mongoose";
-import { createToken}  from "../middleware/auth"
+import { createToken } from "../middleware/auth"
 import { Code } from "mongodb";
 
 export default class AuthService {
@@ -12,7 +12,6 @@ export default class AuthService {
         let email = body.email
 
         let member = (await this.MemberController.read({ email }))[0]
-        console.log({ member: member });
         let myActivChallenge: any = []
         if (member) {
             if (!member.fullName) { await this.MemberController.update(member.id, { fullName }) }
@@ -21,16 +20,14 @@ export default class AuthService {
             await Promise.all(myChallenge.map(async challengeId => {
                 let memberActivChaleng = await AuthService.checkActivChaleng(challengeId as ObjectId)
                 if (memberActivChaleng.length > 0) {
-                    myActivChallenge.push( memberActivChaleng[0] )
+                    myActivChallenge.push(memberActivChaleng[0])
                 }
             }))
         }
 
         let invited = await AuthService.findInvitedActivChaleng(email)
-        
-        
         if (invited.length > 0) {
-            console.log({invited:invited});
+            console.log({ invited: invited });
             if (!member) {
                 await this.MemberController.create({
                     email: email,
@@ -38,18 +35,21 @@ export default class AuthService {
                     img: img,
                     myChallenge: [],
                     coins: 0,
-                    notifications: []
+                    notifications: [],
+                    myActiveChallenge: [],
+                    myInvites: [],
+                    myCoins: [],
                 })
             }
             myActivChallenge.push({ invited })
         }
 
         member = (await this.MemberController.read({ email }))[0]
-       if (member == undefined) {throw({status:407,msg:"mamber not exist"})}
-        console.log({ member: member });
-        const token = createToken( {userId:member.id ,userPermission: "user"})
+        if (member == undefined) { throw ({ status: 407, msg: "mamber not exist" }) }
+        const token = createToken({ userId: member.id, userPermission: "user" })
         return ({ myActivChallenge, member, token })
     }
+
     static activeChallengeController = new activeChallengeController();
 
     static async checkActivChaleng(challenge: ObjectId) {
