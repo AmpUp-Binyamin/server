@@ -1,4 +1,4 @@
-import { ObjectId } from "mongoose"
+import { ObjectId } from "mongodb"
 import UserAuth from "../../middleware/UserAuth"
 
 export default class UpdateMemberRequest extends UserAuth {

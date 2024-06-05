@@ -1,5 +1,5 @@
-import { ObjectId as MongoDBObjectId } from 'mongodb';
-import { ObjectId, isValidObjectId } from "mongoose";
+import {  ObjectId } from 'mongodb';
+import {  isValidObjectId } from "mongoose";
 import activeChallengeController from "../controllers/ActiveChallengeController";
 import ChallengeController from "../controllers/ChallengeController";
 import MemberController from "../controllers/MemberControllers";
@@ -113,6 +113,7 @@ export default class ActiveChallegeService {
             participants: [],
             startDate: data.startDate,
             cards: [],
+            store: []
         };
         return await this.controller.create(newActiveChallenge);
     }
@@ -155,7 +156,7 @@ export default class ActiveChallegeService {
         // יצירת הקלף להוספה לאתגר הפעיל
         const cardToAdd: IActiveCard = {
             member: answer.userId,
-            card: new MongoDBObjectId(card._id),
+            card: new ObjectId(card._id),
             challengeDay: card.day,
             coins: card.coins,
             answerValue: answer.value,
@@ -176,9 +177,9 @@ export default class ActiveChallegeService {
         const activeChallenge = activeChallengeResult[0]
         if (member && activeChallenge) {
 
-            const inviteExists = member.myInvites.find(invite => invite.toString() === activeChallengeId)
+            const inviteExists = member.myInvites.find(invite => invite.toString() === activeChallengeId.toString())
             if (inviteExists) {
-                const updatedMyInvites = member.myInvites.filter(invite => invite.toString() !== activeChallengeId)
+                const updatedMyInvites = member.myInvites.filter(invite => invite.toString() !== activeChallengeId.toString())
                 const updatedActiveChallenges = [...member.myActiveChallenge, activeChallengeId]
                 const challengeId = (activeChallenge as IActiveChallenge).challenge
                 const updatedChallenges = [...member.myChallenge, challengeId]
@@ -186,15 +187,15 @@ export default class ActiveChallegeService {
                 const updatedInvited = (activeChallenge as IActiveChallenge).invited.filter(email => email !== member.email)
 
                 await this.memberController.update(memberId, {
-                    myInvites: updatedMyInvites as ObjectId[],
+                    myInvites: updatedMyInvites as ObjectId [],
                     myActiveChallenge: updatedActiveChallenges as ObjectId[],
                     myChallenge: updatedChallenges as ObjectId[]
                 })
 
-                const result = (activeChallenge as IActiveChallenge).participants.find(memberId => memberId.toString() === (member._id as IMember).toString())
+                const result = (activeChallenge as IActiveChallenge).participants.find(memberId => memberId.toString() === (member as IMember)._id?.toString())
 
                 if (!result) {
-                    await this.controller.update(activeChallengeId as string, {
+                    await this.controller.update(activeChallengeId.toString(), {
                         invited: updatedInvited,
                         $push: { participants: member._id }
                     })

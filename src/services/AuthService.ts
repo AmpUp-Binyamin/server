@@ -28,7 +28,7 @@ export default class AuthService {
         //אם נמצא מוזמן ולא קיים בממבר אז יוצר ממבר 
         let invited = await AuthService.findInvitedActivChaleng(email)
         if (invited.length > 0) {
-           
+
             if (!member) {
                 await this.MemberController.create({
                     email: email,
@@ -60,22 +60,21 @@ export default class AuthService {
     }
     static async getMyInvitesAndMyActiveChallenge(email: string) {
         let member = (await this.MemberController.read({ email }))[0]
-        let myActivChallenge = member.myActiveChallenge
+        let myActivChallenge = member.myActiveChallenge as unknown as ObjectId[]
         let myChallenge = member.myChallenge
-        let myInvites = member.myInvites as ObjectId[] || []
+        let myInvites = member.myInvites
         let invitedInActivChallenge = await AuthService.findInvitedActivChaleng(email)
         if (invitedInActivChallenge.length > 0) {
             invitedInActivChallenge.forEach(i => {
-                
-                if ( !myInvites.find(a => a == i.id) &&
+
+                if (!myInvites.find(a => a == i.id) &&
                     !myActivChallenge.find(a => a == i.id) &&
-                    !myChallenge.find(a => a == i.id))
-                  { myInvites.push(i.id as ObjectId)}
+                    !myChallenge.find(a => a == i.id)) { myInvites.push(i.id) }
             })
         }
-        member.myInvites = myInvites
-        await this.MemberController.update(member.id,  {myInvites})
-        let activChallengeOn: (Schema.Types.ObjectId | IActiveChallenge)[] = []
+
+        await this.MemberController.update(member.id, { myInvites })
+        let activChallengeOn: ObjectId[] = []
         await Promise.all(myActivChallenge.map(async id => {
             let activChallenge = await AuthService.findByIdActivChaleng(id as ObjectId)
             let challengeID = activChallenge?.challenge
@@ -95,7 +94,7 @@ export default class AuthService {
         return ({ member, invites: member.myInvites, myActivChallenge: activChallengeOn, token })
     }
     static async findByIdActivChaleng(id: ObjectId) {
-        return await this.activeChallengeController.readOne(id)
+        return await this.activeChallengeController.readOne(id.toString())
     }
     static async findByIdChaleng(id: ObjectId) {
         return await this.ChallengeController.readOne(id)
