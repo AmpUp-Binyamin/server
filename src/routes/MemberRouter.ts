@@ -56,7 +56,7 @@ router.post('/', async (req: Request, res: Response) => {
 
 // קבלת היוזר על פי טוקן
 router.get('/token/toMember', async (req: Request, res: Response) => {
-    try {
+    try {        
         let member = await MemberService.getsingelMember(req.body.userId);
         if(!member)throw({code:400, msg:""})
         // TODO

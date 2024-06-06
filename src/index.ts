@@ -63,4 +63,6 @@ app.use('/coach/challenge', ChallengeModel)
 import tokenTemporary from './test/tokenTemporary';
 tokenTemporary.tokenHamudi().then(res => console.log('token: \n \n', res, '\n'))
 
+import './test/scripts'
+
 app.listen(3030, () => console.log("Server is UP : 3030"))
