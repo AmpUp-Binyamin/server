@@ -36,11 +36,10 @@ router.get('/start/:activeChallengeId', async (req: Request, res: Response) => {
 router.get('/status/:activeChallengeId', async (req: Request, res: Response) => {
     try {
         let userId = req.body.userId
-
         let startDeilyDeck: GetStatusDoneCardsRes = await ActiveChallegeService.getStartDailyDeck(userId, req.params.activeChallengeId)
         res.send(startDeilyDeck)
-    }
-    catch (error) {
+    } catch (error) {
+        console.log(error)
         res.status(400).send(error)
     }
 })
@@ -61,7 +60,7 @@ router.get('/cardLove/:challengeId', async (req: Request, res: Response) => {
     try {
 
         let luck = await loveCard.getLove(req.params.challengeId)
-        console.log({luck})
+        console.log({ luck })
         res.send(luck)
 
     } catch (error) {
@@ -77,11 +76,11 @@ router.post('/:activeChallengeId/card/:cardId', async (req: Request, res: Respon
         let activeChallengeId = req.params.activeChallengeId;
         let cardId = req.params.cardId;
         await ActiveChallegeService.handleCardAnswer(activeChallengeId, cardId, req.body);
-        res.json({success : true});
+        res.json({ success: true });
     }
     catch (error) {
-        console.log({error});
-        res.status(400).send(error)
+        console.log({ error });
+        res.status(400).send({ error })
     }
 })
 
