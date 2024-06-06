@@ -77,10 +77,10 @@ router.post('/:activeChallengeId/card/:cardId', async (req: Request, res: Respon
         let activeChallengeId = req.params.activeChallengeId;
         let cardId = req.params.cardId;
         await ActiveChallegeService.handleCardAnswer(activeChallengeId, cardId, req.body);
-        res.send('sucsses');
+        res.json({success : true});
     }
     catch (error) {
-        console.log(error);
+        console.log({error});
         res.status(400).send(error)
     }
 })
