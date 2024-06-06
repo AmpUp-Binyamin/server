@@ -10,15 +10,15 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
     participants: ObjectId[];
     startDate: Date;
     cards: IActiveCard[]
-    store: IStoreItem[];
-
+    store?: IStoreItem[]
     constructor(
         coach: ObjectId,
         challenge: ObjectId,
         invited: string[],
         participants: ObjectId[],
         startDate: Date,
-        cards: IActiveCard[]
+        cards: IActiveCard[],
+        store: IStoreItem[]
     ) {
         this.coach = coach;
         this.challenge = challenge;
@@ -26,7 +26,7 @@ export default class AddActiveChallengeRequest implements IActiveChallenge {
         this.participants = participants;
         this.startDate = startDate;
         this.cards = cards;
-        this.store = [];
+        this.store = store;
     }
 }
 

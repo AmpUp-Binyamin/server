@@ -15,7 +15,7 @@ export default interface IActiveChallenge extends Partial<Document> {
     participants: ObjectId[] | Partial<IMember>[] | IMember[]
     startDate: Date
     cards: IActiveCard[]
-    store: IStoreItem[],
+    store?: IStoreItem[],
 }
 
 //----sub Interface for each answered card within the running challenge
