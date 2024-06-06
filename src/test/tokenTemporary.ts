@@ -5,7 +5,7 @@ export default class tokenTemporary {
 
     static async tokenHamudi(): Promise<string | undefined> {
 
-        let member = (await this.memberController.read({ email: 'lliieellbb2@gmail.com' }))[0];
+        let member = (await this.memberController.read({ email: 'miriampuny16@gmail.com' }))[0];
         if (member._id) return createToken({ userId: String(member._id), userPermission: "user" })
     }
 }

@@ -76,7 +76,6 @@ export default class ActiveChallegeService {
 
         const numCardsOfDay: number[] = []
         const completedDays: number[] = []
-
         cards?.forEach(card => {
             (numCardsOfDay[card.day - 1] === undefined) ? numCardsOfDay[card.day - 1] = 1 : ++(numCardsOfDay[card.day - 1])
         })
