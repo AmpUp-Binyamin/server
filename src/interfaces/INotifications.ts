@@ -7,5 +7,6 @@ export default interface INotifications extends Partial<Document> {
     title:string
     content:string
     isRead:Boolean
-    sender:ObjectId
+    sender: ObjectId | string
+    date?: Date
 }

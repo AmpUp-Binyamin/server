@@ -1,4 +1,4 @@
-import { Document, FilterQuery, UpdateQuery } from "mongoose";
+import { Document, FilterQuery, ObjectId, UpdateQuery } from "mongoose";
 import IChallenge from "../interfaces/IChallenge";
 import IController from "../interfaces/IController";
 import ChallengeModel from "../models/ChallengeModel";
@@ -39,7 +39,7 @@ export default class ChallengeController implements IController<IChallenge> {
         return await challenge.exec()
     }
 
-    async readOne(id: string): Promise<IChallenge | null> {
+    async readOne(id: string| ObjectId): Promise<IChallenge | null> {
         return await ChallengeModel.findById(id)
     }
 
