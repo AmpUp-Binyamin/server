@@ -50,18 +50,13 @@ const storeItemSchema = new mongoose.Schema<IStoreItem>({
 const mediaSchema = new mongoose.Schema<IMedia>({
     type: {
         type: String,
-        required: true,
         enum: ["image", "video", "audio", "document", "other"]
     },
     fileName: {
         type: String,
-        required: true,
-        unique: true
     },
     path: {
         type: String,
-        required: true,
-        unique: true
     },
     size: {
         type: String,
