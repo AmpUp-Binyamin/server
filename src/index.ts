@@ -17,6 +17,8 @@ app.use(express.json())
 import AuthRouter from './routes/AuthRouter'
 app.use('/auth', AuthRouter)
 
+import CoachRouter from './routes/CoachRouter'
+app.use('/coach', CoachRouter)
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth';
@@ -27,7 +29,6 @@ app.use('*', verifyToken)
 // ################# ROUTERS ######################
 // ################################################
 import UserRouter from './routes/UserRouter'
-import CoachRouter from './routes/CoachRouter'
 import NotificationRoutr from './routes/NotificationRouter'
 import FeedBackRouter from './routes/FeedBackRouter'
 import ActiveChallengeRouter from './routes/ActiveChallengeRouter'
@@ -43,7 +44,6 @@ import TeamRouter from './routes/TeamRouter'
 import ChallengeModel from './coach/router/challengeRouter';
 
 app.use('/user', UserRouter)
-app.use('/coach', CoachRouter)
 app.use('/activeChallenge', ActiveChallengeRouter)
 app.use('/store', StoreRouter)
 app.use('/archive', ArchiveRouter)

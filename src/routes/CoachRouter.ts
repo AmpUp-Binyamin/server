@@ -11,9 +11,11 @@ import CardService from "../coach/service/cardService";
 const router = Router()
 
 
-router.get('/:userId', verifyTokenCoach, async (req: Request, res: Response) => {
+router.get('/', verifyTokenCoach, async (req: Request, res: Response) => {
     try {
-        let coach = await CoachService.getSingleCoach(req.params.userId)
+        console.log('********00*********',req.body);
+        
+        let coach = await CoachService.getSingleCoach(req.body.userId)
         res.send(coach)
     } catch (error) {
         res.status(400).send(error)
