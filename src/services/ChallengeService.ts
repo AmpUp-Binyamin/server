@@ -5,6 +5,9 @@ import { DaysDoneHelper } from "../helpers/DaysDoneHelper";
 
 
 export default class ChallengeService {
+    static getAllChallengesOfCoach(coachId: any) {
+        throw new Error("Method not implemented.");
+    }
     static controller = new ChallengeController()
     static DaysDoneHelper = new DaysDoneHelper()
     // פונ שמקבלת פרטי אתגר לא פעיל לפי מה שצריך להציג במסך של הצטרפות לאתגר
@@ -27,4 +30,11 @@ export default class ChallengeService {
         }
     }
 }
+//get all challenges of coach
+export async function getAllChallengesOfCoach(id: string) {
+    return await ChallengeService.controller.read({ coach: id },)
+}
+
+
+
 // ChallengeService.getChallengeCardAmountPerDay('6656df1b8437151db0cce4ee')

@@ -11,7 +11,7 @@ export default class CoachController implements IController<ICoach> {
         return await CoachModel.find(filter)
     }
     async readOne(id: string): Promise<ICoach | null> {
-        return await CoachModel.findById(id)
+        return await CoachModel.findById(id).populate('myChallenges')
     }
     async update(id: string, data: Partial<ICoach>): Promise<ICoach | null> {
         await CoachModel.updateOne({ _id: id }, data)

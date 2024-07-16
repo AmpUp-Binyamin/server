@@ -1,5 +1,6 @@
 import { Request, Response, Router } from "express";
 import ChallengeService from "../services/ChallengeService";
+import { verifyTokenCoach } from "../middleware/coachAuth";
 
 const router = Router()
 
@@ -13,7 +14,19 @@ router.get('/start/:challengeId', async (req:Request, res:Response) => {
         res.status(400).send(error)
     }
 })
+//get all challenges of coach
+router.get('/coach/', verifyTokenCoach, async (req:Request, res:Response) => {
+    try{
+        let challenges = await ChallengeService.getAllChallengesOfCoach(req.body.coachId)
+        res.send(challenges)
+    }
+    catch(error){
+        console.log(error);
+        res.status(400).send(error)
+    }
+})
 
+//get all challenges of user
 
 
 

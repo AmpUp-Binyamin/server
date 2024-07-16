@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node ./dist/index.js",
-    "dev": "tsc && npm start",
-    "watch": "nodemon",
+    "dev-prev": "tsc && npm start",
+    "dev": "nodemon",
     "seed": "ts-node ./mockData/seed.ts"
   },
   "keywords": [],

@@ -12,9 +12,7 @@ const router = Router()
 
 
 router.get('/', verifyTokenCoach, async (req: Request, res: Response) => {
-    try {
-        console.log('********00*********',req.body);
-        
+    try {        
         let coach = await CoachService.getSingleCoach(req.body.userId)
         res.send(coach)
     } catch (error) {
