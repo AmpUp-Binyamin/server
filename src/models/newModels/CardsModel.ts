@@ -10,9 +10,7 @@ const cardSchema = new Schema<ICard>({
     media: [{ type: Schema.Types.ObjectId, ref: 'Media' }],
     coins: { type: Number, required: true },
     image: String,
-    drawProbability: Number,
-    winProbability: Number,
-    coach: { type: Schema.Types.ObjectId, ref: 'Coach', required: true }
+    coach: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 export default mongoose.model<ICard>('Card', cardSchema);

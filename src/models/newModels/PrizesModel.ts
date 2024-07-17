@@ -11,8 +11,7 @@ const prizeSchema = new Schema<IPrize>({
     quantity: { type: Number, required: true },
     cardType: { type: String, required: true },
     isActive: { type: Boolean, required: true },
-    isAction: { type: Boolean, required: true },
-    coach: { type: Schema.Types.ObjectId, ref: 'Coach', required: true }
+    coach: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 export default mongoose.model<IPrize>('Prize', prizeSchema);

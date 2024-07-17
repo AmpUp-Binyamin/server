@@ -1,3 +1,4 @@
+// interfaces/IChallenge.ts
 import { Document, ObjectId } from 'mongoose';
 
 export interface IChallenge extends Document {

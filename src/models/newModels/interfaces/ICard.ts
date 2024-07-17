@@ -9,7 +9,5 @@ export interface ICard extends Document {
     media: ObjectId[];
     coins: number;
     image?: string;
-    drawProbability?: number;
-    winProbability?: number;
     coach: ObjectId;
 }

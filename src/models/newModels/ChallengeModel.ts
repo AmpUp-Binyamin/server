@@ -1,4 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
+// models/Challenge.ts
+import mongoose, { Schema } from 'mongoose';
 import { IChallenge } from './interfaces/IChallenge';
 
 const challengeSchema = new Schema<IChallenge>({
@@ -8,7 +9,7 @@ const challengeSchema = new Schema<IChallenge>({
     team: { type: Schema.Types.ObjectId, ref: 'Team', required: true },
     deck: { type: Schema.Types.ObjectId, ref: 'Deck', required: true },
     startDate: { type: Date, required: true },
-    coach: { type: Schema.Types.ObjectId, ref: 'Coach', required: true }
+    coach: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 
 export default mongoose.model<IChallenge>('Challenge', challengeSchema);

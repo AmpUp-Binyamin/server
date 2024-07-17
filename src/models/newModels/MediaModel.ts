@@ -1,10 +1,12 @@
-import { Document, Schema } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
+import { IMedia } from './interfaces/IMedia';
 
-export interface IMedia extends Document {
-    fileName: string;
-    link: string;
-    size: string;
-    type: string;
-    coach: { type: Schema.Types.ObjectId, ref: 'Coach', required: true }
+const mediaSchema = new Schema<IMedia>({
+    fileName: { type: String, required: true },
+    link: { type: String, required: true },
+    size: { type: String, required: true },
+    type: { type: String, required: true },
+    coach: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+});
 
-}
+export default mongoose.model<IMedia>('Media', mediaSchema);

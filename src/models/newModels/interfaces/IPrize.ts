@@ -10,6 +10,5 @@ export interface IPrize extends Document {
     quantity: number;
     cardType: string;
     isActive: boolean;
-    isAction: boolean;
     coach: ObjectId;
 }

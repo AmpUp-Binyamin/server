@@ -6,5 +6,4 @@ export interface IMedia extends Document {
     size: string;
     type: string;
     coach: ObjectId;
-
 }
