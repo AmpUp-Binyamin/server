@@ -1,4 +1,4 @@
-import FeedBackController from "../controllers/FeedBackComtroller";
+import FeedBackController from "../controllers/FeedBackController";
 import AddFedBackRequest from "../dto/FeedBack/AddFeedBackRequest";
 import IFeedBack from "../interfaces/IFeedBack";
 

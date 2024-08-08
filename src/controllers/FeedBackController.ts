@@ -1,7 +1,8 @@
-import { FilterQuery } from "mongoose";
-import IFeedBack from "../interfaces/IFeedBack";
-import FeedBackModel from "../models/FeedBackModel";
-import IController from "../interfaces/IController";
+// import { ObjectId } from 'mongoose';
+import { FilterQuery } from 'mongoose';
+import IController from '../interfaces/IController';
+import IFeedBack from '../interfaces/IFeedBack';
+import FeedBackModel from '../models/FeedBackModel'
 
 export default class FeedBackController implements IController<IFeedBack> {
     async create(data: IFeedBack): Promise<IFeedBack> {
@@ -21,3 +22,5 @@ export default class FeedBackController implements IController<IFeedBack> {
         throw new Error('Method not implemented.');
     }
 }
+
+

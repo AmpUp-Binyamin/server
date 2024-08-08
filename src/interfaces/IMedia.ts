@@ -1,10 +1,9 @@
-import Media from "../types/Media";
+import { Document, ObjectId } from 'mongoose';
 
-export default interface IMedia {
-    _id?:string;
-    type?: string; // "image", "video", "audio", "document", 
-    fileName?: string;
-    path?: string;
-    content?: string;
-    size?: number;
+export default interface IMedia extends Document {
+    fileName: string;
+    link: string;
+    size: string;
+    type: string;
+    coach: ObjectId;
 }

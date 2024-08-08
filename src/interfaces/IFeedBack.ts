@@ -1,5 +1,5 @@
 import { Document } from "mongoose"
-export default interface IFeedBack extends Partial<Document> {
+export default interface IFeedBack extends Document {
     subject: string
     name : string
     email: string

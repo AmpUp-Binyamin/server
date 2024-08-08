@@ -1,5 +1,4 @@
 import { FilterQuery } from "mongoose"
-import IUser from "./IUser"
 
 export default interface IController<T> {
 

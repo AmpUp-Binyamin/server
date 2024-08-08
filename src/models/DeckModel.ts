@@ -1,5 +1,5 @@
 import mongoose, { Schema, Document } from 'mongoose';
-import { IDeck, IDeckCard } from './interfaces/IDeck';
+import { IDeck, IDeckCard } from '../interfaces/IDeck';
 
 const deckCardSchema = new Schema<IDeckCard>({
     card: { type: Schema.Types.ObjectId, ref: 'Card', required: true },

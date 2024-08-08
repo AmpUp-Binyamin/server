@@ -1,5 +1,5 @@
-import mongoose, { Schema, Document } from 'mongoose';
-import { IPrize } from './interfaces/IPrize';
+import mongoose, { Schema } from 'mongoose';
+import  IPrize from '../interfaces/IPrize';
 
 const prizeSchema = new Schema<IPrize>({
     name: { type: String, required: true },

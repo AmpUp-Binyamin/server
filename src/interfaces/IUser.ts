@@ -1,9 +1,37 @@
-import { Document } from "mongoose"
-import Permission from "../types/Permission"
+import { Document, ObjectId } from 'mongoose';
 
-export default interface IUser extends Partial<Document> {
-    fullName: string
-    email: string
-    permission: Permission
-    password?: string
+export interface IUserChallenge {
+    challenge: ObjectId;
+    coach: ObjectId;
+    isActive: boolean;
+    spentCoins: number;
+    earnedCoins: number;
+    prizes: ObjectId[];
+    joinDate?: Date;
+    feed: {
+        sender: ObjectId;
+        date: Date;
+        message: string;
+        isThanks: boolean;
+    }[];
+    lastSeen: Date;
+    receivedThanks: {
+        sender: ObjectId;
+        date: Date;
+    }[];
+}
+
+export interface IUser extends Document {
+    status: 'User' | 'Coach';
+    fullName: string;
+    email: string;
+    phone: string;
+    image?: string;
+    motto?: string;
+    link?: string;
+    joinDate: Date;
+    lastSeen: Date;
+    linksToSocialNetwork: string[];
+    challenges: IUserChallenge[];
+    coaches: ObjectId[];
 }

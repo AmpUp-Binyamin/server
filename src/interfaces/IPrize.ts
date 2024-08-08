@@ -1,6 +1,6 @@
 import { Document, ObjectId } from 'mongoose';
 
-export interface IPrize extends Document {
+export default interface IPrize extends Document {
     name: string;
     description: string;
     image: string;

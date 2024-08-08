@@ -1,7 +1,7 @@
 // import { ObjectId } from 'mongoose';
 import { FilterQuery } from 'mongoose';
 import IController from '../interfaces/IController';
-import IUser from '../interfaces/IUser';
+import {IUser} from '../interfaces/IUser';
 import UserModel from '../models/UserModel'
 
 export default class UserController implements IController<IUser> {
