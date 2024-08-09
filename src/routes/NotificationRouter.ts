@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import NotificationService from "../services/notificationService";
+import NotificationService from "../services/old/notificationService";
 import { Mapper } from "../helpers/Mapper";
 import { CreateCoachRequest } from "../dto/coach/CoachRequest";
 

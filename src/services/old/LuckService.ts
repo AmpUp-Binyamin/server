@@ -1,19 +1,26 @@
-import ChallengeController from "../controllers/ChallengeController";
-import LuckResponse from "../dto/luck/LuckResponse";
-import { RandomNumberGenerator } from "../helpers/luck";
+import ChallengeController from "../../controllers/ChallengeController";
+import LuckResponse from "../../dto/luck/LuckResponse";
+import { RandomNumberGenerator } from "../../helpers/luck";
 import { ObjectId } from "mongoose";
 import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
 export class LuckHelper {
-  static RandomGenerator = new RandomNumberGenerator()
-  static shapes: string[] = ["cherry", "diamond", "bell", "clover", "currency", "lemon"];
+  static RandomGenerator = new RandomNumberGenerator();
+  static shapes: string[] = [
+    "cherry",
+    "diamond",
+    "bell",
+    "clover",
+    "currency",
+    "lemon",
+  ];
   // // דובדבן יהלום פעמון תלתן מטבע לימון
   static getShapes = [
-    { "cherry": 20 },
-    { "diamond": 100 },
-    { "bell": 30 },
-    { "clover": 40 },
-    { "currency": 50 },
-    { "lemon": 10 },
+    { cherry: 20 },
+    { diamond: 100 },
+    { bell: 30 },
+    { clover: 40 },
+    { currency: 50 },
+    { lemon: 10 },
   ];
   static getLottery(drawProbability: number): boolean {
     return drawProbability >= this.RandomGenerator.getRandom(0, 1);
@@ -68,6 +75,4 @@ export default class LuckService {
     }
     return LuckHelper.getWin(chance.winProbability);
   }
-
-
 }
