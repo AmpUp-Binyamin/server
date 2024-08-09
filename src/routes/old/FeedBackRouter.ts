@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import FeedBackService from "../services/old/FeedBackService";
-import AddFedBackRequest from "../dto/FeedBack/AddFeedBackRequest";
-import { Mapper } from "../helpers/Mapper";
+import FeedBackService from "../../services/old/FeedBackService";
+import AddFedBackRequest from "../../dto/FeedBack/AddFeedBackRequest";
+import { Mapper } from "../../helpers/Mapper";
 const router = Router();
 
 router.get("/:feedbackId", async (req: Request, res: Response) => {

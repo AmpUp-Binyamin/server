@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import ChallengeService from "../services/old/ChallengeService";
-import { verifyTokenCoach } from "../middleware/coachAuth";
+import ChallengeService from "../../services/old/ChallengeService";
+import { verifyTokenCoach } from "../../middleware/coachAuth";
 
 const router = Router();
 

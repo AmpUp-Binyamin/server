@@ -1,5 +1,5 @@
 import { ObjectId } from "mongoose";
-import AuthService from "../services/old/AuthService";
+import AuthService from "../../services/old/AuthService";
 import { Request, Response, Router } from "express";
 import IMember from "../interfaces/IMember";
 const router = Router();

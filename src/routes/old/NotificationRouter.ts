@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import NotificationService from "../services/old/notificationService";
-import { Mapper } from "../helpers/Mapper";
-import { CreateCoachRequest } from "../dto/coach/CoachRequest";
+import NotificationService from "../../services/old/notificationService";
+import { Mapper } from "../../helpers/Mapper";
+import { CreateCoachRequest } from "../../dto/coach/CoachRequest";
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express";
-import LuckService from "../services/old/LuckService";
+import LuckService from "../../services/old/LuckService";
 
 const router = Router();
 

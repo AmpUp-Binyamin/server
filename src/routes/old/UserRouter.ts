@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import UserService from "../services/UserService";
-import AddUserRequest from "../dto/user/AddUserRequest";
-import { Mapper } from "../helpers/Mapper";
+import UserService from "../../services/old/UserService";
+import AddUserRequest from "../../dto/user/AddUserRequest";
+import { Mapper } from "../../helpers/Mapper";
 const router = Router();
 
 router.get("/:userId", async (req: Request, res: Response) => {

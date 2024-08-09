@@ -1,4 +1,4 @@
-// import { ObjectId } from 'mongoose';
+// src\controllers\PrizeController.ts
 import { FilterQuery } from 'mongoose';
 import IController from '../interfaces/IController';
 import IPrize from '../interfaces/IPrize';
@@ -19,6 +19,8 @@ export default class PrizeController implements IController<IPrize> {
         return await this.readOne(id)
     }
     async del(id: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
+        const result = await PrizeModel.updateOne({ _id: id }, { isActive: false });
+        return result.modifiedCount > 0;
     }
+
 }

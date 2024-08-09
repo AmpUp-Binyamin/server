@@ -1,14 +1,14 @@
 import { Request, Response, Router } from "express";
-import { Mapper } from "../helpers/Mapper";
-import ActiveChallegeService from "../services/old/ActiveChallengeService";
-import AddActiveChallengeRequest from "../dto/activeChallenge/AddActiveChallengeRequest";
-import { loveCard } from "../services/old/LoveCardService";
+import { Mapper } from "../../helpers/Mapper";
+import ActiveChallegeService from "../../services/old/ActiveChallengeService";
+import AddActiveChallengeRequest from "../../dto/activeChallenge/AddActiveChallengeRequest";
+import { loveCard } from "../../services/old/LoveCardService";
 import IActiveChallenge from "../interfaces/IActiveChallenge";
-import GetActiveChallToStartReq from "../dto/activeChallenge/GetActiveChallToStartReq";
-import AddUserRequest from "../dto/user/AddUserRequest";
-import GetStatusDoneCardsRes from "../dto/activeChallenge/GetStatusDoneCardsRes";
-import { verifyTokenCoach } from "../middleware/coachAuth";
-import { tempMediaUpload, validateAndUploadMedia } from "../middleware/s3";
+import GetActiveChallToStartReq from "../../dto/activeChallenge/GetActiveChallToStartReq";
+import AddUserRequest from "../../dto/user/AddUserRequest";
+import GetStatusDoneCardsRes from "../../dto/activeChallenge/GetStatusDoneCardsRes";
+import { verifyTokenCoach } from "../../middleware/coachAuth";
+import { tempMediaUpload, validateAndUploadMedia } from "../../middleware/s3";
 const router = Router();
 
 router.get(

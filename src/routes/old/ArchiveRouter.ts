@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express";
-import MemberService from "../services/old/MemberService";
-import ArchiveService from "../services/old/ArchiveService";
+import MemberService from "../../services/old/MemberService";
+import ArchiveService from "../../services/old/ArchiveService";
 
 const router = Router();
 

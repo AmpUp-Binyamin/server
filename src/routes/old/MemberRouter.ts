@@ -1,10 +1,10 @@
 import { Request, Response, Router } from "express";
-import MemberService from "../services/old/MemberService";
-import { Mapper } from "../helpers/Mapper";
-import UpdateMemberRequest from "../dto/member/UpdateMemberRequest";
-import createToken from "../middleware/createToken";
-import AddMemberRequest from "../dto/member/AddMemberRequest";
-import AuthService from "../services/old/AuthService";
+import MemberService from "../../services/old/MemberService";
+import { Mapper } from "../../helpers/Mapper";
+import UpdateMemberRequest from "../../dto/member/UpdateMemberRequest";
+import createToken from "../../middleware/createToken";
+import AddMemberRequest from "../../dto/member/AddMemberRequest";
+import AuthService from "../../services/old/AuthService";
 const router = Router();
 
 router.put("/personal-info", async (req: Request, res: Response) => {

@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import { Mapper } from "../helpers/Mapper";
-import CoinsRequest from "../dto/coins/CoinsRequest";
-import CoinsService from "../services/old/CoinsService";
+import { Mapper } from "../../helpers/Mapper";
+import CoinsRequest from "../../dto/coins/CoinsRequest";
+import CoinsService from "../../services/old/CoinsService";
 
 const router = Router();
 

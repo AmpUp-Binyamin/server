@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
-import AddMemberRequest from "../dto/member/AddMemberRequest";
-import MemberService from "../services/old/MemberService";
-import createToken from "../middleware/createToken";
-import { Mapper } from "../helpers/Mapper";
+import AddMemberRequest from "../../dto/member/AddMemberRequest";
+import MemberService from "../../services/old/MemberService";
+import createToken from "../../middleware/createToken";
+import { Mapper } from "../../helpers/Mapper";
 
 const router = Router();
 

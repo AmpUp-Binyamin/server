@@ -1,6 +1,9 @@
 import { Request, Response, Router } from "express";
-import { CreateTeamRequest, UpdateTeamRequest } from "../dto/team/TeamRequest";
-import TeamService from "../services/old/TeamService";
+import {
+  CreateTeamRequest,
+  UpdateTeamRequest,
+} from "../../dto/team/TeamRequest";
+import TeamService from "../../services/old/TeamService";
 
 const router = Router();
 

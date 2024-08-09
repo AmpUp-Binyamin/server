@@ -1,8 +1,8 @@
 import { Request, Response, Router } from "express";
-import ChallengeController from "../controllers/ChallengeController";
-import StoreService from "../services/old/Store.Service";
-import IChallenge from "../interfaces/IChallenge";
-import ActiveChallegeService from "../services/old/ActiveChallengeService";
+import ChallengeController from "../../controllers/ChallengeController";
+import StoreService from "../../services/old/Store.Service";
+import IChallenge from "../../interfaces/IChallenge";
+import ActiveChallegeService from "../../services/old/ActiveChallengeService";
 
 const router = Router();
 

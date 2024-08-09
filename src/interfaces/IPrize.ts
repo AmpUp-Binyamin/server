@@ -1,3 +1,4 @@
+// src\interfaces\IPrize.ts
 import { Document, ObjectId } from 'mongoose';
 
 export default interface IPrize extends Document {

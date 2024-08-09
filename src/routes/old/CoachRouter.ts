@@ -1,12 +1,12 @@
 import { Request, Response, Router } from "express";
-import CoachService from "../services/old/CoachService";
-import { Mapper } from "../helpers/Mapper";
-import { CreateCoachRequest } from "../dto/coach/CoachRequest";
-import { verifyTokenCoach } from "../middleware/coachAuth";
-import { tempImgUpload, validateAndUploadImg } from "../middleware/s3";
-import CreateCardRequest from "../coach/dto/CreateCardRequest";
-import AddMemberService from "../coach/service/AddMemberService";
-import CardService from "../coach/service/cardService";
+import CoachService from "../../services/old/CoachService";
+import { Mapper } from "../../helpers/Mapper";
+import { CreateCoachRequest } from "../../dto/coach/CoachRequest";
+import { verifyTokenCoach } from "../../middleware/coachAuth";
+import { tempImgUpload, validateAndUploadImg } from "../../middleware/s3";
+import CreateCardRequest from "../../coach/dto/CreateCardRequest";
+import AddMemberService from "../../coach/service/AddMemberService";
+import CardService from "../../coach/service/cardService";
 
 const router = Router();
 
