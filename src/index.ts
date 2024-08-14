@@ -25,43 +25,46 @@ app.use("*", verifyToken);
 // ################################################
 // ################# ROUTERS ######################
 // ################################################
-import UserRouter from "./routes/UserRouter";
 import NotificationRoutr from "./routes/old/NotificationRouter";
-import FeedBackRouter from "./routes/old/FeedBackRouter";
+import ChallengeModel from "./coach/router/challengeRouter";
 // import ActiveChallengeRouter from "./routes/old/ActiveChallengeRouter";
 import ArchiveRouter from "./routes/old/ArchiveRouter";
-import ChallengeRouter from "./routes/old/ChallengeRouter";
 import LuckRouter from "./routes/old/LuckRouter";
-import MediaRouter from "./routes/old/MediaRouter";
 import MemberRouter from "./routes/old/MemberRouter";
-import StoreRouter from "./routes/old/StoreRouter";
 import CoinsRouter from "./routes/old/CoinsRouter";
 import RegisterRouter from "./routes/old/RegisterRouter";
-import TeamRouter from "./routes/old/TeamRouter";
-import ChallengeModel from "./coach/router/challengeRouter";
+import MediaRouter from "./routes/old/MediaRouter";
+
 import answerRouter from './routes/AnswerRouter';
-import prizeRouter from './routes/PrizeRouter';
 import cardRouter from './routes/CardRouter';
+import ChallengeRouter from "./routes/ChallengeRouter";
+import deckRouter from './routes/DeckRouter';
+import FeedBackRouter from "./routes/FeedBackRouter";
+import prizeRouter from './routes/PrizeRouter';
+import StoreRouter from "./routes/StoreRouter";
+import teamRouter from "./routes/TeamRouter";
+import userRouter from "./routes/UserRouter";
 
 
 
 
-app.use('/answers', answerRouter);
+app.use('/answer', answerRouter);
 app.use('/card', cardRouter);
-app.use("/user", UserRouter);
+app.use("/challenge", ChallengeRouter);
+app.use('/deck', deckRouter);
+app.use("/feedback", FeedBackRouter);
 app.use("/prize", prizeRouter);
-// app.use("/activeChallenge", ActiveChallengeRouter);
 app.use("/store", StoreRouter);
-app.use("/archive", ArchiveRouter);
+app.use("/team", teamRouter);
+app.use("/user", userRouter);
+// app.use("/activeChallenge", ActiveChallengeRouter);
+// app.use("/archive", ArchiveRouter);
 app.use("/media", MediaRouter);
 app.use("/notification", NotificationRoutr);
-app.use("/feedback", FeedBackRouter);
-app.use("/challenge", ChallengeRouter);
 app.use("/luck", LuckRouter);
 app.use("/member", MemberRouter);
 app.use("/coins", CoinsRouter);
 app.use("/register", RegisterRouter);
-app.use("/team", TeamRouter);
 app.use("/coach/challenge", ChallengeModel);
 // ################################################
 // ################################################
