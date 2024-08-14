@@ -14,7 +14,8 @@ const deckSchema = new Schema<IDeck>({
     winProbability: Number,
     cards: [deckCardSchema],
     store: { type: Schema.Types.ObjectId, ref: 'Store' },
-    coach: { type: Schema.Types.ObjectId, ref: 'User', required: true }
+    coach: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    isActive: { type: Boolean, default: true, required: true },
 });
 
 export default mongoose.model<IDeck>('Deck', deckSchema);

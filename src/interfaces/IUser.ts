@@ -34,4 +34,5 @@ export interface IUser extends Partial<Document> {
   linksToSocialNetwork?: string[];
   challenges?: IUserChallenge[];
   coaches: Types.ObjectId[];
+  isActive: boolean;
 }

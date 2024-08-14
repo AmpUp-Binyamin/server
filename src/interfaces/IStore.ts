@@ -4,4 +4,5 @@ export default interface IStore extends Document {
     storeName: string;
     prizes: ObjectId[];
     coach: ObjectId;
+    isActive: boolean;
 }

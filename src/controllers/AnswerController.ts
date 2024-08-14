@@ -19,7 +19,8 @@ export default class AnswerController implements IController<IAnswer> {
         return await this.readOne(id)
     }
     async del(id: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
+        const result = await AnswerModel.updateOne({ _id: id }, { isActive: false });
+        return result.modifiedCount > 0;
     }
 }
 

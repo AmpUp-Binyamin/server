@@ -9,4 +9,5 @@ export default interface IAnswer extends Document {
   user: ObjectId;
   answerValue: string;
   answerMedia?: ObjectId;
+  isActive: boolean;
 }

@@ -9,4 +9,5 @@ export default interface IChallenge extends Document {
     deck: ObjectId;
     startDate: Date;
     coach: ObjectId;
+    isActive: boolean;
 }

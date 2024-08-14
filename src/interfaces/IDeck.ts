@@ -14,4 +14,5 @@ export interface IDeck extends Document {
     cards: IDeckCard[];
     store: ObjectId;
     coach: ObjectId;
+    isActive: boolean;
 }

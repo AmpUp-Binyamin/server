@@ -34,7 +34,9 @@ const userSchema = new Schema<IUser>({
     lastSeen: { type: Date },
     linksToSocialNetwork: [String],
     challenges: [userChallengeSchema],
-    coaches: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    coaches: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    isActive: { type: Boolean, default: true, required: true },
+
 });
 
 export default mongoose.model<IUser>('User', userSchema);

@@ -10,7 +10,7 @@ const prizeSchema = new Schema<IPrize>({
     daysToAvailability: { type: Number, required: true },
     quantity: { type: Number, required: true },
     cardType: { type: String, required: true },
-    isActive: { type: Boolean, required: true },
+    isActive: { type: Boolean, default: true, required: true },
     coach: { type: Schema.Types.ObjectId, ref: 'User', required: true }
 });
 

@@ -19,7 +19,8 @@ export default class CardController implements IController<ICard> {
         return await this.readOne(id)
     }
     async del(id: string): Promise<boolean> {
-        throw new Error('Method not implemented.');
+        const result = await CardModel.updateOne({ _id: id }, { isActive: false });
+        return result.modifiedCount > 0;
     }
 }
 

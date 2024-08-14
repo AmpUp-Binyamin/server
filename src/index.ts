@@ -25,10 +25,10 @@ app.use("*", verifyToken);
 // ################################################
 // ################# ROUTERS ######################
 // ################################################
-import UserRouter from "./routes/old/UserRouter";
+import UserRouter from "./routes/UserRouter";
 import NotificationRoutr from "./routes/old/NotificationRouter";
 import FeedBackRouter from "./routes/old/FeedBackRouter";
-import ActiveChallengeRouter from "./routes/old/ActiveChallengeRouter";
+// import ActiveChallengeRouter from "./routes/old/ActiveChallengeRouter";
 import ArchiveRouter from "./routes/old/ArchiveRouter";
 import ChallengeRouter from "./routes/old/ChallengeRouter";
 import LuckRouter from "./routes/old/LuckRouter";
@@ -39,9 +39,18 @@ import CoinsRouter from "./routes/old/CoinsRouter";
 import RegisterRouter from "./routes/old/RegisterRouter";
 import TeamRouter from "./routes/old/TeamRouter";
 import ChallengeModel from "./coach/router/challengeRouter";
+import answerRouter from './routes/AnswerRouter';
+import prizeRouter from './routes/PrizeRouter';
+import cardRouter from './routes/CardRouter';
 
+
+
+
+app.use('/answers', answerRouter);
+app.use('/card', cardRouter);
 app.use("/user", UserRouter);
-app.use("/activeChallenge", ActiveChallengeRouter);
+app.use("/prize", prizeRouter);
+// app.use("/activeChallenge", ActiveChallengeRouter);
 app.use("/store", StoreRouter);
 app.use("/archive", ArchiveRouter);
 app.use("/media", MediaRouter);

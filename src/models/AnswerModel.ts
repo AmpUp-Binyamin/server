@@ -10,6 +10,7 @@ const answerSchema = new Schema<IAnswer>({
   user: { type: Schema.Types.ObjectId, ref: "User", required: true },
   answerValue: { type: String, required: true },
   answerMedia: { type: Schema.Types.ObjectId, ref: "Media" },
+  isActive: { type: Boolean, default: true, required: true },
 });
 
 export default mongoose.model<IAnswer>("Answer", answerSchema);
