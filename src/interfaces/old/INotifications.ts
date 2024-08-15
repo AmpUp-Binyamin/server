@@ -1,3 +1,4 @@
+// src\interfaces\old\INotifications.ts
 import { Document, ObjectId } from "mongoose"
 import Permission from "../types/Permission"
 

@@ -1,8 +1,9 @@
-import { Document, ObjectId } from 'mongoose';
+// src\interfaces\ITeam.ts
+import { Document, Types } from 'mongoose';
 
 export default interface ITeam extends Document {
     teamName: string;
-    members: ObjectId[];
-    coach: ObjectId;
+    members: Types.ObjectId[];
+    coach: Types.ObjectId;
     isActive: boolean;
 }

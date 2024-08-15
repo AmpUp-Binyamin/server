@@ -1,8 +1,8 @@
-// src\routes\old\AuthRouter.ts
+// src\routes\AuthRouterNew.ts
 import { ObjectId } from "mongoose";
-import AuthService from "../../services/old/AuthService";
+import AuthService from "../services/old/AuthService";
 import { Request, Response, Router } from "express";
-import { IUser } from "../../interfaces/IUser";
+import { IUser } from "../interfaces/IUser";
 const router = Router();
 
 router.post("/checkEmail", async (req: Request, res: Response) => {

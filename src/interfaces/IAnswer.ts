@@ -1,13 +1,13 @@
-// interfaces/IAnswer.ts
-import { Document, ObjectId } from "mongoose";
+// src\interfaces\IAnswer.ts
+import { Document, Types } from "mongoose";
 
 export default interface IAnswer extends Document {
-  challenge: ObjectId;
-  card: ObjectId;
+  challenge: Types.ObjectId;
+  card: Types.ObjectId;
   day: number;
   cardOrder: number;
-  user: ObjectId;
+  user: Types.ObjectId;
   answerValue: string;
-  answerMedia?: ObjectId;
+  answerMedia?: Types.ObjectId;
   isActive: boolean;
 }

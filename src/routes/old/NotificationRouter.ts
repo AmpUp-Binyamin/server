@@ -1,3 +1,4 @@
+// src\routes\old\NotificationRouter.ts
 import { Request, Response, Router } from "express";
 import NotificationService from "../../services/old/notificationService";
 import { Mapper } from "../../helpers/Mapper";

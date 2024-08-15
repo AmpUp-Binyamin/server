@@ -1,22 +1,23 @@
-import { Document, ObjectId, Types } from "mongoose";
+// src\interfaces\IUser.ts
+import { Document, Types } from "mongoose";
 
 export interface IUserChallenge {
-  challenge: ObjectId;
-  coach: ObjectId;
+  challenge: Types.ObjectId;
+  coach: Types.ObjectId;
   isActive: boolean;
   spentCoins: number;
   earnedCoins: number;
-  prizes: ObjectId[];
+  prizes: Types.ObjectId[];
   joinDate?: Date;
   feed: {
-    sender: ObjectId;
+    sender: Types.ObjectId;
     date: Date;
     message: string;
     isThanks: boolean;
   }[];
   lastSeen: Date;
   receivedThanks: {
-    sender: ObjectId;
+    sender: Types.ObjectId;
     date: Date;
   }[];
 }

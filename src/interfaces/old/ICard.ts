@@ -1,3 +1,4 @@
+// src\interfaces\old\ICard.ts
 import IMedia from "./IMedia";
 
 export default interface ICard {

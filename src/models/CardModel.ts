@@ -1,3 +1,4 @@
+// src\models\CardModel.ts
 import mongoose, { Schema, } from "mongoose";
 import ICard from "../interfaces/ICard";
 

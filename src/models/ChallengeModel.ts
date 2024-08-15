@@ -1,4 +1,4 @@
-// models/Challenge.ts
+// src\models\ChallengeModel.ts
 import mongoose, { Schema } from 'mongoose';
 import  IChallenge  from '../interfaces/IChallenge';
 

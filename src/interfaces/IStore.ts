@@ -1,8 +1,9 @@
-import { Document, ObjectId } from 'mongoose';
+// src\interfaces\IStore.ts
+import { Document, Types } from 'mongoose';
 
 export default interface IStore extends Document {
     storeName: string;
-    prizes: ObjectId[];
-    coach: ObjectId;
+    prizes: Types.ObjectId[];
+    coach: Types.ObjectId;
     isActive: boolean;
 }

@@ -1,5 +1,6 @@
+// src\middleware\UserAuth.ts
 import {IUser} from "../interfaces/IUser";
-import UserService from "../services/old/UserService";
+import UserService from "../services/UserService";
 import Permission from "../types/Permission";
 
 export default abstract class UserAuth {

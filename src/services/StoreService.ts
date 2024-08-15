@@ -1,4 +1,4 @@
-// src/services/StoreService.ts
+// src\services\StoreService.ts
 import { FilterQuery } from 'mongoose';
 import StoreController from '../controllers/StoreController';
 import IStore from '../interfaces/IStore';

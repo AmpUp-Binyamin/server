@@ -1,3 +1,4 @@
+// src\interfaces\old\ICoach.ts
 import { Document, ObjectId } from "mongoose"
 
 export default interface ICoach extends Partial<Document> {

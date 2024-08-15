@@ -1,5 +1,5 @@
 // src\interfaces\IPrize.ts
-import { Document, ObjectId } from 'mongoose';
+import { Document, Types } from 'mongoose';
 
 export default interface IPrize extends Document {
     name: string;
@@ -11,5 +11,5 @@ export default interface IPrize extends Document {
     quantity: number;
     cardType: string;
     isActive: boolean;
-    coach: ObjectId;
+    coach: Types.ObjectId;
 }

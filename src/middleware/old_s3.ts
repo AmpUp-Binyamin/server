@@ -1,4 +1,4 @@
-// import { S3Client, DeleteObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+// src\middleware\old_s3.ts
 // import { Request, Response, NextFunction } from 'express';
 // import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 // import dotenv from 'dotenv';

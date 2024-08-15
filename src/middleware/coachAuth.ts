@@ -1,3 +1,4 @@
+// src\middleware\coachAuth.ts
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import createToken from "./createToken";

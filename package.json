@@ -8,7 +8,7 @@
     "start": "node ./dist/index.js",
     "dev-prev": "tsc && npm start",
     "dev": "nodemon",
-    "seed": "ts-node ./mockData/seed.ts"
+    "seed": "ts-node ./mockData/newDBSeeder.ts"
   },
   "keywords": [],
   "author": "",

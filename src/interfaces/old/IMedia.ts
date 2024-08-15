@@ -1,3 +1,4 @@
+// src\interfaces\old\IMedia.ts
 import Media from "../types/Media";
 
 export default interface IMedia {

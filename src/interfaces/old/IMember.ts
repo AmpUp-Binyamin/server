@@ -1,3 +1,4 @@
+// src\interfaces\old\IMember.ts
 import { Document } from "mongoose"
 import { ObjectId } from "mongodb"
 import INotifications from "./INotifications"

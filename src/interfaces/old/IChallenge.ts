@@ -1,3 +1,4 @@
+// src\interfaces\old\IChallenge.ts
 import { Document, ObjectId } from "mongoose"
 import ICard from "./ICard";
 import IStoreItem from "./IStoreItem";

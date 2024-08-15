@@ -1,7 +1,8 @@
-import { Document, ObjectId } from 'mongoose';
+// src\interfaces\IDeck.ts
+import { Document, Types } from 'mongoose';
 
 export interface IDeckCard {
-    card: ObjectId;
+    card: Types.ObjectId;
     day: number;
     cardOrder: number;
 }
@@ -12,7 +13,7 @@ export interface IDeck extends Document {
     drawProbability?: number;
     winProbability?: number;
     cards: IDeckCard[];
-    store: ObjectId;
-    coach: ObjectId;
+    store: Types.ObjectId;
+    coach: Types.ObjectId;
     isActive: boolean;
 }

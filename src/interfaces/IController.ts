@@ -1,3 +1,4 @@
+// src\interfaces\IController.ts
 import { FilterQuery } from "mongoose"
 
 export default interface IController<T> {

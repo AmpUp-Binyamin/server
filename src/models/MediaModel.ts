@@ -1,3 +1,4 @@
+// src\models\MediaModel.ts
 import mongoose, { Schema } from "mongoose";
 import IMedia from "../interfaces/IMedia";
 

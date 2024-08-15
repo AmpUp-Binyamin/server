@@ -1,4 +1,4 @@
-// models/Answer.ts
+// src\models\AnswerModel.ts
 import mongoose, { Schema } from "mongoose";
 import IAnswer from "../interfaces/IAnswer";
 

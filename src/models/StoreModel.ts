@@ -1,3 +1,4 @@
+// src\models\StoreModel.ts
 import mongoose, { Schema } from "mongoose";
 import IStore from "../interfaces/IStore";
 

@@ -1,13 +1,13 @@
-// interfaces/IChallenge.ts
-import { Document, ObjectId } from 'mongoose';
+// src\interfaces\IChallenge.ts
+import { Document, Types } from 'mongoose';
 
 export default interface IChallenge extends Document {
     challengeName: string;
     shortDescription?: string;
     longDescription?: string;
-    team: ObjectId;
-    deck: ObjectId;
+    team: Types.ObjectId;
+    deck: Types.ObjectId;
     startDate: Date;
-    coach: ObjectId;
+    coach: Types.ObjectId;
     isActive: boolean;
 }

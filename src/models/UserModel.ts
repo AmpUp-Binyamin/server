@@ -1,3 +1,4 @@
+// src\models\UserModel.ts
 import mongoose, { Schema } from 'mongoose';
 import { IUser, IUserChallenge } from '../interfaces/IUser';
 

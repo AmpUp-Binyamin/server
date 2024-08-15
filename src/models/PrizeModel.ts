@@ -1,3 +1,4 @@
+// src\models\PrizeModel.ts
 import mongoose, { Schema } from 'mongoose';
 import  IPrize from '../interfaces/IPrize';
 

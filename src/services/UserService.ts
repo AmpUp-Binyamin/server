@@ -1,3 +1,4 @@
+// src\services\UserService.ts
 import {Types} from "mongoose";
 import UserController from "../controllers/UserController";
 import AddUserRequest from "../dto/user/AddUserRequest";
@@ -18,7 +19,8 @@ export default class UserService {
             fullName: data.fullName,
             email: data.email,
             status: "User",
-            coaches: [coachId]
+            coaches: [coachId],
+            isActive: true,
         }
 
         return await this.controller.create(newUser)

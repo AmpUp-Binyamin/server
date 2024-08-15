@@ -1,3 +1,4 @@
+// src\models\FeedBackModel.ts
 import mongoose from 'mongoose'
 import IFeedBack from '../interfaces/IFeedBack'
 

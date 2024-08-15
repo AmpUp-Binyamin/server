@@ -1,3 +1,4 @@
+// src\routes\old\ChallengeRouter.ts
 import { Request, Response, Router } from "express";
 import ChallengeService from "../../services/old/ChallengeService";
 import { verifyTokenCoach } from "../../middleware/coachAuth";

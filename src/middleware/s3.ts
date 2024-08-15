@@ -1,8 +1,11 @@
+// src\middleware\s3.ts
 import { S3Client, DeleteObjectCommand, PutObjectCommand, GetObjectCommand, PutObjectCommandInput } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import dotenv from 'dotenv';
 import multer from "multer";
 import IMedia from "../interfaces/IMedia";
+import { Types } from 'mongoose';
+
 
 dotenv.config();
 
@@ -90,17 +93,19 @@ export async function validateAndUploadImg(imageData: Express.Multer.File, userI
     return getFileUrl(imageName, isPublic);
 }
 
-export async function validateAndUploadMedia(mediaData: Express.Multer.File | undefined, userId: string, isPublic: boolean = true): Promise<void | IMedia> {
+export async function validateAndUploadMedia(mediaData: Express.Multer.File | undefined, userId: string, isPublic: boolean = true): Promise<void | Partial<IMedia>> {
     if (!mediaData) return;
     const { buffer, mimetype, size } = mediaData;
     const fileName = `${userId}_${Date.now().toString()}_${mediaData.originalname}`;
+    const userIdObjectId = new Types.ObjectId(userId);
     await uploadFileToAWS(buffer, fileName, mimetype, isPublic);
     const path = await getFileUrl(fileName, isPublic);
-    let media: IMedia = {
+    let media:Partial<IMedia> = {
         type: mimetype.split('/')[0], // "image", "video", "audio", "document", 
         fileName: fileName,
-        path,
-        size,
+        link: path,
+        size: size,
+        coach: userIdObjectId
     };
     return media;
 }

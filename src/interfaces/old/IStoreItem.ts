@@ -1,3 +1,4 @@
+// src\interfaces\old\IStoreItem.ts
 export type CardType = 'streak2' | 'streak4'
 
 export default interface IStoreItem {
