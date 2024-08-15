@@ -12,9 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 // ###### ONLY FOR FAKE DATA
-// import go from './mockData/aviad';
-// go()
-import seed from './mockData/newDBSeeder';
+// import seed from './mockData/newDBSeeder';
 // seed()
 
 // import AuthRouter from "./routes/old/AuthRouter";
@@ -24,8 +22,8 @@ import seed from './mockData/newDBSeeder';
 // app.use("/coach", CoachRouter);
 
 // middleware - token to user
-// import { verifyToken } from "./middleware/auth";
-// app.use("*", verifyToken);
+import { verifyToken } from "./middleware/auth";
+app.use("*", verifyToken);
 
 // ################################################
 // ################# ROUTERS ######################
@@ -76,8 +74,8 @@ app.use("/user", userRouter);
 // ################################################
 // ################################################
 
-// import tokenTemporary from "./test/tokenTemporary";
-// tokenTemporary.tokenHamudi().then(res => console.log('token: \n \n', res, '\n'))
+import tokenTemporary from "./test/temporaryToken";
+tokenTemporary.coachToken().then(res => console.log('test coach token: \n \n',res, '\n'))
 
 // import "./test/scripts";
 

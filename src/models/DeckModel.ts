@@ -1,3 +1,4 @@
+// src\models\DeckModel.ts
 import mongoose, { Schema, Document } from 'mongoose';
 import { IDeck, IDeckCard } from '../interfaces/IDeck';
 

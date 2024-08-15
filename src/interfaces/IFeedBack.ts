@@ -4,5 +4,5 @@ export default interface IFeedBack extends Document {
     subject: string
     name : string
     email: string
-    message: string
+    message?: string
 }

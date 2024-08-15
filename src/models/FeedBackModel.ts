@@ -17,7 +17,6 @@ const feedbackSchema = new mongoose.Schema<IFeedBack>({
     },
     message: {
         type: String,
-        required: true
     }
 }
 )
