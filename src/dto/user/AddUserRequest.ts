@@ -1,14 +1,13 @@
 // src\dto\user\AddUserRequest.ts
-import UserAuth from "../../middleware/UserAuth"
+import UserAuth from '../../middleware/UserAuth';
 
 export default class AddUserRequest extends UserAuth {
-    fullName: string
-    email: string
-    
+  fullName: string;
+  email: string;
 
-    constructor(fn = '', email = '') {
-        super()
-        this.fullName = fn
-        this.email = email
-    }
+  constructor(fn = '', email = '') {
+    super();
+    this.fullName = fn;
+    this.email = email;
+  }
 }

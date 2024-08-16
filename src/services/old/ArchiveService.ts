@@ -1,16 +1,16 @@
 // import { ObjectId } from "mongoose"
-import { Schema, Document, Types, ObjectId } from "mongoose";
-import activeChallengeController from "../controllers/ActiveChallengeController";
-import ChallengeController from "../../controllers/ChallengeController";
-import CoachController from "../controllers/CoachController";
-import MemberController from "../controllers/MemberControllers";
-import IActiveChallenge from "../interfaces/IActiveChallenge";
-import IChallenge from "../../interfaces/IChallenge";
+import { Schema, Document, Types, ObjectId } from 'mongoose';
+import activeChallengeController from '../controllers/ActiveChallengeController';
+import ChallengeController from '../../controllers/ChallengeController';
+import CoachController from '../controllers/CoachController';
+import MemberController from '../controllers/MemberControllers';
+import IActiveChallenge from '../interfaces/IActiveChallenge';
+import IChallenge from '../../interfaces/IChallenge';
 // import { CardRequest } from "../dto/singleCard/CardRequest"
-import { CardResponse } from "../../dto/singleCard/CardResponse";
+import { CardResponse } from '../../dto/singleCard/CardResponse';
 
 // import { ObjectId: ObjectIdValue } from 'mongodb'
-const { ObjectId: ObjectIdValue } = require("mongodb");
+const { ObjectId: ObjectIdValue } = require('mongodb');
 
 export default class ArchiveService {
   static challengeController = new ChallengeController();
@@ -33,7 +33,7 @@ export default class ArchiveService {
       memberChallenges.map((ch) => {
         const challengeId = (ch as { _id: ObjectId })._id.toString();
         return this.memberController.readStartDate(challengeId);
-      })
+      }),
     );
 
     let finel = memberChallenges.map((ch, index) => ({
@@ -47,7 +47,7 @@ export default class ArchiveService {
           date: this.calculateEndDate(startDates[index]?.startDate, card.day),
         }))
         .filter((card) => {
-          if (typeof card.date === "string") {
+          if (typeof card.date === 'string') {
             const dateObj = new Date(card.date);
             if (!isNaN(dateObj.getTime())) {
               return this.isDateBeforeToday(dateObj);
@@ -62,7 +62,7 @@ export default class ArchiveService {
           }
           return false;
         })
-        .filter((card) => card.cardType === "study"),
+        .filter((card) => card.cardType === 'study'),
     }));
     return finel;
   }
@@ -73,7 +73,7 @@ export default class ArchiveService {
 
   static async getCard(
     challengeId: string,
-    cardId: string
+    cardId: string,
   ): Promise<CardResponse> {
     const challenge = await this.challengeController.readOne(challengeId);
     if (!challenge) {
@@ -81,7 +81,7 @@ export default class ArchiveService {
     }
 
     const card = challenge.cards.find(
-      (card) => card._id?.toString() === cardId
+      (card) => card._id?.toString() === cardId,
     );
     if (!card || !card._id) {
       throw `Card with id ${cardId} not found in challenge ${challengeId}.`;
@@ -90,7 +90,7 @@ export default class ArchiveService {
     let cardObjectId: Types.ObjectId;
     try {
       cardObjectId =
-        typeof card._id === "string" ? new Types.ObjectId(card._id) : card._id;
+        typeof card._id === 'string' ? new Types.ObjectId(card._id) : card._id;
     } catch (error) {
       throw `Invalid card ID format: ${card._id}`;
     }
@@ -100,52 +100,52 @@ export default class ArchiveService {
       card.title,
       card.media,
       cardObjectId,
-      card.content
+      card.content,
     );
   }
 
   private static calculateEndDate(
     startDate: Date | undefined,
-    duration: number
+    duration: number,
   ): string | null {
     if (!startDate || isNaN(startDate.getTime())) {
-      console.error("Invalid startDate:", startDate);
+      console.error('Invalid startDate:', startDate);
       return null;
     }
 
     if (isNaN(duration)) {
-      console.error("Invalid duration:", duration);
+      console.error('Invalid duration:', duration);
       return null;
     }
 
     const endDate = new Date(startDate);
     endDate.setDate(endDate.getDate() + duration);
 
-    const formattedDay: string = ("0" + endDate.getDate()).slice(-2);
-    const formattedMonth: string = ("0" + (endDate.getMonth() + 1)).slice(-2);
+    const formattedDay: string = ('0' + endDate.getDate()).slice(-2);
+    const formattedMonth: string = ('0' + (endDate.getMonth() + 1)).slice(-2);
     const formattedYear: string = endDate.getFullYear().toString();
 
-    return [formattedYear, formattedMonth, formattedDay].join("-");
+    return [formattedYear, formattedMonth, formattedDay].join('-');
   }
 
   private static isDateBeforeToday(date: Date | string): boolean {
     const today = new Date();
-    const inputDate = typeof date === "string" ? new Date(date) : date;
+    const inputDate = typeof date === 'string' ? new Date(date) : date;
 
     return inputDate < today;
   }
 
   private static formatDate(isoString: Date | undefined): string | null {
     if (!isoString || isNaN(isoString.getTime())) {
-      console.error("Invalid ISO date:", isoString);
+      console.error('Invalid ISO date:', isoString);
       return null;
     }
 
     const date = new Date(isoString);
 
     const year: number = date.getFullYear();
-    const month: string = String(date.getMonth() + 1).padStart(2, "0"); // getMonth() returns 0-based month
-    const day: string = String(date.getDate()).padStart(2, "0");
+    const month: string = String(date.getMonth() + 1).padStart(2, '0'); // getMonth() returns 0-based month
+    const day: string = String(date.getDate()).padStart(2, '0');
 
     return `${year}-${month}-${day}`;
   }

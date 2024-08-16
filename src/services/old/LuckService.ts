@@ -1,17 +1,17 @@
-import ChallengeController from "../../controllers/ChallengeController";
-import LuckResponse from "../../dto/luck/LuckResponse";
-import { RandomNumberGenerator } from "../../helpers/luck";
-import { ObjectId } from "mongoose";
-import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
+import ChallengeController from '../../controllers/ChallengeController';
+import LuckResponse from '../../dto/luck/LuckResponse';
+import { RandomNumberGenerator } from '../../helpers/luck';
+import { ObjectId } from 'mongoose';
+import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
 export class LuckHelper {
   static RandomGenerator = new RandomNumberGenerator();
   static shapes: string[] = [
-    "cherry",
-    "diamond",
-    "bell",
-    "clover",
-    "currency",
-    "lemon",
+    'cherry',
+    'diamond',
+    'bell',
+    'clover',
+    'currency',
+    'lemon',
   ];
   // // דובדבן יהלום פעמון תלתן מטבע לימון
   static getShapes = [
@@ -54,24 +54,24 @@ export default class LuckService {
 
   static async getCasino(
     challengeId: string,
-    cardId: string
+    cardId: string,
   ): Promise<boolean> {
     let challenge = await this.controller.readOne(challengeId);
-    if (!challenge) throw { code: 400, message: "go to hell!!!" };
+    if (!challenge) throw { code: 400, message: 'go to hell!!!' };
     let chance = challenge.cards.find((c) => String(c._id) === cardId);
     if (!chance || chance.drawProbability === undefined) {
-      throw { code: 400, message: "Card or drawProbability not found" };
+      throw { code: 400, message: 'Card or drawProbability not found' };
     }
     return LuckHelper.getLottery(chance.drawProbability);
   }
 
   static async getResCasino(challengeId: string, cardId: string): Promise<any> {
     let challenge = await this.controller.readOne(challengeId);
-    if (!challenge) throw { code: 400, message: "go to hell!!!" };
+    if (!challenge) throw { code: 400, message: 'go to hell!!!' };
     let chance = challenge.cards.find((c) => String(c._id) === cardId);
 
     if (!chance || chance.winProbability === undefined) {
-      throw { code: 400, message: "Card or winProbability not found" };
+      throw { code: 400, message: 'Card or winProbability not found' };
     }
     return LuckHelper.getWin(chance.winProbability);
   }

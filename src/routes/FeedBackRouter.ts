@@ -1,14 +1,14 @@
 // src\routes\FeedBackRouter.ts
-import { Request, Response, Router } from "express";
-import FeedBackService from "../../services/old/FeedBackService";
-import AddFedBackRequest from "../../dto/FeedBack/AddFeedBackRequest";
-import { Mapper } from "../../helpers/Mapper";
+import { Request, Response, Router } from 'express';
+import FeedBackService from '../../services/old/FeedBackService';
+import AddFedBackRequest from '../../dto/FeedBack/AddFeedBackRequest';
+import { Mapper } from '../../helpers/Mapper';
 const router = Router();
 
-router.get("/:feedbackId", async (req: Request, res: Response) => {
+router.get('/:feedbackId', async (req: Request, res: Response) => {
   try {
     let feedback = await FeedBackService.getSingleFeedBack(
-      req.params.feedbackId
+      req.params.feedbackId,
     );
     console.log(feedback);
     res.send(feedback);
@@ -17,7 +17,7 @@ router.get("/:feedbackId", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/", async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
   try {
     let feedbacks = await FeedBackService.getAllFeedBack();
     console.log(feedbacks);
@@ -27,11 +27,11 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/:feedbackId", async (req: Request, res: Response) => {
+router.put('/:feedbackId', async (req: Request, res: Response) => {
   try {
     let feedback = await FeedBackService.updateFeedBack(
       req.params.feedbackId,
-      req.body
+      req.body,
     );
     console.log(`${feedback} updated successfully`);
     res.send(feedback);
@@ -40,7 +40,7 @@ router.put("/:feedbackId", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:feedbackId", async (req: Request, res: Response) => {
+router.delete('/:feedbackId', async (req: Request, res: Response) => {
   try {
     let feedback = await FeedBackService.deleteFeedBack(req.params.feedbackId);
     console.log(`${feedback} deleted successfully`);
@@ -50,7 +50,7 @@ router.delete("/:feedbackId", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     let request = Mapper<AddFedBackRequest>(new AddFedBackRequest(), req.body);
     let feedback = await FeedBackService.createNewFeedBack(request);

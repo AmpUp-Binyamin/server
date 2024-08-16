@@ -1,8 +1,8 @@
-import activeChallengeController from "../controllers/ActiveChallengeController";
-import ChallengeController from "../../controllers/ChallengeController";
-import MemberController from "../controllers/MemberControllers";
-import CoinsRequest from "../../dto/coins/CoinsRequest";
-import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
+import activeChallengeController from '../controllers/ActiveChallengeController';
+import ChallengeController from '../../controllers/ChallengeController';
+import MemberController from '../controllers/MemberControllers';
+import CoinsRequest from '../../dto/coins/CoinsRequest';
+import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
 
 export default class CoinsService {
   static activeChallengeController = new activeChallengeController();
@@ -16,7 +16,7 @@ export default class CoinsService {
     let currentDay = await this.getCurrentChallengeDay(activeChallenge);
     let cards: IActiveCard[] = activeChallenge.cards.filter(
       (c) =>
-        String(c.member) == String(data.userId) && c.challengeDay == currentDay
+        String(c.member) == String(data.userId) && c.challengeDay == currentDay,
     );
 
     let cardsOfChallenge = (
@@ -24,13 +24,13 @@ export default class CoinsService {
     )?.cards.filter(
       (c) =>
         c.day == currentDay &&
-        c.cardType != "support" &&
-        c.cardType != "share" &&
-        c.cardType != "lottery"
+        c.cardType != 'support' &&
+        c.cardType != 'share' &&
+        c.cardType != 'lottery',
     );
 
     if (cards.length != cardsOfChallenge?.length)
-      throw "error : The number of tickets sent does not match the number in the system";
+      throw 'error : The number of tickets sent does not match the number in the system';
 
     let newCoins = 0;
     cards.forEach((c) => (newCoins += c.coins));
@@ -42,7 +42,8 @@ export default class CoinsService {
 
   static async getCurrentChallengeDay(activeChallenge: IActiveChallenge) {
     let currentDay = Math.floor(
-      (Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - activeChallenge.startDate.getTime()) /
+        (1000 * 60 * 60 * 24),
     );
     return currentDay;
   }

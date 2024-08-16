@@ -1,12 +1,10 @@
-import { ObjectId } from "mongoose"
+import { ObjectId } from 'mongoose';
 
-
-export interface ReadCoachResponse{
-    fullName: string
-    email: string
-    phoneNumber: string
-    picture: string
-    link: string
-    myChallenges: ObjectId[]
+export interface ReadCoachResponse {
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  picture: string;
+  link: string;
+  myChallenges: ObjectId[];
 }
-

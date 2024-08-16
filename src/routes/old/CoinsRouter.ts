@@ -1,11 +1,11 @@
-import { Request, Response, Router } from "express";
-import { Mapper } from "../../helpers/Mapper";
-import CoinsRequest from "../../dto/coins/CoinsRequest";
-import CoinsService from "../../services/old/CoinsService";
+import { Request, Response, Router } from 'express';
+import { Mapper } from '../../helpers/Mapper';
+import CoinsRequest from '../../dto/coins/CoinsRequest';
+import CoinsService from '../../services/old/CoinsService';
 
 const router = Router();
 
-router.put("/add-coins", async (req: Request, res: Response) => {
+router.put('/add-coins', async (req: Request, res: Response) => {
   try {
     let request = Mapper<CoinsRequest>(new CoinsRequest(), req.body);
     let coins = await CoinsService.addCoins(request);

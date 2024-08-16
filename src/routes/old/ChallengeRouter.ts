@@ -1,14 +1,14 @@
 // src\routes\old\ChallengeRouter.ts
-import { Request, Response, Router } from "express";
-import ChallengeService from "../../services/old/ChallengeService";
-import { verifyTokenCoach } from "../../middleware/coachAuth";
+import { Request, Response, Router } from 'express';
+import ChallengeService from '../../services/old/ChallengeService';
+import { verifyTokenCoach } from '../../middleware/coachAuth';
 
 const router = Router();
 
-router.get("/start/:challengeId", async (req: Request, res: Response) => {
+router.get('/start/:challengeId', async (req: Request, res: Response) => {
   try {
     let challenge = await ChallengeService.getOneChallenge(
-      req.params.challengeId
+      req.params.challengeId,
     );
     res.send(challenge);
   } catch (error) {
@@ -17,10 +17,10 @@ router.get("/start/:challengeId", async (req: Request, res: Response) => {
   }
 });
 //get all challenges of coach
-router.get("/coach/", verifyTokenCoach, async (req: Request, res: Response) => {
+router.get('/coach/', verifyTokenCoach, async (req: Request, res: Response) => {
   try {
     let challenges = await ChallengeService.getAllChallengesOfCoach(
-      req.body.coachId
+      req.body.coachId,
     );
     res.send(challenges);
   } catch (error) {

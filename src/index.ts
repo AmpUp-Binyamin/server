@@ -1,8 +1,8 @@
 // src\index.ts
-import cors from "cors";
-import "dotenv/config";
-import express from "express";
-import { connect } from "./config/db";
+import cors from 'cors';
+import 'dotenv/config';
+import express from 'express';
+import { connect } from './config/db';
 //todo: use https
 
 connect();
@@ -18,12 +18,12 @@ app.use(express.json());
 // import AuthRouter from "./routes/old/AuthRouter";
 // app.use("/auth", AuthRouter);
 
-// import CoachRouter from "./routes/old/CoachRouter";
-// app.use("/coach", CoachRouter);
+import CoachRouter from './routes/old/CoachRouter';
+app.use('/coach', CoachRouter);
 
 // middleware - token to user
-import { verifyToken } from "./middleware/auth";
-app.use("*", verifyToken);
+import { verifyToken } from './middleware/auth';
+app.use('*', verifyToken);
 
 // ################################################
 // ################# ROUTERS ######################
@@ -41,24 +41,23 @@ app.use("*", verifyToken);
 
 import answerRouter from './routes/AnswerRouter';
 import cardRouter from './routes/CardRouter';
-import ChallengeRouter from "./routes/ChallengeRouter";
+import ChallengeRouter from './routes/ChallengeRouter';
 import deckRouter from './routes/DeckRouter';
 // import FeedBackRouter from "./routes/FeedBackRouter";
 import prizeRouter from './routes/PrizeRouter';
-import StoreRouter from "./routes/StoreRouter";
-import teamRouter from "./routes/TeamRouter";
-import userRouter from "./routes/UserRouter";
-
+import StoreRouter from './routes/StoreRouter';
+import teamRouter from './routes/TeamRouter';
+import userRouter from './routes/UserRouter';
 
 app.use('/answer', answerRouter);
 app.use('/card', cardRouter);
-app.use("/challenge", ChallengeRouter);
+app.use('/challenge', ChallengeRouter);
 app.use('/deck', deckRouter);
 // app.use("/feedback", FeedBackRouter);
-app.use("/prize", prizeRouter);
-app.use("/store", StoreRouter);
-app.use("/team", teamRouter);
-app.use("/user", userRouter);
+app.use('/prize', prizeRouter);
+app.use('/store', StoreRouter);
+app.use('/team', teamRouter);
+app.use('/user', userRouter);
 
 // app.use("/media", MediaRouter);
 // app.use("/notification", NotificationRouter);
@@ -74,9 +73,9 @@ app.use("/user", userRouter);
 // ################################################
 // ################################################
 
-import tokenTemporary from "./test/temporaryToken";
-tokenTemporary.coachToken().then(res => console.log('test coach token: \n \n',res, '\n'))
+// import tokenTemporary from "./test/temporaryToken";
+// tokenTemporary.coachToken().then(res => console.log('test coach token: \n \n',res, '\n'))
 
 // import "./test/scripts";
 
-app.listen(3030, () => console.log("Server is UP : 3030"));
+app.listen(3030, () => console.log('Server is UP : 3030'));

@@ -1,3 +1,3 @@
-type Permission = "user" | "admin" | "coach";
+type Permission = 'user' | 'admin' | 'coach';
 
 export default Permission;

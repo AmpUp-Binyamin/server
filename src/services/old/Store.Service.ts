@@ -1,20 +1,20 @@
-import ChallengeController from "../../controllers/ChallengeController";
-import MemberController from "../controllers/MemberControllers";
-import IChallenge from "../../interfaces/IChallenge";
-import IMember from "../interfaces/IMember";
-import IStoreItem from "../interfaces/IStoreItem";
-import { IMyCoins } from "../models/MemberModel";
-import MemberService from "../services/MemberService";
+import ChallengeController from '../../controllers/ChallengeController';
+import MemberController from '../controllers/MemberControllers';
+import IChallenge from '../../interfaces/IChallenge';
+import IMember from '../interfaces/IMember';
+import IStoreItem from '../interfaces/IStoreItem';
+import { IMyCoins } from '../models/MemberModel';
+import MemberService from '../services/MemberService';
 
 export default class StoreService {
   static controller = new ChallengeController();
 
   static async getChallenge(_id: string): Promise<IStoreItem[]> {
     const challenge = await this.controller.readOne(_id);
-    console.log(" s ", challenge);
+    console.log(' s ', challenge);
 
     if (!challenge) {
-      throw new Error("this challenge dose not exist ");
+      throw new Error('this challenge dose not exist ');
     }
     return challenge.store.filter((i) => {
       if (i.daysToExpiry > 0 && i.quantity > 0) {
@@ -25,7 +25,7 @@ export default class StoreService {
   static async updateMemberItems(
     memberId: string,
     challengeId: string,
-    storeItemId: string
+    storeItemId: string,
   ): Promise<IChallenge | null> {
     const memberController = new MemberController();
     const challengeController = new ChallengeController();
@@ -34,12 +34,11 @@ export default class StoreService {
     if (!m) return null;
     const member: IMember = m?.toObject?.() as IMember;
     let memberCoinsObj: IMyCoins | undefined = member?.myCoins.find(
-      (obj) => obj.challengeId == challengeId
+      (obj) => obj.challengeId == challengeId,
     );
     let memberCoins: number | undefined = memberCoinsObj?.coins;
-    let challenge: IChallenge | null = await challengeController.readOne(
-      challengeId
-    );
+    let challenge: IChallenge | null =
+      await challengeController.readOne(challengeId);
 
     let price = challenge?.store.find((c) => c._id == storeItemId)?.coins;
     let quantity = challenge?.store.find((c) => c._id == storeItemId)?.quantity;
@@ -48,7 +47,9 @@ export default class StoreService {
       if (memberCoins > price) {
         const coinsUpdate =
           member?.myCoins?.map?.((c) =>
-            c.challengeId === challengeId ? { ...c, coins: c.coins - price } : c
+            c.challengeId === challengeId
+              ? { ...c, coins: c.coins - price }
+              : c,
           ) || [];
         let newStoreItem = await MemberService.addNewStoreItem(memberId, {
           cardId: storeItemId,
@@ -56,12 +57,12 @@ export default class StoreService {
         });
         let newCoineSum = await MemberService.updateMemberCoins(
           memberId,
-          coinsUpdate
+          coinsUpdate,
         );
         let newQuantity = await challengeController.updateQuantity(
           challengeId,
           storeItemId,
-          quantity ? quantity - 1 : 0
+          quantity ? quantity - 1 : 0,
         );
         return await challengeController.readOne(challengeId);
       }

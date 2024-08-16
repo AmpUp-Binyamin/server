@@ -2,8 +2,8 @@
 
 ## How to run
 
-for dev mode 
-run 
+for dev mode
+run
 
 ```sh
    git clone -
@@ -13,9 +13,10 @@ run
 
 ## config
 
-add .env at top level with 
+add .env at top level with
+
 ```sh
-MONGO_URL= 
+MONGO_URL=
 JWT_SECRET=
 AWS_BUCKET_NAME=
 AWS_BUCKET_REGION=
@@ -23,13 +24,12 @@ AWS_ACCESS_KEY=
 AWS_SECRET_ACCESS_KEY=
 ```
 
-
-
 ## Uploading Files
 
 In a server or using Postman, you can choose a file (only one at a time!), provide it with a name, and send it. There are different upload options for pictures and general files:
 
 1. **Uploading Pictures**:
+
    - When you upload a picture, the server stores it in Amazon S3 (Simple Storage Service).
    - The server responds by providing a URL (web address) where the picture can be accessed.
 
@@ -51,8 +51,7 @@ git commit -am 'before merge(example)'
 git pull origin dev
 git push origin --your-branch
 ```
+
 if u r crying cz there is conflicts = call Aviad
 
 create a pull request
-
- 

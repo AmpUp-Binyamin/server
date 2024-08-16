@@ -1,23 +1,22 @@
 // src\models\FeedBackModel.ts
-import mongoose from 'mongoose'
-import IFeedBack from '../interfaces/IFeedBack'
+import mongoose from 'mongoose';
+import IFeedBack from '../interfaces/IFeedBack';
 
 const feedbackSchema = new mongoose.Schema<IFeedBack>({
-    subject: {
-        type: String,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    email: {
-        type: String,
-        required: true
-    },
-    message: {
-        type: String,
-    }
-}
-)
-export default mongoose.model<IFeedBack>('feedback', feedbackSchema)
+  subject: {
+    type: String,
+    required: true,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+  },
+  message: {
+    type: String,
+  },
+});
+export default mongoose.model<IFeedBack>('feedback', feedbackSchema);

@@ -1,5 +1,5 @@
 // src\interfaces\IUser.ts
-import { Document, Types } from "mongoose";
+import { Document, Types } from 'mongoose';
 
 export interface IUserChallenge {
   challenge: Types.ObjectId;
@@ -23,7 +23,7 @@ export interface IUserChallenge {
 }
 
 export interface IUser extends Partial<Document> {
-  status: "User" | "Coach";
+  status: 'User' | 'Coach';
   fullName: string;
   email: string;
   phone?: string;

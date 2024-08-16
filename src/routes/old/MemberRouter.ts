@@ -1,18 +1,18 @@
 // src\routes\old\MemberRouter.ts
-import { Request, Response, Router } from "express";
-import MemberService from "../../services/old/MemberService";
-import { Mapper } from "../../helpers/Mapper";
-import UpdateMemberRequest from "../../dto/member/UpdateMemberRequest";
-import createToken from "../../middleware/createToken";
-import AddMemberRequest from "../../dto/member/AddMemberRequest";
-import AuthService from "../../services/old/AuthService";
+import { Request, Response, Router } from 'express';
+import MemberService from '../../services/old/MemberService';
+import { Mapper } from '../../helpers/Mapper';
+import UpdateMemberRequest from '../../dto/member/UpdateMemberRequest';
+import createToken from '../../middleware/createToken';
+import AddMemberRequest from '../../dto/member/AddMemberRequest';
+import AuthService from '../../services/old/AuthService';
 const router = Router();
 
-router.put("/personal-info", async (req: Request, res: Response) => {
+router.put('/personal-info', async (req: Request, res: Response) => {
   try {
     let request = Mapper<UpdateMemberRequest>(
       new UpdateMemberRequest(),
-      req.body
+      req.body,
     );
     let userUpdate = await MemberService.updateMember(request);
     res.send(userUpdate);
@@ -21,7 +21,7 @@ router.put("/personal-info", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/:memberId", async (req: Request, res: Response) => {
+router.get('/:memberId', async (req: Request, res: Response) => {
   try {
     let member = await MemberService.getsingelMember(req.params.memberId);
     console.log(member);
@@ -31,11 +31,11 @@ router.get("/:memberId", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/personal-info", async (req: Request, res: Response) => {
+router.get('/personal-info', async (req: Request, res: Response) => {
   try {
-    const destructuredUserTokenId = "6656df1b8437151db0cce4e2";
+    const destructuredUserTokenId = '6656df1b8437151db0cce4e2';
     const memberInfo = await MemberService.getPersonalInfo(
-      destructuredUserTokenId
+      destructuredUserTokenId,
     );
     res.send(memberInfo);
   } catch (error) {
@@ -43,7 +43,7 @@ router.get("/personal-info", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
   try {
     const request = Mapper<AddMemberRequest>(new AddMemberRequest(), req.body);
 
@@ -51,7 +51,7 @@ router.post("/", async (req: Request, res: Response) => {
 
     const token = createToken({
       userId: newMember?.id,
-      userPermission: "user",
+      userPermission: 'user',
     });
     console.log(token);
     res.json({ token, newMember });
@@ -62,13 +62,13 @@ router.post("/", async (req: Request, res: Response) => {
 });
 
 // קבלת היוזר על פי טוקן
-router.get("/token/toMember", async (req: Request, res: Response) => {
+router.get('/token/toMember', async (req: Request, res: Response) => {
   try {
     let member = await MemberService.getsingelMember(req.body.userId);
-    if (!member) throw { code: 400, msg: "" };
+    if (!member) throw { code: 400, msg: '' };
     // TODO
     let memberInfo = await AuthService.getMyInvitesAndMyActiveChallenge(
-      member.email
+      member.email,
     );
     res.send(memberInfo);
   } catch (error) {
@@ -78,7 +78,7 @@ router.get("/token/toMember", async (req: Request, res: Response) => {
 });
 
 router.get(
-  "/:memberId/myCards/:activeChallengeId",
+  '/:memberId/myCards/:activeChallengeId',
   async (req: Request, res: Response) => {
     try {
       const memberId = req.params.memberId;
@@ -89,7 +89,7 @@ router.get(
     } catch (error) {
       res.status(400).send(error);
     }
-  }
+  },
 );
 
 export default router;

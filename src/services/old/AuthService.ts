@@ -1,12 +1,12 @@
 // src\services\old\AuthService.ts
-import MemberController from "../controllers/MemberControllers";
-import activeChallengeController from "../controllers/ActiveChallengeController";
-import { ObjectId, Schema } from "mongoose";
-import { createToken } from "../../middleware/auth";
-import { Code } from "mongodb";
-import IMember from "../interfaces/IMember";
-import ChallengeController from "../../controllers/ChallengeController";
-import IActiveChallenge from "../interfaces/IActiveChallenge";
+import MemberController from '../controllers/MemberControllers';
+import activeChallengeController from '../controllers/ActiveChallengeController';
+import { ObjectId, Schema } from 'mongoose';
+import { createToken } from '../../middleware/auth';
+import { Code } from 'mongodb';
+import IMember from '../interfaces/IMember';
+import ChallengeController from '../../controllers/ChallengeController';
+import IActiveChallenge from '../interfaces/IActiveChallenge';
 
 export default class AuthService {
   static MemberController = new MemberController();
@@ -55,7 +55,7 @@ export default class AuthService {
     // לבסוף שולח את הממבר המעודכן וזורק שגיאה ספציפית למקרה שלא נמצא ממבר
     member = (await this.MemberController.read({ email }))[0];
     if (member == undefined) {
-      throw { status: 407, msg: "mamber not exist" };
+      throw { status: 407, msg: 'mamber not exist' };
     }
 
     return member;
@@ -73,9 +73,8 @@ export default class AuthService {
     let myActivChallenge = member.myActiveChallenge as unknown as ObjectId[];
     let myChallenge = member.myChallenge;
     let myInvites = member.myInvites;
-    let invitedInActivChallenge = await AuthService.findInvitedActivChaleng(
-      email
-    );
+    let invitedInActivChallenge =
+      await AuthService.findInvitedActivChaleng(email);
     if (invitedInActivChallenge.length > 0) {
       invitedInActivChallenge.forEach((i) => {
         if (
@@ -93,12 +92,12 @@ export default class AuthService {
     await Promise.all(
       myActivChallenge.map(async (id) => {
         let activChallenge = await AuthService.findByIdActivChaleng(
-          id as ObjectId
+          id as ObjectId,
         );
         let challengeID = activChallenge?.challenge;
         let startDate = activChallenge?.startDate;
         let challenge = await AuthService.findByIdChaleng(
-          challengeID as unknown as ObjectId
+          challengeID as unknown as ObjectId,
         );
         let duration = challenge?.duration;
         let endDate;
@@ -109,9 +108,9 @@ export default class AuthService {
             activChallengeOn.push(id);
           }
         }
-      })
+      }),
     );
-    const token = createToken({ userId: member.id, userPermission: "user" });
+    const token = createToken({ userId: member.id, userPermission: 'user' });
     return {
       member,
       invites: member.myInvites,

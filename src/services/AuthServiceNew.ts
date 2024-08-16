@@ -1,11 +1,11 @@
 // src\services\AuthServiceNew.ts
-import UserController from "../controllers/UserController";
+import UserController from '../controllers/UserController';
 // import activeChallengeController from "../controllers/ActiveChallengeController";
-import { ObjectId, Schema } from "mongoose";
-import { createToken } from "../middleware/auth";
-import { Code } from "mongodb";
-import { IUser } from "../interfaces/IUser";
-import ChallengeController from "../controllers/ChallengeController";
+import { ObjectId, Schema } from 'mongoose';
+import { createToken } from '../middleware/auth';
+import { Code } from 'mongodb';
+import { IUser } from '../interfaces/IUser';
+import ChallengeController from '../controllers/ChallengeController';
 // import IActiveChallenge from "../interfaces/IActiveChallenge";
 
 export default class AuthService {

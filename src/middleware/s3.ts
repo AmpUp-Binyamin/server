@@ -5,12 +5,12 @@ import {
   PutObjectCommand,
   GetObjectCommand,
   PutObjectCommandInput,
-} from "@aws-sdk/client-s3";
-import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import dotenv from "dotenv";
-import multer from "multer";
-import IMedia from "../interfaces/IMedia";
-import { Types } from "mongoose";
+} from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import dotenv from 'dotenv';
+import multer from 'multer';
+import IMedia from '../interfaces/IMedia';
+import { Types } from 'mongoose';
 
 dotenv.config();
 
@@ -38,9 +38,9 @@ export function uploadFileToAWS(
   fileBuffer: Buffer,
   fileName: string,
   mimetype: string,
-  isPublic: boolean
+  isPublic: boolean,
 ) {
-  let ACL: PutObjectCommandInput["ACL"] = isPublic ? "public-read" : "private"; // Set ACL to 'public-read' for public files
+  let ACL: PutObjectCommandInput['ACL'] = isPublic ? 'public-read' : 'private'; // Set ACL to 'public-read' for public files
   const uploadParams = {
     Bucket: bucket,
     Body: fileBuffer,
@@ -67,20 +67,20 @@ const getFileUrl = async (Key: string, isPublic: boolean): Promise<string> => {
       });
       return signedUrl;
     } catch (error: any) {
-      console.error("Error generating pre-signed URL:", error);
+      console.error('Error generating pre-signed URL:', error);
       throw error;
     }
   }
 };
 
 export function validateAndDeleteMedia(request: any): string | Promise<any> {
-  if (!request) return "file not found";
+  if (!request) return 'file not found';
   const { userId, userPermission, fileUrl } = request;
-  const fileName = fileUrl.split("/").pop()?.split("?")[0];
-  if (!fileName) return "file not found";
-  const fileOwnerId = fileName.split("_")[0];
-  if (userId !== fileOwnerId && userPermission !== "admin") {
-    return "You do not have permission to delete this file.";
+  const fileName = fileUrl.split('/').pop()?.split('?')[0];
+  if (!fileName) return 'file not found';
+  const fileOwnerId = fileName.split('_')[0];
+  if (userId !== fileOwnerId && userPermission !== 'admin') {
+    return 'You do not have permission to delete this file.';
   }
   return deleteFile(fileName);
 }
@@ -93,17 +93,17 @@ function deleteFile(fileName: string): Promise<any> {
   return s3.send(new DeleteObjectCommand(deleteParams));
 }
 
-export const tempImgUpload = multerUpload.single("img");
-export const tempMediaUpload = multerUpload.single("media");
+export const tempImgUpload = multerUpload.single('img');
+export const tempMediaUpload = multerUpload.single('media');
 
 export async function validateAndUploadImg(
   imageData: Express.Multer.File,
   userId: string,
-  isPublic: boolean = true
+  isPublic: boolean = true,
 ): Promise<void | string> {
   if (!imageData) return;
   const { buffer, mimetype } = imageData;
-  if (mimetype.split("/")[0] !== "image") throw new Error("Invalid image type");
+  if (mimetype.split('/')[0] !== 'image') throw new Error('Invalid image type');
   const imageName = `${userId}_${Date.now().toString()}_${
     imageData.originalname
   }`;
@@ -114,7 +114,7 @@ export async function validateAndUploadImg(
 export async function validateAndUploadMedia(
   mediaData: Express.Multer.File | undefined,
   userId: string,
-  isPublic: boolean = true
+  isPublic: boolean = true,
 ): Promise<void | Partial<IMedia>> {
   if (!mediaData) return;
   const { buffer, mimetype, size } = mediaData;
@@ -125,7 +125,7 @@ export async function validateAndUploadMedia(
   await uploadFileToAWS(buffer, fileName, mimetype, isPublic);
   const path = await getFileUrl(fileName, isPublic);
   let media: Partial<IMedia> = {
-    type: mimetype.split("/")[0], // "image", "video", "audio", "document",
+    type: mimetype.split('/')[0], // "image", "video", "audio", "document",
     fileName: fileName,
     url: path,
     size: size,

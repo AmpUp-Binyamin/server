@@ -10,7 +10,6 @@
 // import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
 // import { ObjectId } from 'mongoose';
 
-
 // export default async function go() {
 
 //   await MemberModel.collection.drop();
@@ -772,7 +771,6 @@
 //   await MemberModel.updateOne({ _id: m2._id }, { $push: { myChallenge: activCh1._id } });
 //   await MemberModel.updateOne({ _id: m3._id }, { $push: { myChallenge: activCh2._id } });
 //   await MemberModel.updateOne({ _id: m4._id }, { $push: { myChallenge: activCh2._id } });
-
 
 //   console.log("###########  END  #########");
 // }

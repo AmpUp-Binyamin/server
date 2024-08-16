@@ -1,16 +1,16 @@
-import { Request, Response, Router } from "express";
-import CoachService from "../../services/old/CoachService";
-import { Mapper } from "../../helpers/Mapper";
-import { CreateCoachRequest } from "../../dto/coach/CoachRequest";
-import { verifyTokenCoach } from "../../middleware/coachAuth";
-import { tempImgUpload, validateAndUploadImg } from "../../middleware/s3";
-import CreateCardRequest from "../../coach/dto/CreateCardRequest";
-import AddMemberService from "../../coach/service/AddMemberService";
-import CardService from "../../coach/service/cardService";
+import { Request, Response, Router } from 'express';
+import CoachService from '../../services/old/CoachService';
+import { Mapper } from '../../helpers/Mapper';
+import { CreateCoachRequest } from '../../dto/coach/CoachRequest';
+import { verifyTokenCoach } from '../../middleware/coachAuth';
+import { tempImgUpload, validateAndUploadImg } from '../../middleware/s3';
+import CreateCardRequest from '../../coach/dto/CreateCardRequest';
+import AddMemberService from '../../coach/service/AddMemberService';
+import CardService from '../../coach/service/cardService';
 
 const router = Router();
 
-router.get("/", verifyTokenCoach, async (req: Request, res: Response) => {
+router.get('/', verifyTokenCoach, async (req: Request, res: Response) => {
   try {
     let coach = await CoachService.getSingleCoach(req.body.userId);
     res.send(coach);
@@ -19,11 +19,11 @@ router.get("/", verifyTokenCoach, async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", tempImgUpload, async (req: Request, res: Response) => {
+router.post('/', tempImgUpload, async (req: Request, res: Response) => {
   try {
     let request = Mapper<CreateCoachRequest>(
       new CreateCoachRequest(),
-      req.body
+      req.body,
     );
     let coach = await CoachService.createNewCoach(request);
     if (req.file) {
@@ -40,13 +40,13 @@ router.post("/", tempImgUpload, async (req: Request, res: Response) => {
 });
 
 router.put(
-  "/newCard/:challengeId",
+  '/newCard/:challengeId',
   verifyTokenCoach,
   async (req: Request, res: Response) => {
     try {
       let request = Mapper<CreateCardRequest>(
         new CreateCardRequest(),
-        req.body
+        req.body,
       );
       request.challengeId = req.params.challengeId;
       request.userId = req.body.userId;
@@ -55,11 +55,11 @@ router.put(
     } catch (error) {
       res.status(400).send(error);
     }
-  }
+  },
 );
 
 router.put(
-  "/newMember/:challengeId",
+  '/newMember/:challengeId',
   verifyTokenCoach,
   async (req: Request, res: Response) => {
     try {
@@ -71,17 +71,17 @@ router.put(
     } catch (error) {
       res.status(400).send(error);
     }
-  }
+  },
 );
 
 router.put(
-  "/updateCard/:challengeId/card/:cardId",
+  '/updateCard/:challengeId/card/:cardId',
   verifyTokenCoach,
   async (req: Request, res: Response) => {
     try {
       let request = Mapper<CreateCardRequest>(
         new CreateCardRequest(),
-        req.body
+        req.body,
       );
       request.challengeId = req.params.challengeId;
       request._id = req.params.cardId;
@@ -95,7 +95,7 @@ router.put(
 
       res.status(400).send(error);
     }
-  }
+  },
 );
 
 // router.put("/img", uploadImage.any(), (req: Request, res: Response) => {

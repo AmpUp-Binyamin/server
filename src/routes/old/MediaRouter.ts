@@ -1,21 +1,21 @@
-import { Request, Response, Router } from "express";
+import { Request, Response, Router } from 'express';
 import {
   validateAndDeleteMedia,
   tempImgUpload,
   tempMediaUpload,
   validateAndUploadImg,
   validateAndUploadMedia,
-} from "../../middleware/s3";
-import { verifyToken } from "../../middleware/auth";
+} from '../../middleware/s3';
+import { verifyToken } from '../../middleware/auth';
 
 const router: Router = Router();
 
 router.post(
-  "/img",
+  '/img',
   tempImgUpload,
   verifyToken,
   async (req: Request, res: Response) => {
-    console.log("req.body: ", req.body);
+    console.log('req.body: ', req.body);
 
     try {
       let userId: string = req.body.userId;
@@ -23,43 +23,43 @@ router.post(
         let url = await validateAndUploadImg(req.file, userId);
         console.log(url);
         if (url) {
-          const fileName = url.split("/").pop()?.split("?")[0];
+          const fileName = url.split('/').pop()?.split('?')[0];
           console.log({ fileName });
         }
       }
 
-      res.send("Files uploaded successfully.");
+      res.send('Files uploaded successfully.');
     } catch (error) {
-      console.log("Error:", error);
-      res.status(666).send("error not found");
+      console.log('Error:', error);
+      res.status(666).send('error not found');
     }
-  }
+  },
 );
 
-router.post("/media", tempMediaUpload, async (req: Request, res: Response) => {
+router.post('/media', tempMediaUpload, async (req: Request, res: Response) => {
   try {
     let userId: string = req.body.userId;
     if (req.file) {
       let media = await validateAndUploadMedia(req.file, userId);
       console.log(media);
     }
-    res.send("Files uploaded successfully.");
+    res.send('Files uploaded successfully.');
   } catch (error) {
-    console.log("Error:", error);
-    res.status(666).send("error not found");
+    console.log('Error:', error);
+    res.status(666).send('error not found');
   }
 });
 
-router.delete("/img", async (req: Request, res: Response) => {
-  console.log("req.body: ", req.body);
+router.delete('/img', async (req: Request, res: Response) => {
+  console.log('req.body: ', req.body);
   const fileUrl = req.body.fileUrl;
-  console.log("fileUrl: ", fileUrl);
+  console.log('fileUrl: ', fileUrl);
   try {
     await validateAndDeleteMedia(req.body);
     res.send(`File ${fileUrl} deleted successfully.`);
   } catch (error) {
-    console.log("Error:", error);
-    res.status(500).send("Error deleting file.");
+    console.log('Error:', error);
+    res.status(500).send('Error deleting file.');
   }
 });
 

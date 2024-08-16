@@ -1,31 +1,31 @@
-import { Request, Response, Router } from "express";
-import ChallengeController from "../../controllers/ChallengeController";
-import StoreService from "../../services/old/Store.Service";
-import IChallenge from "../../interfaces/IChallenge";
-import ActiveChallegeService from "../../services/old/ActiveChallengeService";
+import { Request, Response, Router } from 'express';
+import ChallengeController from '../../controllers/ChallengeController';
+import StoreService from '../../services/old/Store.Service';
+import IChallenge from '../../interfaces/IChallenge';
+import ActiveChallegeService from '../../services/old/ActiveChallengeService';
 
 const router = Router();
 
-router.get("/:active_challenge_id", async (req: Request, res: Response) => {
+router.get('/:active_challenge_id', async (req: Request, res: Response) => {
   try {
     let challenge: any = await ActiveChallegeService.getSingleActiveChallenge(
-      req.params.active_challenge_id
+      req.params.active_challenge_id,
     );
-    console.log(" r ", challenge);
+    console.log(' r ', challenge);
     if (challenge?.challenge) {
       let store = await StoreService.getChallenge(challenge?.challenge);
-      console.log(" r ", store);
+      console.log(' r ', store);
       return res.send(store);
     } else {
-      return res.status(400).send("No challenge found");
+      return res.status(400).send('No challenge found');
     }
   } catch (error) {
-    console.log("Store Router Error: ", error);
+    console.log('Store Router Error: ', error);
     return res.status(400).send(error);
   }
 });
 
-router.put("/:storeItemId", async (req: Request, res: Response) => {
+router.put('/:storeItemId', async (req: Request, res: Response) => {
   try {
     let memberId = req.body.userId;
     let challengeId = req.body.challengeId;

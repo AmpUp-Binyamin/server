@@ -1,7 +1,7 @@
 // src\middleware\UserAuth.ts
-import {IUser} from "../interfaces/IUser";
-import UserService from "../services/UserService";
-import Permission from "../types/Permission";
+import { IUser } from '../interfaces/IUser';
+import UserService from '../services/UserService';
+import Permission from '../types/Permission';
 
 export default abstract class UserAuth {
   userId: string;
@@ -9,8 +9,8 @@ export default abstract class UserAuth {
   user?: IUser | null;
 
   constructor() {
-    this.userId = "";
-    this.userPermission = "user";
+    this.userId = '';
+    this.userPermission = 'user';
   }
 
   async getFullData?(): Promise<IUser | null> {

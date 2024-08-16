@@ -1,11 +1,11 @@
-import FeedBackController from "../../controllers/FeedBackController";
-import AddFedBackRequest from "../../dto/FeedBack/AddFeedBackRequest";
-import IFeedBack from "../../interfaces/IFeedBack";
+import FeedBackController from '../../controllers/FeedBackController';
+import AddFedBackRequest from '../../dto/FeedBack/AddFeedBackRequest';
+import IFeedBack from '../../interfaces/IFeedBack';
 
 export default class FeedBackService {
   static controller = new FeedBackController();
   static async createNewFeedBack(
-    data: AddFedBackRequest
+    data: AddFedBackRequest,
   ): Promise<IFeedBack | null> {
     let newFeadBack: IFeedBack = {
       subject: data.subject,
@@ -26,7 +26,7 @@ export default class FeedBackService {
 
   static async updateFeedBack(
     id: string,
-    data: Partial<IFeedBack>
+    data: Partial<IFeedBack>,
   ): Promise<IFeedBack | null> {
     return await this.controller.update(id, data);
   }

@@ -1,11 +1,11 @@
-import TeamController from "../../controllers/TeamController";
+import TeamController from '../../controllers/TeamController';
 import {
   CreateTeamMemberRequest,
   CreateTeamRequest,
   UpdateTeamMemberRequest,
-} from "../../dto/team/TeamRequest";
-import IMember from "../interfaces/IMember";
-import { ITeam } from "../../interfaces/ITeam";
+} from '../../dto/team/TeamRequest';
+import IMember from '../interfaces/IMember';
+import { ITeam } from '../../interfaces/ITeam';
 
 export default class TeamService {
   static TeamController = new TeamController();
@@ -36,25 +36,25 @@ export default class TeamService {
 
   static async updateTeamMember(
     teamId: string,
-    data: UpdateTeamMemberRequest | CreateTeamMemberRequest
+    data: UpdateTeamMemberRequest | CreateTeamMemberRequest,
   ) {
     try {
       const team = await this.TeamController.readOne(teamId);
       if (!team) return;
-      if ("_id" in data) {
+      if ('_id' in data) {
         let member = team.members.find((m) => m._id == data._id);
         if (!member) {
-          throw new Error("Member not found");
+          throw new Error('Member not found');
         }
         return await this.TeamController.updateMember(
           teamId,
           member._id as string,
-          data as UpdateTeamMemberRequest
+          data as UpdateTeamMemberRequest,
         );
       } else {
         return await this.TeamController.createMember(
           teamId,
-          data as CreateTeamMemberRequest
+          data as CreateTeamMemberRequest,
         );
       }
     } catch (error) {

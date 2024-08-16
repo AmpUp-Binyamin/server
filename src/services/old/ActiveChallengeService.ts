@@ -1,18 +1,18 @@
-import { ObjectId } from "mongodb";
-import { isValidObjectId } from "mongoose";
-import activeChallengeController from "../controllers/ActiveChallengeController";
-import ChallengeController from "../../controllers/ChallengeController";
-import MemberController from "../controllers/MemberControllers";
-import GetActiveChallToStartReq from "../../dto/activeChallenge/GetActiveChallToStartReq";
-import { FutureDateCalc } from "../../helpers/FutureDateCalc";
-import { RandomNumberGenerator } from "../../helpers/luck";
-import IChallenge from "../../interfaces/IChallenge";
-import ICoach from "../interfaces/ICoach";
-import IMember from "../interfaces/IMember";
+import { ObjectId } from 'mongodb';
+import { isValidObjectId } from 'mongoose';
+import activeChallengeController from '../controllers/ActiveChallengeController';
+import ChallengeController from '../../controllers/ChallengeController';
+import MemberController from '../controllers/MemberControllers';
+import GetActiveChallToStartReq from '../../dto/activeChallenge/GetActiveChallToStartReq';
+import { FutureDateCalc } from '../../helpers/FutureDateCalc';
+import { RandomNumberGenerator } from '../../helpers/luck';
+import IChallenge from '../../interfaces/IChallenge';
+import ICoach from '../interfaces/ICoach';
+import IMember from '../interfaces/IMember';
 
-import IActiveChallenge, { IActiveCard } from "../interfaces/IActiveChallenge";
-import ICard from "../../interfaces/ICard";
-import GetStatusDoneCardsRes from "../../dto/activeChallenge/GetStatusDoneCardsRes";
+import IActiveChallenge, { IActiveCard } from '../interfaces/IActiveChallenge';
+import ICard from '../../interfaces/ICard';
+import GetStatusDoneCardsRes from '../../dto/activeChallenge/GetStatusDoneCardsRes';
 
 export default class ActiveChallegeService {
   static controller = new activeChallengeController();
@@ -21,32 +21,32 @@ export default class ActiveChallegeService {
   static challengeController = new ChallengeController();
 
   static async getSingleActiveChallenge(
-    id: string
+    id: string,
   ): Promise<IActiveChallenge | null> {
     return await this.controller.readOne(id);
   }
 
   static async getActiveChallengeToStartScreen(
-    id: string
+    id: string,
   ): Promise<GetActiveChallToStartReq | null> {
     let activeChallenge: IActiveChallenge | null | undefined =
       await this.controller.readOneWithPopulate(
         id,
         {
-          participants: "img",
-          coach: "fullName picture title",
-          challenge: "challengeName coverImage subDescription duration",
+          participants: 'img',
+          coach: 'fullName picture title',
+          challenge: 'challengeName coverImage subDescription duration',
         },
-        "startDate participants"
+        'startDate participants',
       );
     if (!activeChallenge) return null;
 
-    if (!("_id" in activeChallenge.challenge)) return null;
+    if (!('_id' in activeChallenge.challenge)) return null;
     const duration = (activeChallenge.challenge as IChallenge)
       .duration as number;
     const futureDate: Date = FutureDateCalc(
       activeChallenge.startDate,
-      duration
+      duration,
     );
     const { startDate, challenge, participants, coach } = activeChallenge;
     const res = new GetActiveChallToStartReq(
@@ -54,7 +54,7 @@ export default class ActiveChallegeService {
       futureDate,
       participants as IMember[],
       challenge as IChallenge,
-      coach as ICoach
+      coach as ICoach,
     );
     return res;
   }
@@ -62,13 +62,13 @@ export default class ActiveChallegeService {
   static async getStartDailyDeck(userId: ObjectId, id: string) {
     const activeChallenge: IActiveChallenge | null | undefined =
       await this.controller.readOneWithPopulate(id, {
-        challenge: "_id cards duration challengeName",
-        coach: "fullName picture title",
+        challenge: '_id cards duration challengeName',
+        coach: 'fullName picture title',
       });
-    if (!activeChallenge) throw "";
+    if (!activeChallenge) throw '';
 
     const challenge = activeChallenge.challenge as Partial<IChallenge>;
-    if (!challenge.cards) throw "";
+    if (!challenge.cards) throw '';
     const coach: Partial<ICoach> = activeChallenge.coach as Partial<ICoach>;
     let cards: ICard[] = challenge.cards as ICard[];
     const totalDays: number = challenge.duration as number;
@@ -83,24 +83,25 @@ export default class ActiveChallegeService {
     });
 
     const memberCards: IActiveCard[] = activeChallenge.cards.filter(
-      (card) => String(card.member) == String(userId)
+      (card) => String(card.member) == String(userId),
     );
 
     numCardsOfDay.forEach((num, day) => {
       const activeCard: IActiveCard[] = memberCards.filter(
-        (c) => c.challengeDay == day + 1
+        (c) => c.challengeDay == day + 1,
       );
       if (activeCard.length == num) completedDays.push(day + 1);
     });
     let currentDay = Math.floor(
-      (Date.now() - activeChallenge.startDate.getTime()) / (1000 * 60 * 60 * 24)
+      (Date.now() - activeChallenge.startDate.getTime()) /
+        (1000 * 60 * 60 * 24),
     );
     const currentCards: ICard[] = cards.filter(
-      (card) => card.day == currentDay
+      (card) => card.day == currentDay,
     );
     const cardsStatus: ICard[] = currentCards.map((card) => {
       const done: IActiveCard | undefined = memberCards.find(
-        (c) => String(c.card) == card._id
+        (c) => String(c.card) == card._id,
       );
       return { ...card, done: Boolean(done) };
     });
@@ -110,7 +111,7 @@ export default class ActiveChallegeService {
       totalDays,
       completedDays,
       coach,
-      challengeName
+      challengeName,
     );
   }
 
@@ -118,10 +119,10 @@ export default class ActiveChallegeService {
 
   static async createNewActiveChallenge(data: any): Promise<IActiveChallenge> {
     if (!data.challenge) {
-      throw { code: 400, msg: "challenge not found" };
+      throw { code: 400, msg: 'challenge not found' };
     }
     if (!data.startDate) {
-      throw { code: 400, msg: "start date not found" };
+      throw { code: 400, msg: 'start date not found' };
     }
     let newActiveChallenge: IActiveChallenge = {
       coach: data.userId,
@@ -136,8 +137,8 @@ export default class ActiveChallegeService {
   }
 
   static async loveCard(challengeId: string): Promise<any> {
-    let challenge = await this.controller.readOne(challengeId, "participants");
-    if (!challenge) throw { code: 400, message: "go to hell!!!" };
+    let challenge = await this.controller.readOne(challengeId, 'participants');
+    if (!challenge) throw { code: 400, message: 'go to hell!!!' };
     let num = challenge.participants.length;
     let user =
       challenge.participants[this.RandomGenerator.getRandom(0, num - 1)];
@@ -149,27 +150,27 @@ export default class ActiveChallegeService {
   static async handleCardAnswer(
     activeChallengeId: string,
     cardId: string,
-    answer: any
+    answer: any,
   ): Promise<IActiveCard> {
-    if (!activeChallengeId || !cardId) throw { code: 400, msg: "missing data" };
+    if (!activeChallengeId || !cardId) throw { code: 400, msg: 'missing data' };
     if (!isValidObjectId(activeChallengeId))
-      throw { code: 400, msg: "challengeId is not ObjectId" };
+      throw { code: 400, msg: 'challengeId is not ObjectId' };
     if (!isValidObjectId(cardId))
-      throw { code: 400, msg: "cardId is not ObjectId" };
+      throw { code: 400, msg: 'cardId is not ObjectId' };
 
     // מציאת האתגר בדטאבייס
     // מציאת האתגר הפעיל
     let activeChallenge = await this.controller.readOne(activeChallengeId);
     if (!activeChallenge)
-      throw { code: 400, msg: "Active challenge not found" };
+      throw { code: 400, msg: 'Active challenge not found' };
     let challenge = await this.challengeController.readOne(
-      String(activeChallenge.challenge)
+      String(activeChallenge.challenge),
     );
-    if (!challenge) throw { code: 400, msg: "challenge not found" };
+    if (!challenge) throw { code: 400, msg: 'challenge not found' };
 
     // מציאת הכרטיס
     let card = challenge.cards.find((card) => card._id == cardId);
-    if (!card) throw { code: 400, msg: "card not found" };
+    if (!card) throw { code: 400, msg: 'card not found' };
 
     // יצירת הקלף להוספה לאתגר הפעיל
     const cardToAdd: IActiveCard = {
@@ -181,7 +182,7 @@ export default class ActiveChallegeService {
       answerMedia: [answer.media],
     };
 
-    console.log("value: ", answer.value);
+    console.log('value: ', answer.value);
     // הוספת הקלף החדש לאתגר הפעיל
     await this.controller.update(activeChallenge._id as string, {
       $push: { cards: cardToAdd },
@@ -191,21 +192,21 @@ export default class ActiveChallegeService {
 
   static async joinActiveChallenge(
     memberId: string | ObjectId,
-    activeChallengeId: string | ObjectId
+    activeChallengeId: string | ObjectId,
   ) {
     const member = await this.memberController.readOne(memberId);
     const activeChallengeResult = await this.controller.readSelect(
       { _id: activeChallengeId },
-      "-cards"
+      '-cards',
     );
     const activeChallenge = activeChallengeResult[0];
     if (member && activeChallenge) {
       const inviteExists = member.myInvites.find(
-        (invite) => invite.toString() === activeChallengeId.toString()
+        (invite) => invite.toString() === activeChallengeId.toString(),
       );
       if (inviteExists) {
         const updatedMyInvites = member.myInvites.filter(
-          (invite) => invite.toString() !== activeChallengeId.toString()
+          (invite) => invite.toString() !== activeChallengeId.toString(),
         );
         const updatedActiveChallenges = [
           ...member.myActiveChallenge,
@@ -226,7 +227,7 @@ export default class ActiveChallegeService {
 
         const result = (activeChallenge as IActiveChallenge).participants.find(
           (memberId) =>
-            memberId.toString() === (member as IMember)._id?.toString()
+            memberId.toString() === (member as IMember)._id?.toString(),
         );
 
         if (!result) {
@@ -241,11 +242,11 @@ export default class ActiveChallegeService {
       } else {
         return {
           success: false,
-          msg: "member does not have a valid invite to this challenge",
+          msg: 'member does not have a valid invite to this challenge',
         };
       }
     } else {
-      return { success: false, msg: "member or challenge not found" };
+      return { success: false, msg: 'member or challenge not found' };
     }
   }
 }

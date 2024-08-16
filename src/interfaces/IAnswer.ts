@@ -1,5 +1,5 @@
 // src\interfaces\IAnswer.ts
-import { Document, Types } from "mongoose";
+import { Document, Types } from 'mongoose';
 
 export default interface IAnswer extends Document {
   challenge: Types.ObjectId;

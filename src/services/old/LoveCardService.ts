@@ -1,10 +1,10 @@
-import activeChallengeController from "../controllers/ActiveChallengeController";
-import ChallengeController from "../../controllers/ChallengeController";
-import MemberController from "../controllers/MemberControllers";
-import { DaysDoneHelper } from "../../helpers/DaysDoneHelper";
-import { RandomNumberGenerator } from "../../helpers/luck";
-import { ObjectId } from "mongoose";
-import ICard from "../../interfaces/ICard";
+import activeChallengeController from '../controllers/ActiveChallengeController';
+import ChallengeController from '../../controllers/ChallengeController';
+import MemberController from '../controllers/MemberControllers';
+import { DaysDoneHelper } from '../../helpers/DaysDoneHelper';
+import { RandomNumberGenerator } from '../../helpers/luck';
+import { ObjectId } from 'mongoose';
+import ICard from '../../interfaces/ICard';
 
 export class loveCard {
   static controller = new activeChallengeController();
@@ -18,7 +18,7 @@ export class loveCard {
     let challenge = await this.controller.readOne(challengeId);
     // console.log(challenge);
 
-    if (!challenge) throw { code: 400, message: "go to hell!!!" };
+    if (!challenge) throw { code: 400, message: 'go to hell!!!' };
     let num = challenge.participants.length;
     let random = this.RandomGenerator.getRandom(0, num - 1);
     // console.log({random});
@@ -30,19 +30,19 @@ export class loveCard {
     // console.log({userId});
 
     if (!userId) {
-      throw { code: 400, message: "go to hell!!!" };
+      throw { code: 400, message: 'go to hell!!!' };
     }
     // מפה בדיקות למה להביא פירגון 1.אם יום ראשון
     // 2. אם התחלי X ימים ולא סיים
     //  3. לא עשה 3 ימים וחזר לעשות
     if (await this.CheckingFristDay(userId, challenge))
-      return { userId: { "frist Day": "good luck" } };
+      return { userId: { 'frist Day': 'good luck' } };
     this.DoNotFinish(userId, challenge);
 
     console.log(userId);
 
     const regularChallenge = await this.challengeController.readOne(
-      challenge.challenge.toString()
+      challenge.challenge.toString(),
     );
     console.log({ regularChallenge });
     const regularChallengeCards = regularChallenge?.cards;
@@ -50,31 +50,31 @@ export class loveCard {
     const regularChallengeCardsObj =
       this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(
         regularChallengeCards as ICard[],
-        "day"
+        'day',
       );
     const user = await this.memberController.readOne(String(userId));
     const memberCards = this.DaysDoneHelper.getMemberCardsArray(
       user?._id as ObjectId,
-      challenge
+      challenge,
     );
     const memberDaysDoneObj = this.DaysDoneHelper.getDaysAndDaysToBeDoneObject(
       memberCards,
-      "challengeDay"
+      'challengeDay',
     );
     const result1 = await this.DaysDoneHelper.checkPositiveStreak(
       memberDaysDoneObj,
       3,
-      challenge
+      challenge,
     );
     const result2 = await this.DaysDoneHelper.checkNegativeStreakEnd(
       memberDaysDoneObj,
       3,
-      challenge
+      challenge,
     );
     const result3 = await this.DaysDoneHelper.checkMembersIncompleteStreaks(
       memberDaysDoneObj,
       regularChallengeCardsObj,
-      3
+      3,
     );
     return { user: user, res: result1 };
   }
@@ -92,7 +92,7 @@ export class loveCard {
     let startDate = challenge.startDate;
     // console.log(challenge.cards);
     const maxChallengeDay = Math.max(
-      ...challenge.cards.map((card: any) => card.challengeDay)
+      ...challenge.cards.map((card: any) => card.challengeDay),
     );
     // console.log("***********************************");
     let x = 3;
@@ -115,7 +115,7 @@ export class loveCard {
         if (num < 6 && num > 0) total++;
       });
     }
-    if (total == 3) return { userId: "Send him not to despair, you can do it" };
+    if (total == 3) return { userId: 'Send him not to despair, you can do it' };
 
     //   challenge.cards.filter(c => c.challenge)
     //כמה ימים היה  האתגר

@@ -1,16 +1,16 @@
 // src\routes\old\NotificationRouter.ts
-import { Request, Response, Router } from "express";
-import NotificationService from "../../services/old/notificationService";
-import { Mapper } from "../../helpers/Mapper";
-import { CreateCoachRequest } from "../../dto/coach/CoachRequest";
+import { Request, Response, Router } from 'express';
+import NotificationService from '../../services/old/notificationService';
+import { Mapper } from '../../helpers/Mapper';
+import { CreateCoachRequest } from '../../dto/coach/CoachRequest';
 
 const router = Router();
 
-router.get("/:chalngeId", async (req: Request, res: Response) => {
+router.get('/:chalngeId', async (req: Request, res: Response) => {
   try {
     let notifications = await NotificationService.getNotifications(
       req.body.memberId,
-      req.params.chalngeId
+      req.params.chalngeId,
     );
 
     res.send(notifications);
@@ -19,13 +19,13 @@ router.get("/:chalngeId", async (req: Request, res: Response) => {
   }
 });
 
-router.delete("/:notifictionId", async (req: Request, res: Response) => {
+router.delete('/:notifictionId', async (req: Request, res: Response) => {
   try {
     let notifications = await NotificationService.deleteOneNotification(
       req.body.memberId,
-      req.params.notifictionId
+      req.params.notifictionId,
     );
-    res.send("deleted succeדsfuly");
+    res.send('deleted succeדsfuly');
   } catch (error) {
     res.status(400).send(error);
   }

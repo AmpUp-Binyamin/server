@@ -1,10 +1,10 @@
-import { Request, Response, Router } from "express";
-import MemberService from "../../services/old/MemberService";
-import ArchiveService from "../../services/old/ArchiveService";
+import { Request, Response, Router } from 'express';
+import MemberService from '../../services/old/MemberService';
+import ArchiveService from '../../services/old/ArchiveService';
 
 const router = Router();
 
-router.get("/pastChallenges", async (req: Request, res: Response) => {
+router.get('/pastChallenges', async (req: Request, res: Response) => {
   try {
     let userId = req.body.userId;
     let memberChallenges = await ArchiveService.getMemberChallenges(userId);
@@ -15,7 +15,7 @@ router.get("/pastChallenges", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/:challengeId", async (req: Request, res: Response) => {
+router.get('/:challengeId', async (req: Request, res: Response) => {
   try {
     let challenge = await ArchiveService.getChallenge(req.params.challengeId);
     if (challenge) {
@@ -28,11 +28,11 @@ router.get("/:challengeId", async (req: Request, res: Response) => {
   }
 });
 
-router.get("/:challengeId/:cardId", async (req: Request, res: Response) => {
+router.get('/:challengeId/:cardId', async (req: Request, res: Response) => {
   try {
     let card = await ArchiveService.getCard(
       req.params.challengeId,
-      req.params.cardId
+      req.params.cardId,
     );
     if (card) {
       res.send(card);

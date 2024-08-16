@@ -88,9 +88,6 @@
 //     next();
 // };
 
-
-
-
 // export function deleteFile(fileName: string): Promise<any> {
 //     const deleteParams = {
 //         Bucket: bucket,
@@ -99,9 +96,8 @@
 //     return s3.send(new DeleteObjectCommand(deleteParams));
 // }
 
-// const uploadimg = upload.single('img');       
+// const uploadimg = upload.single('img');
 // export const uploadImgAndSaveUrl = [uploadimg, saveImgUrlToBody];
 
 // const uploadmedia = upload.single('media')
 // export const uploadMediaAndSaveUrl = [uploadmedia, saveMediaUrlToBody];
-

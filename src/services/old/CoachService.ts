@@ -1,6 +1,6 @@
-import CoachController from "../controllers/CoachController";
-import { CreateCoachRequest } from "../../dto/coach/CoachRequest";
-import ICoach from "../interfaces/ICoach";
+import CoachController from '../controllers/CoachController';
+import { CreateCoachRequest } from '../../dto/coach/CoachRequest';
+import ICoach from '../interfaces/ICoach';
 
 export default class CoachService {
   static controller = new CoachController();
@@ -10,7 +10,7 @@ export default class CoachService {
   }
 
   static async createNewCoach(
-    data: CreateCoachRequest
+    data: CreateCoachRequest,
   ): Promise<ICoach | null> {
     let newCoach: ICoach = {
       fullName: data.fullName,
@@ -26,7 +26,7 @@ export default class CoachService {
 
   static async updateCoach(
     id: string,
-    data: Partial<ICoach>
+    data: Partial<ICoach>,
   ): Promise<ICoach | null> {
     return await this.controller.update(id, data);
   }

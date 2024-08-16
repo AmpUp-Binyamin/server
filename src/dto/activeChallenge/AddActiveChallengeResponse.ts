@@ -1,3 +1,1 @@
-export default class AddActiveChallengeResponse {
-
-}
+export default class AddActiveChallengeResponse {}
