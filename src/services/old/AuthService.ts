@@ -1,12 +1,12 @@
 // src\services\old\AuthService.ts
-import MemberController from '../controllers/MemberControllers';
-import activeChallengeController from '../controllers/ActiveChallengeController';
+// import MemberController from '../controllers/MemberControllers';
+// import activeChallengeController from '../controllers/ActiveChallengeController';
 import { ObjectId, Schema } from 'mongoose';
 import { createToken } from '../../middleware/auth';
 import { Code } from 'mongodb';
-import IMember from '../interfaces/IMember';
+// import IMember from '../interfaces/IMember';
 import ChallengeController from '../../controllers/ChallengeController';
-import IActiveChallenge from '../interfaces/IActiveChallenge';
+// import IActiveChallenge from '../interfaces/IActiveChallenge';
 
 export default class AuthService {
   static MemberController = new MemberController();

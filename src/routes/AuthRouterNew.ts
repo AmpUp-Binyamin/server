@@ -1,8 +1,10 @@
 // src\routes\AuthRouterNew.ts
 import { ObjectId } from 'mongoose';
 import AuthService from '../services/AuthServiceNew';
+import { verifyToken } from '../middleware/auth';
 import { Request, Response, Router } from 'express';
 import { IUser } from '../interfaces/IUser';
+import UserService from '../services/UserService';
 const router = Router();
 
 // router.post('/checkEmail', async (req: Request, res: Response) => {
@@ -17,13 +19,18 @@ const router = Router();
 //     res.status(400).send(error);
 //   }
 // });
-// export default router;
 
-router.get('/coach', verifyTokenCoach, async (req: Request, res: Response) => {
+router.get('/coach', verifyToken, async (req: Request, res: Response) => {
   try {
-    let coach = await CoachService.getSingleCoach(req.body.userId);
+    let coach = await UserService.getSingleUser(req.body.userId);
+    console.log({coach});
+    if (!coach) throw new Error("no coach");
+    if (coach.status != 'Coach') throw new Error("not coach");
+    
     res.send(coach);
   } catch (error) {
     res.status(400).send(error);
   }
 });
+
+export default router;

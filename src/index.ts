@@ -15,11 +15,11 @@ app.use(express.json());
 // import seed from './mockData/newDBSeeder';
 // seed()
 
-// import AuthRouter from "./routes/old/AuthRouter";
-// app.use("/auth", AuthRouter);
+import AuthRouterNew from "./routes/AuthRouterNew";
+app.use("/auth", AuthRouterNew);
 
-import CoachRouter from './routes/old/CoachRouter';
-app.use('/coach', CoachRouter);
+// import CoachRouter from './routes/old/CoachRouter';
+// app.use('/coach', CoachRouter);
 
 // middleware - token to user
 import { verifyToken } from './middleware/auth';
@@ -73,8 +73,8 @@ app.use('/user', userRouter);
 // ################################################
 // ################################################
 
-// import tokenTemporary from "./test/temporaryToken";
-// tokenTemporary.coachToken().then(res => console.log('test coach token: \n \n',res, '\n'))
+import tokenTemporary from "./test/temporaryToken";
+tokenTemporary.coachToken().then(res => console.log('test coach token: \n \n',res, '\n'))
 
 // import "./test/scripts";
 
