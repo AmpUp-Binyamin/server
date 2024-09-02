@@ -41,6 +41,7 @@ export const verifyToken = async (
     };
 
     req.body = { ...req.body, ...user };
+    req.userId = user.userId; 
 
     next();
   } catch (error) {
