@@ -7,7 +7,7 @@ const storeService = new StoreService();
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const store = await storeService.createStore(req.body);
+    const store = await storeService.createStore(req.body, req.body.userId);
     res.status(201).json(store);
   } catch (error) {
     res.status(400).send(error);
@@ -16,7 +16,7 @@ router.post('/', async (req: Request, res: Response) => {
 
 router.get('/', async (req: Request, res: Response) => {
   try {
-    const stores = await storeService.getStores(req.query);
+    const stores = await storeService.getStores(req.query, req.body.userId);
     res.status(200).json(stores);
   } catch (error) {
     res.status(400).send(error);
@@ -25,7 +25,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.get('/:id', async (req: Request, res: Response) => {
   try {
-    const store = await storeService.getStoreById(req.params.id);
+    const store = await storeService.getStoreById(req.params.id, req.body.userId);
     if (store) {
       res.status(200).json(store);
     } else {
@@ -38,7 +38,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 
 router.put('/:id', async (req: Request, res: Response) => {
   try {
-    const store = await storeService.updateStore(req.params.id, req.body);
+    const store = await storeService.updateStore(req.params.id, req.body, req.body.userId);
     if (store) {
       res.status(200).json(store);
     } else {
@@ -51,7 +51,7 @@ router.put('/:id', async (req: Request, res: Response) => {
 
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
-    const success = await storeService.deleteStore(req.params.id);
+    const success = await storeService.deleteStore(req.params.id, req.body.userId);
     if (success) {
       res.status(200).json({ message: 'Store marked as inactive' });
     } else {

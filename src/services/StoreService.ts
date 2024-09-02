@@ -1,8 +1,16 @@
 // src\services\StoreService.ts
-import { FilterQuery } from 'mongoose';
+import { FilterQuery, Types } from 'mongoose';
 import StoreController from '../controllers/StoreController';
 import IStore from '../interfaces/IStore';
 import { Mapper } from '../helpers/Mapper';
+
+// Define a type for filterable properties
+type FilterableStoreProperties = {
+  storeName?: string;
+  prizes?: Types.ObjectId[];
+  coach?: Types.ObjectId | string;
+  isActive?: boolean;
+};
 
 export default class StoreService {
   private storeController: StoreController;
@@ -11,31 +19,45 @@ export default class StoreService {
     this.storeController = new StoreController();
   }
 
-  async createStore(body: any): Promise<IStore> {
-    const dto = {} as IStore; // Create a blank DTO for mapping
-    const storeData = Mapper<IStore>(dto, body); // Map the incoming data to the DTO
+  async createStore(body: any, userId: string): Promise<IStore> {
+    const dto = {} as IStore;
+    const storeData = Mapper<IStore>(dto, { ...body, coach: userId, isActive: true });
     return await this.storeController.create(storeData);
   }
 
-  async getStores(filter: Partial<IStore>): Promise<IStore[]> {
-    const queryFilter: FilterQuery<IStore> = filter as FilterQuery<IStore>; // Cast Partial<IStore> to FilterQuery<IStore>
+  async getStores(filter: FilterableStoreProperties, userId: string): Promise<IStore[]> {
+    const queryFilter: FilterQuery<IStore> = { 
+      ...filter, 
+      coach: userId,
+      isActive: true
+    };
     return await this.storeController.read(queryFilter);
   }
 
-  async getStoreById(id: string): Promise<IStore | null> {
-    return await this.storeController.readOne(id);
+  async getStoreById(id: string, userId: string): Promise<IStore | null> {
+    const store = await this.storeController.readOne(id);
+    if (store && store.coach.toString() === userId && store.isActive) {
+      return store;
+    }
+    return null;
   }
 
-  async updateStore(id: string, body: any): Promise<IStore | null> {
-    const dto = {} as IStore; // Create a blank DTO for mapping
-    const storeData = Mapper<IStore>(dto, body); // Map the incoming data to the DTO
-    return await this.storeController.update(id, storeData);
+  async updateStore(id: string, body: any, userId: string): Promise<IStore | null> {
+    const store = await this.storeController.readOne(id);
+    if (store && store.coach.toString() === userId && store.isActive) {
+      const dto = {} as IStore;
+      const storeData = Mapper<IStore>(dto, body);
+      return await this.storeController.update(id, storeData);
+    }
+    return null;
   }
 
-  async deleteStore(id: string): Promise<boolean> {
-    const dto = {} as IStore; // Create a blank DTO for mapping
-    const storeData = Mapper<IStore>(dto, { isActive: false }); // Set `isActive` to false
-    const updatedStore = await this.storeController.update(id, storeData);
-    return !!updatedStore; // Return true if update was successful, otherwise false
+  async deleteStore(id: string, userId: string): Promise<boolean> {
+    const store = await this.storeController.readOne(id);
+    if (store && store.coach.toString() === userId && store.isActive) {
+      const updatedStore = await this.storeController.update(id, { isActive: false });
+      return !!updatedStore;
+    }
+    return false;
   }
 }
